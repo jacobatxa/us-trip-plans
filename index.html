@@ -139,6 +139,16 @@
   }
   .stpaul-box h3 { color: var(--accent-c); margin-top: 0; }
 
+  .sched-wrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--border); border-radius: 10px; }
+  .sched-wrap table { margin: 0; min-width: 700px; }
+  .sched-wrap th { position: sticky; top: 0; background: var(--card); z-index: 1; white-space: nowrap; }
+  .sched-wrap td { font-size: .82em; vertical-align: top; }
+  .sched-wrap .row-la { background: rgba(91,155,213,.06); }
+  .sched-wrap .row-ys { background: rgba(255,217,61,.05); }
+  .sched-wrap .row-sp { background: rgba(107,203,119,.05); }
+  .sched-wrap .row-fly { background: rgba(212,168,67,.06); }
+  .sched-wrap .diverge { color: var(--gold); font-size: .75em; display: block; margin-top: 2px; }
+
   @media (max-width: 600px) {
     .hero h1 { font-size: 1.5em; }
     .tab-bar button { padding: 10px 14px; font-size: .82em; }
@@ -363,6 +373,31 @@
   <tr><td>迪士尼距离</td><td>开车15分钟</td><td>步行15分钟</td><td>步行5分钟</td></tr>
 </table>
 
+<h2>日程总览 (方案B 为基准)</h2>
+<div class="sched-wrap">
+<table>
+  <tr><th>日期</th><th>星期</th><th>地点</th><th>上午</th><th>下午</th><th>晚上 / 住宿</th><th>方案差异</th></tr>
+  <tr class="row-fly"><td>8/12</td><td>二</td><td>飞行</td><td>西安→首尔 KE142</td><td>首尔→洛杉矶 KE011</td><td>15:20抵LAX 取车 入住Anaheim</td><td>一致</td></tr>
+  <tr class="row-la"><td>8/13</td><td>三</td><td>LA</td><td>迪士尼乐园全天</td><td>Fantasyland Star Wars</td><td>烟花秀 Anaheim酒店</td><td>一致</td></tr>
+  <tr class="row-la"><td>8/14</td><td>四</td><td>LA</td><td>环球影城全天</td><td>Mario World Harry Potter</td><td>CityWalk 晚餐 Anaheim酒店</td><td>一致</td></tr>
+  <tr class="row-la"><td>8/15</td><td>五</td><td>LA</td><td>Santa Monica海滩</td><td>Getty Center</td><td>Griffith日落 Anaheim酒店</td><td>一致</td></tr>
+  <tr class="row-la"><td>8/16</td><td>六</td><td>LA</td><td>Huntington/科技馆</td><td>机动 打包行李</td><td>Anaheim酒店 <span class="diverge">A: 上午飞BZN 黄石D1</span></td><td>A: 已飞BZN B/C: LA最后1晚</td></tr>
+  <tr class="row-ys"><td>8/17</td><td>日</td><td>黄石</td><td><span class="diverge">A: 下8字 Old Faithful</span>B/C: LA飞BZN 取车</td><td>Grand Prismatic → Lake</td><td>西黄石镇 <span class="diverge">A: Brandin' Iron</span>B: White Buffalo C: Travelers Lodge</td><td>A: 黄石D2 B/C: 黄石D1</td></tr>
+  <tr class="row-ys"><td>8/18</td><td>一</td><td>黄石</td><td><span class="diverge">A: Norris → BZN → MSP</span>B: 下8字 Old Faithful</td><td>Grand Prismatic → Lake</td><td><span class="diverge">A: St Paul家里</span>B: 西黄石 White Buffalo C: Travelers Lodge</td><td>A: 已到St Paul B: 黄石D2 C: 黄石D2</td></tr>
+  <tr class="row-ys"><td>8/19</td><td>二</td><td>黄石</td><td><span class="diverge">A: St Paul休整</span>B: Mammoth+Norris 中午BZN→MSP</td><td><span class="diverge">B: 飞MSP</span>C: Norris Mammoth</td><td><span class="diverge">A: St Paul家里</span>B: St Paul家里 C: 西黄石 Travelers Lodge</td><td>A: StPaul D2 B: 到St Paul C: 黄石D3</td></tr>
+  <tr class="row-ys"><td>8/20</td><td>三</td><td></td><td><span class="diverge">A: St Paul双城探索</span>B: St Paul休整+Mall</td><td></td><td><span class="diverge">C: 黄石缓冲 中午BZN→MSP</span></td><td>A: StPaul D3 B: StPaul D2 C: 到St Paul</td></tr>
+  <tr class="row-sp"><td>8/21</td><td>四</td><td>St Paul</td><td>Como Zoo / Mall of America</td><td>Science Museum / 家庭聚餐</td><td>St Paul家里 <span class="diverge">C: 家庭大餐告别</span></td><td>A: StPaul D4 B: StPaul D3 C: StPaul D2</td></tr>
+  <tr class="row-sp"><td>8/22</td><td>五</td><td>St Paul→LA</td><td>收拾告别 MSP飞LAX</td><td>LAX转机</td><td>23:50 KE012 返程 <span class="diverge">夫妻行程结束</span></td><td>一致 老人+女儿继续St Paul</td></tr>
+  <tr class="row-sp"><td>8/23</td><td>六</td><td>St Paul</td><td colspan="3">老人+女儿: 休整 Mall of America室内游乐场 Nickelodeon Universe</td><td>仅老人+女儿</td></tr>
+  <tr class="row-sp"><td>8/24</td><td>日</td><td>St Paul</td><td colspan="3">老人+女儿: Minnesota Zoo (灰狼/驼鹿/水獭) + Como Park Conservatory</td><td>仅老人+女儿</td></tr>
+  <tr class="row-sp"><td>8/25</td><td>一</td><td>St Paul</td><td colspan="3">老人+女儿: Duluth苏必利尔湖1日游 Great Lakes Aquarium 湖边散步</td><td>仅老人+女儿</td></tr>
+  <tr class="row-sp"><td>8/26</td><td>二</td><td>St Paul</td><td colspan="3">老人+女儿: Stillwater古董小镇半日 冰淇淋+河边野餐 轻松日</td><td>仅老人+女儿</td></tr>
+  <tr class="row-sp"><td>8/27</td><td>三</td><td>St Paul</td><td colspan="3">老人+女儿: Science Museum + St Paul Saints棒球赛(晚场)</td><td>仅老人+女儿</td></tr>
+  <tr class="row-sp"><td>8/28</td><td>四</td><td>St Paul</td><td colspan="3">老人+女儿: Mall of America最后扫货 打包行李 晚上早休息</td><td>仅老人+女儿</td></tr>
+  <tr class="row-fly"><td>8/29</td><td>五</td><td>St Paul→LA</td><td>MSP飞LAX Frontier</td><td>LAX转机</td><td>23:50 KE012 返程 <span class="diverge">老人+女儿行程结束</span></td><td>仅老人+女儿 公务舱</td></tr>
+</table>
+</div>
+
 <h2>附加费用（所有方案通用）</h2>
 <table>
   <tr><th>项目</th><th>明细</th><th>金额</th></tr>
@@ -407,29 +442,77 @@
 
 <h2>预订链接</h2>
 
-<h3>机票</h3>
+<h3>机票 — 按航段直达搜索</h3>
 <div class="links">
-  <a href="https://southwest.com" target="_blank">Southwest 官网</a>
-  <a href="https://flights.google.com" target="_blank">Google Flights</a>
-  <a href="https://priceline.com" target="_blank">Priceline</a>
-  <a href="https://kayak.com" target="_blank">Kayak</a>
-  <a href="https://flyfrontier.com" target="_blank">Frontier 官网</a>
+  <a href="https://www.southwest.com/air/booking/?originationAirportCode=LAX&destinationAirportCode=BZN&returnAirportCode=&departureDate=2026-08-16&returnDate=&adultPassengersCount=4" target="_blank">Southwest LAX→BZN (8/16 方案A)</a>
+  <a href="https://www.southwest.com/air/booking/?originationAirportCode=LAX&destinationAirportCode=BZN&returnAirportCode=&departureDate=2026-08-17&returnDate=&adultPassengersCount=4" target="_blank">Southwest LAX→BZN (8/17 方案B/C)</a>
+  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-18&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/18 方案A)</a>
+  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-19&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/19 方案B)</a>
+  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-20&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/20 方案C)</a>
+  <a href="https://www.flyfrontier.com/book/?origin=MSP&destination=LAX&departure=2026-08-22&adults=2" target="_blank">Frontier MSP→LAX (8/22 夫妻)</a>
+  <a href="https://www.flyfrontier.com/book/?origin=MSP&destination=LAX&departure=2026-08-29&adults=2" target="_blank">Frontier MSP→LAX (8/29 老人+女儿)</a>
+  <a href="https://flights.google.com" target="_blank">Google Flights 比价</a>
+  <a href="https://kayak.com" target="_blank">Kayak 比价</a>
 </div>
 
-<h3>酒店</h3>
+<h3>酒店 — 按名称直达预订</h3>
+<table style="margin-bottom:14px">
+  <tr><th>方案</th><th>酒店</th><th>直达链接</th><th>比价链接</th></tr>
+  <tr>
+    <td>A</td><td>Fairfield Inn Anaheim Resort</td>
+    <td><a href="https://www.marriott.com/hotels/travel/laxaf-fairfield-inn-anaheim-resort/" target="_blank" style="color:var(--sky)">Marriott 官网</a></td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=Fairfield+Inn+Anaheim+Resort" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-1045071/fairfield-inn-anaheim-resort/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td>
+  </tr>
+  <tr>
+    <td>B</td><td>Best Western Plus Anaheim Inn</td>
+    <td><a href="https://www.bestwestern.com/en_US/book/hotels-in-anaheim/best-western-plus-anaheim-inn/propertyCode.05085.html" target="_blank" style="color:var(--sky)">Best Western 官网</a></td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=Best+Western+Plus+Anaheim+Inn" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-220891/best-western-plus-anaheim-inn/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td>
+  </tr>
+  <tr>
+    <td>C</td><td>Clementine Hotel & Suites Anaheim</td>
+    <td><a href="https://www.clementinehotel.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=Clementine+Hotel+Suites+Anaheim" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-745172/clementine-hotel-and-suites-anaheim/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td>
+  </tr>
+  <tr>
+    <td>A</td><td>Brandin' Iron Inn (西黄石)</td>
+    <td><a href="https://www.brandiniron.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=Brandin+Iron+Inn+West+Yellowstone" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-1850326/brandin-iron-inn/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td>
+  </tr>
+  <tr>
+    <td>B</td><td>White Buffalo Hotel (西黄石)</td>
+    <td><a href="https://www.whitebuffaloclub.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=White+Buffalo+Hotel+West+Yellowstone" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-101599515/white-buffalo-hotel/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td>
+  </tr>
+  <tr>
+    <td>C</td><td>Travelers Lodge (西黄石)</td>
+    <td><a href="https://www.booking.com/searchresults.html?ss=Travelers+Lodge+West+Yellowstone" target="_blank" style="color:var(--sky)">Booking 预订</a></td>
+    <td><a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-1850328/travelers-lodge/" target="_blank" style="color:var(--text-dim)">Trip.com</a> <a href="https://www.expedia.com/West-Yellowstone-Hotels-Travelers-Lodge.h1863493.Hotel-Information" target="_blank" style="color:var(--text-dim)">Expedia</a></td>
+  </tr>
+  <tr>
+    <td>通用</td><td>Anaheim 区域全部酒店</td>
+    <td colspan="2"><a href="https://www.booking.com/searchresults.html?ss=Anaheim%2C+California&checkin=2026-08-12&checkout=2026-08-17&group_adults=2&no_rooms=2" target="_blank" style="color:var(--sky)">Booking Anaheim 8/12-17</a> &nbsp; <a href="https://www.airbnb.com/s/Anaheim--California/homes?checkin=2026-08-12&checkout=2026-08-17&adults=4" target="_blank" style="color:var(--sky)">Airbnb Anaheim</a></td>
+  </tr>
+  <tr>
+    <td>通用</td><td>西黄石 全部住宿</td>
+    <td colspan="2"><a href="https://www.booking.com/searchresults.html?ss=West+Yellowstone%2C+Montana&checkin=2026-08-16&checkout=2026-08-19&group_adults=2&no_rooms=2" target="_blank" style="color:var(--sky)">Booking 西黄石 8/16-19</a> &nbsp; <a href="https://www.trip.com/hotels/list?city=3753&checkin=2026-08-16&checkout=2026-08-19" target="_blank" style="color:var(--sky)">Trip.com 西黄石</a></td>
+  </tr>
+</table>
+
+<h3>门票 — 提前购买</h3>
 <div class="links">
-  <a href="https://trip.com" target="_blank">携程 Trip.com</a>
-  <a href="https://booking.com" target="_blank">Booking.com</a>
-  <a href="https://airbnb.com" target="_blank">Airbnb</a>
-  <a href="https://priceline.com" target="_blank">Priceline 酒店</a>
+  <a href="https://disneyland.disney.go.com/tickets/" target="_blank">迪士尼 官网购票</a>
+  <a href="https://www.universalstudioshollywood.com/web/en/us/tickets" target="_blank">环球影城 官网购票</a>
+  <a href="https://www.nps.gov/yell/planyourvisit/fees.htm" target="_blank">黄石 NPS 门票</a>
+  <a href="https://www.undercovertourist.com/los-angeles/disneyland-resort/tickets/" target="_blank">Undercover Tourist (迪士尼折扣票)</a>
+  <a href="https://www.undercovertourist.com/los-angeles/universal-studios-hollywood/tickets/" target="_blank">Undercover Tourist (环球折扣票)</a>
 </div>
 
-<h3>门票</h3>
+<h3>租车</h3>
 <div class="links">
-  <a href="https://disneyland.disney.go.com" target="_blank">迪士尼 官网</a>
-  <a href="https://universalstudioshollywood.com" target="_blank">环球影城 官网</a>
-  <a href="https://nps.gov/yell" target="_blank">黄石 NPS 官网</a>
-  <a href="https://undercovertourist.com" target="_blank">Undercover Tourist (折扣票)</a>
+  <a href="https://www.enterprise.com/en/car-rental/locations/us/ca/los-angeles-international-airport-40l1.html" target="_blank">Enterprise LAX</a>
+  <a href="https://www.enterprise.com/en/car-rental/locations/us/mt/bozeman-airport-1zn1.html" target="_blank">Enterprise BZN</a>
+  <a href="https://www.hertz.com/rentacar/location/unitedstates/california/losangeles/LAXT50" target="_blank">Hertz LAX</a>
+  <a href="https://www.rentalcars.com/" target="_blank">Rentalcars 比价</a>
 </div>
 
 <p class="note" style="margin-top:32px"><strong>注意：</strong>以上机票价格为8月中旬参考价（Google Flights实时查询）。Southwest/Frontier价格波动大，建议确定方案后立即预订。酒店8月旺季余房紧张，尤其是西黄石镇，尽早锁定。</p>
