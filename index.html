@@ -16,7 +16,7 @@
     --accent-b: #ffd93d;
     --accent-c: #6bcb77;
     --gold: #d4a843;
-    --silver: #a0a8b8;
+    --sky: #5b9bd5;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -26,543 +26,423 @@
     line-height: 1.7;
     min-height: 100vh;
   }
-
   .hero {
-    background: linear-gradient(135deg, #0d0d1a 0%, #1a1025 40%, #0f1a25 70%, #0d0d1a 100%);
-    padding: 80px 40px 60px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
+    padding: 60px 20px 40px;
+    background: linear-gradient(180deg, #0d1117 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(212,168,67,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(107,203,119,0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(100,120,255,0.04) 0%, transparent 60%);
-    animation: heroPulse 12s ease-in-out infinite;
+  .hero h1 { font-size: 2.2em; font-weight: 700; color: #fff; letter-spacing: 2px; }
+  .hero p { color: var(--text-dim); margin-top: 8px; font-size: .95em; }
+  .hero .meta { margin-top: 16px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+  .hero .meta span {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 4px 14px; border-radius: 20px; font-size: .82em; color: var(--text-dim);
   }
-  @keyframes heroPulse {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-  }
-  .hero h1 {
-    font-size: 48px; font-weight: 700;
-    background: linear-gradient(135deg, #e8d5a3, #d4a843, #c4943a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    position: relative; letter-spacing: -0.02em;
-  }
-  .hero .subtitle { font-size: 18px; color: #8888aa; margin-top: 16px; position: relative; }
-  .hero .travelers { display: flex; justify-content: center; gap: 24px; margin-top: 36px; position: relative; }
-  .traveler-tag {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 40px; padding: 12px 24px; font-size: 15px;
-    backdrop-filter: blur(12px); display: flex; align-items: center; gap: 10px;
-  }
-  .traveler-tag .icon {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-  .icon-dad { background: #2d4a6e; } .icon-mom { background: #6e2d4a; }
-  .icon-grandpa { background: #4a5e2d; } .icon-kid { background: #6e5a2d; }
-  .flight-info { margin-top: 28px; position: relative; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-  .flight-pill {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px; padding: 6px 16px; font-size: 13px; color: #aaa;
-  }
-  .flight-pill strong { color: #e0d0a0; }
 
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
-
-  .section-title {
-    font-size: 28px; font-weight: 700; margin: 64px 0 32px; color: #e0d8c0;
+  .tab-bar {
+    display: flex; gap: 0; justify-content: center; padding: 0 20px; margin-top: -1px;
+    position: sticky; top: 0; z-index: 10; background: var(--bg);
+    border-bottom: 1px solid var(--border);
   }
-  .section-title span { font-size: 14px; font-weight: 500; color: var(--text-dim); margin-left: 12px; text-transform: uppercase; letter-spacing: 0.12em; }
-
-  .plan-tabs { display: flex; gap: 4px; margin: 40px 0 0; background: var(--card); border-radius: 16px; padding: 6px; border: 1px solid var(--border); }
-  .plan-tab {
-    flex: 1; padding: 18px 28px; border-radius: 12px; border: none;
-    background: transparent; color: var(--text-dim); cursor: pointer;
-    font-size: 16px; font-weight: 600; transition: all 0.25s; text-align: left; position: relative;
+  .tab-bar button {
+    background: none; border: none; color: var(--text-dim);
+    padding: 14px 24px; cursor: pointer; font-size: .95em;
+    border-bottom: 2px solid transparent; transition: all .2s;
+    font-family: inherit; white-space: nowrap;
   }
-  .plan-tab.active { background: #1e1e35; color: #fff; }
-  .plan-tab:hover:not(.active) { color: #bbb; }
-  .plan-tab .tab-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; display: block; }
-  .plan-tab .tab-price { font-size: 28px; font-weight: 700; margin-top: 4px; }
-  .plan-tab .tab-tag { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+  .tab-bar button:hover { color: #fff; }
+  .tab-bar button.active { color: #fff; border-bottom-color: var(--gold); }
 
-  .plan-panel { display: none; }
-  .plan-panel.active { display: block; }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
 
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; margin: 24px 0; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; transition: border-color 0.2s; }
-  .card:hover { border-color: #3a3a5a; }
-  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-  .card h3 .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .badge-budget { background: rgba(107,203,119,0.15); color: #6bcb77; }
-  .badge-mid { background: rgba(255,217,61,0.15); color: #ffd93d; }
-  .badge-premium { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+  .plan { display: none; }
+  .plan.active { display: block; }
+
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 12px; margin-bottom: 32px;
+  }
+  .summary-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; text-align: center;
+  }
+  .summary-card .val { font-size: 1.6em; font-weight: 700; color: #fff; }
+  .summary-card .lbl { font-size: .78em; color: var(--text-dim); margin-top: 2px; }
+  .summary-card .sub { font-size: .72em; color: var(--text-dim); }
+
+  h2 { font-size: 1.3em; color: #fff; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.05em; color: #ddd; margin: 24px 0 10px; }
 
   .timeline { position: relative; padding-left: 28px; }
-  .timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--border), rgba(37,37,53,0.3)); }
-  .timeline-day { margin-bottom: 20px; position: relative; }
-  .timeline-day::before { content: ''; position: absolute; left: -24px; top: 6px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); }
-  .timeline-day.highlight::before { border-color: var(--gold); background: rgba(212,168,67,0.2); box-shadow: 0 0 8px rgba(212,168,67,0.3); }
-  .day-header { font-size: 14px; font-weight: 700; color: #ccc; margin-bottom: 4px; }
-  .day-header .date { color: var(--text-dim); font-weight: 500; margin-left: 8px; }
-  .day-desc { font-size: 14px; color: #999; }
-  .day-desc strong { color: #bbb; }
-
-  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
-  .data-table th { text-align: left; padding: 10px 14px; color: var(--text-dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
-  .data-table td { padding: 12px 14px; border-bottom: 1px solid rgba(37,37,53,0.5); }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table .price { font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
-  .data-table .total-row td { border-top: 2px solid var(--border); font-weight: 700; font-size: 15px; color: #fff; }
-
-  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
-  .summary-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
-  .summary-box .value { font-size: 28px; font-weight: 700; color: #fff; }
-  .summary-box .label { font-size: 12px; color: var(--text-dim); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
-
-  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
-  .pro-list, .con-list { padding: 20px; border-radius: 12px; font-size: 14px; }
-  .pro-list { background: rgba(107,203,119,0.06); border: 1px solid rgba(107,203,119,0.15); }
-  .con-list { background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.15); }
-  .pro-list h4 { color: #6bcb77; margin-bottom: 10px; }
-  .con-list h4 { color: #ff6b6b; margin-bottom: 10px; }
-  .pro-list li, .con-list li { margin: 6px 0 6px 18px; }
-  .pro-list li::marker { color: #6bcb77; } .con-list li::marker { color: #ff6b6b; }
-
-  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-  .tip-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
-  .tip-card h4 { font-size: 15px; color: #d4a843; margin-bottom: 10px; }
-  .tip-card p { font-size: 14px; color: #999; line-height: 1.7; }
-
-  .alert { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; font-size: 14px; color: #ffaaaa; }
-  .alert strong { color: #ff6b6b; }
-
-  .route-viz { display: flex; align-items: center; gap: 8px; padding: 20px; background: var(--card); border-radius: 12px; margin: 20px 0; overflow-x: auto; border: 1px solid var(--border); flex-wrap: wrap; justify-content: center; }
-  .route-node { background: #1e1e35; border-radius: 10px; padding: 14px 18px; text-align: center; min-width: 100px; border: 1px solid var(--border); }
-  .route-node .city { font-weight: 700; font-size: 16px; color: #e0d0a0; }
-  .route-node .nights { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
-  .route-arrow { color: #555; font-size: 20px; font-weight: 300; }
-  .route-arrow.flight { color: #6e8ab8; } .route-arrow.drive { color: #8a7a5a; }
-
-  @media (max-width: 800px) {
-    .hero { padding: 48px 20px 36px; } .hero h1 { font-size: 32px; }
-    .travelers { gap: 12px; } .summary-grid { grid-template-columns: repeat(2, 1fr); }
-    .pros-cons { grid-template-columns: 1fr; } .cards-grid { grid-template-columns: 1fr; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+    width: 2px; background: var(--border);
   }
+  .day {
+    position: relative; margin-bottom: 18px; padding: 12px 16px;
+    background: var(--card); border-radius: 8px; border: 1px solid var(--border);
+  }
+  .day::before {
+    content: ''; position: absolute; left: -24px; top: 16px;
+    width: 10px; height: 10px; border-radius: 50%; background: var(--gold);
+    border: 2px solid var(--bg);
+  }
+  .day .d { font-weight: 700; color: #fff; font-size: .95em; }
+  .day .loc { color: var(--gold); font-size: .8em; margin-left: 8px; }
+  .day .desc { color: var(--text-dim); font-size: .85em; margin-top: 4px; }
+  .day.tag-la { border-left: 3px solid var(--sky); }
+  .day.tag-ys { border-left: 3px solid var(--accent-b); }
+  .day.tag-sp { border-left: 3px solid var(--accent-c); }
 
-  .footnote { color: var(--text-dim); font-size: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; }
-  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-  .tag { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #999; }
-  .city-accent { color: #d4a843; } .flight-accent { color: #6e8ab8; } .drive-accent { color: #8a7a5a; }
-  .key-change { background: rgba(212,168,67,0.08); border: 1px solid rgba(212,168,67,0.2); border-radius: 8px; padding: 10px 16px; margin: 12px 0; font-size: 13px; color: #d4a843; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: .88em; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-dim); font-weight: 600; font-size: .8em; text-transform: uppercase; }
+  td { color: var(--text); }
+  tr.high td { color: var(--gold); font-weight: 600; }
+
+  .note {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+    font-size: .85em; color: var(--text-dim);
+  }
+  .note strong { color: #e0e0e0; }
+
+  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .pro, .con { padding: 14px 16px; border-radius: 8px; font-size: .85em; }
+  .pro { background: rgba(107,203,119,.08); border: 1px solid rgba(107,203,119,.2); }
+  .con { background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.2); }
+  .pro h4 { color: var(--accent-c); margin-bottom: 6px; }
+  .con h4 { color: var(--accent-a); margin-bottom: 6px; }
+
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 14px; }
+  .tip {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px;
+  }
+  .tip h4 { color: #fff; font-size: .9em; margin-bottom: 6px; }
+  .tip p { color: var(--text-dim); font-size: .82em; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .links a {
+    display: inline-block; padding: 6px 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--sky); text-decoration: none;
+    font-size: .82em; transition: all .2s;
+  }
+  .links a:hover { background: var(--card-hover); border-color: var(--sky); }
+
+  .stpaul-box {
+    background: linear-gradient(135deg, rgba(107,203,119,.06), rgba(91,155,213,.06));
+    border: 1px solid rgba(107,203,119,.15); border-radius: 10px; padding: 18px 20px;
+    margin: 20px 0;
+  }
+  .stpaul-box h3 { color: var(--accent-c); margin-top: 0; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.5em; }
+    .tab-bar button { padding: 10px 14px; font-size: .82em; }
+    .summary-grid { grid-template-columns: repeat(2,1fr); }
+    .pro-con { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
 <div class="hero">
   <h1>美国西部行程方案</h1>
-  <div class="subtitle">Los Angeles  Yellowstone  St Paul &middot; August 2026</div>
-  <div class="travelers">
-    <div class="traveler-tag"><div class="icon icon-dad">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7ba4d4" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-    </div>康杰</div>
-    <div class="traveler-tag"><div class="icon icon-mom">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d47b9a" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-    </div>白雪</div>
-    <div class="traveler-tag"><div class="icon icon-grandpa">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8ab87b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-    </div>白文 60+</div>
-    <div class="traveler-tag"><div class="icon icon-kid">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4b87b" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 22c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-    </div>Sybils 9岁</div>
+  <p>洛杉矶 · 黄石 · 圣保罗 &nbsp;|&nbsp; 2026年8月12-29日 &nbsp;|&nbsp; 4人家庭出行</p>
+  <div class="meta">
+    <span>康杰 + 白雪 8/12-22</span>
+    <span>白文 + Sybils (9岁) 8/12-29</span>
+    <span>全部飞机 · 无自驾长途</span>
+    <span>按便宜航班估算</span>
   </div>
-  <div class="flight-info">
-    <div class="flight-pill">去程 <strong>8/12 KE142+KE011</strong> XIY 12:40 &rarr; ICN &rarr; LAX 15:20</div>
-    <div class="flight-pill">回程A <strong>8/22 KE012</strong> LAX 23:50 &rarr; ICN &rarr; XIY (夫妻)</div>
-    <div class="flight-pill">回程B <strong>8/29 KE012</strong> LAX 23:50 &rarr; ICN &rarr; XIY (老人+女儿,公务舱)</div>
-  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="active" onclick="switchPlan('a')">方案 A &nbsp;$3,490&nbsp; 省钱精华</button>
+  <button onclick="switchPlan('b')">方案 B &nbsp;$4,060&nbsp; 经典均衡</button>
+  <button onclick="switchPlan('c')">方案 C &nbsp;$5,480&nbsp; 舒适深度</button>
 </div>
 
 <div class="container">
 
-  <div class="plan-tabs">
-    <button class="plan-tab active" onclick="switchPlan('a')">
-      <span class="tab-label">方案 A</span>
-      <span class="tab-price">$3,570</span>
-      <span class="tab-tag">紧凑省钱 &middot; 黄石2日</span>
-    </button>
-    <button class="plan-tab" onclick="switchPlan('b')">
-      <span class="tab-label">方案 B</span>
-      <span class="tab-price">$4,480</span>
-      <span class="tab-tag">公路穿越 &middot; 黄石2日</span>
-    </button>
-    <button class="plan-tab" onclick="switchPlan('c')">
-      <span class="tab-label">方案 C</span>
-      <span class="tab-price">$6,130</span>
-      <span class="tab-tag">全飞舒适 &middot; 黄石2日</span>
-    </button>
-  </div>
+<!-- ==================== PLAN A ==================== -->
+<div class="plan active" id="plan-a">
 
-  <!-- ==================== PLAN A ==================== -->
-  <div class="plan-panel active" id="plan-a">
-    <div class="summary-grid">
-      <div class="summary-box"><div class="value">$3,570</div><div class="label">基础总预算</div></div>
-      <div class="summary-box"><div class="value">10/17天</div><div class="label">夫妻/老人+女儿</div></div>
-      <div class="summary-box"><div class="value">3飞</div><div class="label">国内段全飞</div></div>
-      <div class="summary-box"><div class="value">黄石3天</div><div class="label">上下8字全览</div></div>
-    </div>
+<div class="summary-grid">
+  <div class="summary-card"><div class="val">$3,490</div><div class="lbl">基础总预算</div></div>
+  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">夫妻/老人+女儿</div></div>
+  <div class="summary-card"><div class="val">4晚 LA</div><div class="lbl">Anaheim 经济酒店</div></div>
+  <div class="summary-card"><div class="val">2晚 黄石</div><div class="lbl">西黄石 Brandin' Iron</div></div>
+  <div class="summary-card"><div class="val">4晚 StP</div><div class="lbl">夫妻 / 老人+女儿11晚</div></div>
+</div>
 
-    <div class="key-change">调整：St Paul 8/19 抵达（延后1天），黄石从1天变3天完整游览，多住2晚西黄石</div>
+<p class="note"><strong>策略：</strong>砍掉自驾公路，全程廉价航空（Southwest + Frontier）。LA从3晚延到4晚，黄石紧凑2天刷完重点。住宿挑最便宜的，把钱省在门票和体验上。St Paul夫妻待4晚节奏从容。</p>
 
-    <div class="route-viz">
-      <div class="route-node"><div class="city">LA</div><div class="nights">3晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">黄石</div><div class="nights">4晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">St Paul</div><div class="nights">夫妻3晚<br>老人+女儿10晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">LAX</div><div class="nights">返程</div></div>
-    </div>
+<h2>每日行程</h2>
+<div class="timeline">
 
-    <div class="cards-grid">
-      <div class="card">
-        <h3>每日行程 <span class="badge badge-budget">省钱版</span></h3>
-        <div class="timeline">
-          <div class="timeline-day"><div class="day-header">D1 <span class="date">8/12 周三</span></div><div class="day-desc">抵达 LAX 15:20，取车，Anaheim 入住，倒时差</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D2 <span class="date">8/13 周四</span></div><div class="day-desc"><strong>迪士尼乐园</strong>全天。7:30排队进场，买 Genie+($25-30/人)。9岁女儿必刷：Star Wars Rise of Resistance、Space Mountain、Matterhorn、公主巡游</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D3 <span class="date">8/14 周五</span></div><div class="day-desc"><strong>环球影城</strong>全天。马里奥世界是核心亮点，Harry Potter 魔杖互动，Studio Tour 老人友好</div></div>
-          <div class="timeline-day"><div class="day-header">D4 <span class="date">8/15 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> LAX &rarr; BZN (Southwest 1站, 4h10m, $617/4人)。下午进黄石，住西黄石</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D5 <span class="date">8/16 周日</span></div><div class="day-desc"><strong>黄石上8字</strong>：Mammoth Hot Springs &rarr; Lamar Valley 看狼和熊（清晨最佳）&rarr; Tower Fall</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D6 <span class="date">8/17 周一</span></div><div class="day-desc"><strong>黄石下8字</strong>：Old Faithful &rarr; Grand Prismatic (Fairy Falls Trail俯瞰) &rarr; Norris Basin &rarr; 黄石大峡谷 Artist Point &rarr; Hayden Valley 野牛群</div></div>
-          <div class="timeline-day"><div class="day-header">D7 <span class="date">8/18 周二</span></div><div class="day-desc"><strong>黄石缓冲日</strong>：补漏前一天没去的点，或去西拇指间歇泉盆地 + 黄石湖。下午悠闲逛西黄石小镇</div></div>
-          <div class="timeline-day"><div class="day-header">D8 <span class="date">8/19 周三</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> BZN &rarr; MSP (Southwest 1站, 预估$789/4人)。傍晚抵达 St Paul</div></div>
-          <div class="timeline-day"><div class="day-header">D9-10 <span class="date">8/20-21</span></div><div class="day-desc">St Paul 访友。可逛 Mall of America、密西西比河畔、Como Zoo（免费）</div></div>
-          <div class="timeline-day"><div class="day-header">D11 <span class="date">8/22 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> 夫妻 MSP &rarr; LAX (Frontier $252/2人)，当晚 23:50 KE012 回国</div></div>
-          <div class="timeline-day"><div class="day-header">返程B <span class="date">8/29</span></div><div class="day-desc">老人+女儿 MSP &rarr; LAX &rarr; ICN &rarr; XIY (公务舱)</div></div>
-        </div>
-      </div>
+<div class="day tag-la"><div class="d">8/12 周二</div><div class="loc">西安 → 首尔 → 洛杉矶</div><div class="desc">KE142 12:40-16:40 → KE011 19:40-15:20。同日抵达LAX，取车，入住Anaheim酒店。晚上逛 Downtown Disney（免费）适应时差。</div></div>
 
-      <div class="card">
-        <h3>费用明细</h3>
-        <table class="data-table">
-          <tr><th>项目</th><th>明细</th><th class="price">金额</th></tr>
-          <tr><td>LAX &rarr; BZN</td><td>Southwest 1站 4h10m &times;4人</td><td class="price">$617</td></tr>
-          <tr><td>BZN &rarr; MSP</td><td>Southwest 1站 &times;4人 (8/19预估)</td><td class="price">$789</td></tr>
-          <tr><td>MSP &rarr; LAX (夫妻)</td><td>Frontier 1站 &times;2人 (8/22)</td><td class="price">$252</td></tr>
-          <tr><td>MSP &rarr; LAX (老人+女儿)</td><td>Frontier 1站 &times;2人 (8/29预估)</td><td class="price">$252</td></tr>
-          <tr><td>Anaheim 酒店 3晚</td><td>Fairfield Inn $116&times;2间</td><td class="price">$696</td></tr>
-          <tr><td>西黄石 4晚</td><td>Brandin' Iron Inn $71&times;2间</td><td class="price">$568</td></tr>
-          <tr><td>租车 (LA 4天 + BZN 4天)</td><td>经济型 SUV</td><td class="price">$400</td></tr>
-          <tr class="total-row"><td colspan="2">基础预算合计</td><td class="price">$3,574</td></tr>
-        </table>
-        <div style="margin-top:16px; padding:14px; background:rgba(255,255,255,0.03); border-radius:8px; font-size:13px; color:#999;">
-          <strong>门票另计：</strong>迪士尼 $154&times;4=$616 &middot; 环球影城 $144&times;4=$576 &middot; Genie+ $25&times;4=$100 &middot; 黄石 $35/车 &middot; <strong>门票合计约 $1,327</strong>
-        </div>
-      </div>
-    </div>
+<div class="day tag-la"><div class="d">8/13 周三</div><div class="loc">洛杉矶 · 迪士尼乐园</div><div class="desc">全天迪士尼。买 Genie+（$25/人），早7点抢热门 Lightning Lane。9岁女孩重点 Fantasyland + Star Wars: Galaxy's Edge。酒店开车15分钟到园区。</div></div>
 
-    <div class="pros-cons">
-      <div class="pro-list">
-        <h4>优点</h4>
-        <ul>
-          <li>预算最低，机票酒店都是经济档</li>
-          <li>黄石 3 天（上下8字+缓冲），不再赶路</li>
-          <li>全飞不折腾，老人小孩不累</li>
-          <li>夫妻 8/22 准时返程，不耽误工作</li>
-          <li>老人女儿 8/29 才走，St Paul 充分访友</li>
-        </ul>
-      </div>
-      <div class="con-list">
-        <h4>缺点</h4>
-        <ul>
-          <li>两段中转航班（LAX&rarr;BZN、BZN&rarr;MSP），候机时间累</li>
-          <li>Frontier 廉价航空，行李另收费</li>
-          <li>Anaheim 酒店离迪士尼 4-5 英里，需开车</li>
-          <li>Brandin' Iron Inn 评分仅 4.0，设施基础</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div class="day tag-la"><div class="d">8/14 周四</div><div class="loc">洛杉矶 · 环球影城</div><div class="desc">全天环球影城。重点 Super Nintendo World（9岁女孩天菜）+ Harry Potter + Studio Tour。建议买 Early Access 提前1小时入园抢马里奥。好莱坞大道夜景。</div></div>
 
-  <!-- ==================== PLAN B ==================== -->
-  <div class="plan-panel" id="plan-b">
-    <div class="summary-grid">
-      <div class="summary-box"><div class="value">$4,480</div><div class="label">基础总预算</div></div>
-      <div class="summary-box"><div class="value">10/17天</div><div class="label">夫妻/老人+女儿</div></div>
-      <div class="summary-box"><div class="value">2飞+1自驾</div><div class="label">黄石自驾至St Paul</div></div>
-      <div class="summary-box"><div class="value">黄石2天</div><div class="label">上下8字全览</div></div>
-    </div>
+<div class="day tag-la"><div class="d">8/15 周五</div><div class="loc">洛杉矶 · 城市漫游</div><div class="desc">上午 Santa Monica 海滩 + 码头游乐园，下午 Getty Center（免费，山顶俯瞰LA），傍晚 Griffith Observatory 看日落和 Hollywood Sign。晚上打包行李。</div></div>
 
-    <div class="key-change">St Paul 8/19 抵达 — 原方案自驾已经 8/19 到，此方案几乎不变</div>
+<div class="day tag-ys"><div class="d">8/16 周六</div><div class="loc">洛杉矶 → 黄石</div><div class="desc">上午 LAX 飞 Bozeman BZN（Southwest 1站约4h）。下午落地取车，超市采购补给，开车1.5h到西黄石镇。入住 Brandin' Iron Inn，晚上小镇闲逛。</div></div>
 
-    <div class="route-viz">
-      <div class="route-node"><div class="city">LA</div><div class="nights">3晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">黄石</div><div class="nights">3晚</div></div>
-      <div class="route-arrow drive">&#128663;</div>
-      <div class="route-node"><div class="city">Bismarck</div><div class="nights">1晚</div></div>
-      <div class="route-arrow drive">&#128663;</div>
-      <div class="route-node"><div class="city">St Paul</div><div class="nights">夫妻3晚<br>老人+女儿10晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">LAX</div><div class="nights">返程</div></div>
-    </div>
+<div class="day tag-ys"><div class="d">8/17 周日</div><div class="loc">黄石 · 下8字精华</div><div class="desc">早起6:30出发。Old Faithful → Grand Prismatic（走Fairy Falls Trail俯瞰）→ Yellowstone Lake → West Thumb → Hayden Valley 看野生动物。日落前回西黄石。</div></div>
 
-    <div class="cards-grid">
-      <div class="card">
-        <h3>每日行程 <span class="badge badge-mid">公路版</span></h3>
-        <div class="timeline">
-          <div class="timeline-day"><div class="day-header">D1 <span class="date">8/12 周三</span></div><div class="day-desc">抵达 LAX 15:20，取车，Anaheim 入住，倒时差</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D2 <span class="date">8/13 周四</span></div><div class="day-desc"><strong>迪士尼乐园</strong>全天。Genie+必买，7:30 进场冲 Rise of Resistance</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D3 <span class="date">8/14 周五</span></div><div class="day-desc"><strong>环球影城</strong>全天。马里奥世界 Power-Up Band 手环互动</div></div>
-          <div class="timeline-day"><div class="day-header">D4 <span class="date">8/15 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> LAX &rarr; BZN (United 直飞 2h33m, $714/4人)。中午到，下午进黄石，住西黄石</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D5 <span class="date">8/16 周日</span></div><div class="day-desc"><strong>黄石上8字</strong>：Mammoth Hot Springs &rarr; Lamar Valley 看狼和熊（清晨最佳）&rarr; Tower Fall。住西黄石</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D6 <span class="date">8/17 周一</span></div><div class="day-desc"><strong>黄石下8字</strong>：Old Faithful &rarr; Grand Prismatic &rarr; 黄石大峡谷 &rarr; Hayden Valley</div></div>
-          <div class="timeline-day"><div class="day-header">D7 <span class="date">8/18 周二</span></div><div class="day-desc"><span class="drive-accent">&#128663;</span> 西黄石 &rarr; Billings &rarr; Bismarck (8h)。穿越蒙大拿草原，夜宿 Bismarck</div></div>
-          <div class="timeline-day"><div class="day-header">D8 <span class="date">8/19 周三</span></div><div class="day-desc"><span class="drive-accent">&#128663;</span> Bismarck &rarr; St Paul (6h)。途经 Fargo（电影《冰血暴》打卡），下午抵达</div></div>
-          <div class="timeline-day"><div class="day-header">D9 <span class="date">8/20 周四</span></div><div class="day-desc">St Paul 访友</div></div>
-          <div class="timeline-day"><div class="day-header">D10 <span class="date">8/21 周五</span></div><div class="day-desc">St Paul 访友。可逛 Mall of America、Como Zoo</div></div>
-          <div class="timeline-day"><div class="day-header">D11 <span class="date">8/22 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> 夫妻 MSP &rarr; LAX (Delta 直飞 $498/2人)，当晚 23:50 KE012 回国</div></div>
-          <div class="timeline-day"><div class="day-header">D12-18 <span class="date">8/23-28</span></div><div class="day-desc">老人+女儿继续 St Paul，可安排芝加哥2日短途（Amtrak 6h）</div></div>
-          <div class="timeline-day"><div class="day-header">返程 <span class="date">8/29</span></div><div class="day-desc">老人+女儿 MSP &rarr; LAX &rarr; ICN &rarr; XIY (公务舱)</div></div>
-        </div>
-      </div>
+<div class="day tag-ys"><div class="d">8/18 周一</div><div class="loc">黄石 · 上午补漏 → St Paul</div><div class="desc">上午 Norris Geyser Basin 或 Mammoth Hot Springs（看时间）。中午返BZN还车，下午飞 Minneapolis MSP（Southwest 1站）。晚上到St Paul，老人接机。入住家里。</div></div>
 
-      <div class="card">
-        <h3>费用明细</h3>
-        <table class="data-table">
-          <tr><th>项目</th><th>明细</th><th class="price">金额</th></tr>
-          <tr><td>LAX &rarr; BZN</td><td>United 直飞 2h33m &times;4人</td><td class="price">$714</td></tr>
-          <tr><td>MSP &rarr; LAX (夫妻 8/22)</td><td>Delta 直飞 3h50m &times;2人</td><td class="price">$498</td></tr>
-          <tr><td>MSP &rarr; LAX (老人+女儿 8/29)</td><td>Delta 直飞 &times;2人 预估</td><td class="price">$498</td></tr>
-          <tr><td>Anaheim 酒店 3晚</td><td>Fairfield Inn $116&times;2间</td><td class="price">$696</td></tr>
-          <tr><td>西黄石 3晚</td><td>White Buffalo $162&times;2间</td><td class="price">$972</td></tr>
-          <tr><td>Bismarck 途中 1晚</td><td>Motel &times;2间</td><td class="price">$200</td></tr>
-          <tr><td>租车 LA (4天)</td><td>经济型</td><td class="price">$200</td></tr>
-          <tr><td>租车 BZN&rarr;MSP (4天异地还车)</td><td>SUV + 油费$200</td><td class="price">$700</td></tr>
-          <tr class="total-row"><td colspan="2">基础预算合计</td><td class="price">$4,478</td></tr>
-        </table>
-        <div style="margin-top:16px; padding:14px; background:rgba(255,255,255,0.03); border-radius:8px; font-size:13px; color:#999;">
-          <strong>门票另计约 $1,327</strong>（同方案A）&middot; <strong>全含总预算约 $5,800</strong>
-        </div>
-      </div>
-    </div>
+<div class="day tag-sp"><div class="d">8/19 周二</div><div class="loc">St Paul · 休整</div><div class="desc">倒时差休整。白天逛 Mall of America（全美最大商场，含室内游乐场，9岁女孩能玩一天），晚上家庭聚餐。</div></div>
 
-    <div class="pros-cons">
-      <div class="pro-list">
-        <h4>优点</h4>
-        <ul>
-          <li>黄石 2 天完整体验，上下8字全覆盖</li>
-          <li>Bismarck&rarr;St Paul 横穿美中大平原，独特的公路旅行体验</li>
-          <li>只买 2 段机票，省了 BZN&rarr;MSP 这段</li>
-          <li>黄石结束后自由灵活，想停就停</li>
-          <li>黄石只飞进不飞出，LAX&rarr;BZN 直飞 2.5h，体验最好</li>
-        </ul>
-      </div>
-      <div class="con-list">
-        <h4>缺点</h4>
-        <ul>
-          <li>2 天自驾 14 小时，老人和小孩比较累</li>
-          <li>异地还车费高（约 $300-500）</li>
-          <li>北达科他 8 月景色单一（麦田+草原）</li>
-          <li>夫妻总行程需要 11 天（8/22 走）</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div class="day tag-sp"><div class="d">8/20 周三</div><div class="loc">St Paul · 双城探索</div><div class="desc">Minnehaha Falls 城市瀑布 → Minneapolis Sculpture Garden（标志性勺子桥樱桃雕塑）→ Stone Arch Bridge 密西西比河畔步行。下午 Science Museum of Minnesota。</div></div>
 
-  <!-- ==================== PLAN C ==================== -->
-  <div class="plan-panel" id="plan-c">
-    <div class="summary-grid">
-      <div class="summary-box"><div class="value">$6,130</div><div class="label">基础总预算</div></div>
-      <div class="summary-box"><div class="value">10/17天</div><div class="label">夫妻/老人+女儿</div></div>
-      <div class="summary-box"><div class="value">3段直飞</div><div class="label">全程直飞不中转</div></div>
-      <div class="summary-box"><div class="value">黄石3天</div><div class="label">上下8字+缓冲</div></div>
-    </div>
+<div class="day tag-sp"><div class="d">8/21 周四</div><div class="loc">St Paul · 明州自然</div><div class="desc">Como Park Zoo & Conservatory（免费动物园+温室）。下午 Minnesota Children's Museum（9岁女孩友好）。晚上收拾行李，和老人孩子告别。</div></div>
 
-    <div class="key-change">St Paul 8/19 抵达（延后1天），黄石多住1晚（4晚），多1天缓冲日</div>
+<div class="day tag-sp"><div class="d">8/22 周五</div><div class="loc">St Paul → 洛杉矶 → 首尔</div><div class="desc">上午 St Paul 最后逛逛。下午 MSP 飞 LAX（Frontier 1站）。晚上 23:50 KE012 LAX→ICN。夫妻行程结束。</div></div>
 
-    <div class="route-viz">
-      <div class="route-node"><div class="city">LA</div><div class="nights">3晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">黄石</div><div class="nights">4晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">St Paul</div><div class="nights">夫妻3晚<br>老人+女儿10晚</div></div>
-      <div class="route-arrow flight">&#9992;</div>
-      <div class="route-node"><div class="city">LAX</div><div class="nights">返程</div></div>
-    </div>
+</div>
 
-    <div class="cards-grid">
-      <div class="card">
-        <h3>每日行程 <span class="badge badge-premium">舒适版</span></h3>
-        <div class="timeline">
-          <div class="timeline-day"><div class="day-header">D1 <span class="date">8/12 周三</span></div><div class="day-desc">抵达 LAX 15:20，取车，La Quinta Inn 入住（步行到迪士尼），倒时差</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D2 <span class="date">8/13 周四</span></div><div class="day-desc"><strong>迪士尼乐园</strong>全天。住得近不用早出发，Genie+ 轻松刷项目</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D3 <span class="date">8/14 周五</span></div><div class="day-desc"><strong>环球影城</strong>全天。Express Pass 免排队，马里奥世界慢慢玩</div></div>
-          <div class="timeline-day"><div class="day-header">D4 <span class="date">8/15 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> LAX &rarr; BZN (United 直飞 2h33m, $714/4人)。中午抵达，下午进园，住西黄石</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D5 <span class="date">8/16 周日</span></div><div class="day-desc"><strong>黄石上8字</strong>：Mammoth Hot Springs &rarr; Lamar Valley（清晨看狼/熊）&rarr; Tower Fall</div></div>
-          <div class="timeline-day highlight"><div class="day-header">D6 <span class="date">8/17 周一</span></div><div class="day-desc"><strong>黄石下8字</strong>：Old Faithful &rarr; Grand Prismatic &rarr; 黄石大峡谷 &rarr; Hayden Valley</div></div>
-          <div class="timeline-day"><div class="day-header">D7 <span class="date">8/18 周二</span></div><div class="day-desc"><strong>黄石缓冲日</strong>：西拇指间歇泉盆地 + 黄石湖游船，或补漏前一天。下午悠闲休息</div></div>
-          <div class="timeline-day"><div class="day-header">D8 <span class="date">8/19 周三</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> BZN &rarr; MSP (Delta 直飞 2h11m, $1,354/4人)。下午就到 St Paul，轻松</div></div>
-          <div class="timeline-day"><div class="day-header">D9-10 <span class="date">8/20-21</span></div><div class="day-desc">St Paul 访友。充裕时间，逛 Mall of America、Como Zoo、密西西比河游船</div></div>
-          <div class="timeline-day"><div class="day-header">D11 <span class="date">8/22 周六</span></div><div class="day-desc"><span class="flight-accent">&#9992;</span> 夫妻 MSP &rarr; LAX (Delta 直飞 3h50m, $498/2人)，当晚 23:50 KE012 回国</div></div>
-          <div class="timeline-day"><div class="day-header">返程 <span class="date">8/29</span></div><div class="day-desc">老人+女儿 MSP &rarr; LAX &rarr; ICN &rarr; XIY (公务舱)</div></div>
-        </div>
-      </div>
+<h2>夫妻段费用明细</h2>
+<table>
+  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+  <tr><td>LAX → BZN</td><td>Southwest 1站 4h10m ×4人 (8/16)</td><td>$617</td></tr>
+  <tr><td>BZN → MSP</td><td>Southwest 1站 ×4人 (8/18 预估)</td><td>$789</td></tr>
+  <tr><td>MSP → LAX (夫妻)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
+  <tr><td>MSP → LAX (老人+女儿)</td><td>Frontier 1站 ×2人 (8/29 预估)</td><td>$252</td></tr>
+  <tr><td>Anaheim 酒店 4晚</td><td>Fairfield Inn $116×2间</td><td>$928</td></tr>
+  <tr><td>西黄石 2晚</td><td>Brandin' Iron Inn $71×2间</td><td>$284</td></tr>
+  <tr><td>租车 LA 5天 + BZN 3天</td><td>经济型 SUV</td><td>$370</td></tr>
+  <tr class="high"><td>基础预算合计</td><td></td><td>$3,492</td></tr>
+  <tr><td colspan="3" style="color:var(--text-dim);font-size:.8em">* St Paul住宿由老人安排（住家里），不计入基础预算</td></tr>
+</table>
 
-      <div class="card">
-        <h3>费用明细</h3>
-        <table class="data-table">
-          <tr><th>项目</th><th>明细</th><th class="price">金额</th></tr>
-          <tr><td>LAX &rarr; BZN</td><td>United 直飞 2h33m &times;4人</td><td class="price">$714</td></tr>
-          <tr><td>BZN &rarr; MSP</td><td>Delta 直飞 2h11m &times;4人 (8/19预估)</td><td class="price">$1,354</td></tr>
-          <tr><td>MSP &rarr; LAX (夫妻 8/22)</td><td>Delta 直飞 3h50m &times;2人</td><td class="price">$498</td></tr>
-          <tr><td>MSP &rarr; LAX (老人+女儿 8/29)</td><td>Delta 直飞 &times;2人 预估</td><td class="price">$498</td></tr>
-          <tr><td>Anaheim 酒店 3晚</td><td>La Quinta $205&times;2间，步行到迪士尼</td><td class="price">$1,230</td></tr>
-          <tr><td>西黄石 4晚</td><td>Travelers Lodge $179&times;2间</td><td class="price">$1,432</td></tr>
-          <tr><td>租车 (LA 4天 + BZN 4天)</td><td>舒适型 SUV</td><td class="price">$400</td></tr>
-          <tr class="total-row"><td colspan="2">基础预算合计</td><td class="price">$6,126</td></tr>
-        </table>
-        <div style="margin-top:16px; padding:14px; background:rgba(255,255,255,0.03); border-radius:8px; font-size:13px; color:#999;">
-          <strong>门票另计约 $1,327</strong> &middot; <strong>全含总预算约 $7,450</strong>
-        </div>
-      </div>
-    </div>
+<div class="pro-con">
+  <div class="pro"><h4>优点</h4>LA延到4晚，迪士尼+环球+城市游完整覆盖。全程廉价航空不贵。黄石2天重点全刷。夫妻在St Paul有4晚不用赶。</div>
+  <div class="con"><h4>缺点</h4>黄石2天较赶，下8字一天塞满体力要求高。BZN→MSP 中转不是直飞。Anaheim酒店需开车15分钟到迪士尼。早鸟必须6:30出发。</div>
+</div>
 
-    <div class="pros-cons">
-      <div class="pro-list">
-        <h4>优点</h4>
-        <ul>
-          <li>全程直飞，零中转焦虑，老人小孩最省心</li>
-          <li>黄石 3 天完整体验 + 缓冲，不赶不累</li>
-          <li>Anaheim 酒店步行到迪士尼，玩累了随时回</li>
-          <li>每天时间充裕，真正的度假节奏</li>
-        </ul>
-      </div>
-      <div class="con-list">
-        <h4>缺点</h4>
-        <ul>
-          <li>预算最高，机票全直飞 + 酒店升级</li>
-          <li>酒店预算从 $110 提到 $179-205，超标较多</li>
-          <li>Delta 三段直飞占大头 ($2,566)，比方案A贵 $1,656</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <!-- ==================== Tips Section ==================== -->
-  <div class="section-title">小红书攻略精选 <span>来自真实旅行者</span></div>
-  <div class="tips-grid">
-    <div class="tip-card">
-      <h4>黄石 8 月生存法则</h4>
-      <p>早晚 5&deg;C / 午 30&deg;C，温差极大带薄羽绒+雨衣。园内几乎没信号，提前下载离线地图。野牛保持 25 码、熊 100 码。每天 5:00 天亮 21:00 天黑，充分利用。</p>
-    </div>
-    <div class="tip-card">
-      <h4>迪士尼 8 月旺季策略</h4>
-      <p>Genie+ 必买 ($25-30/人/天)，凌晨 12 点开抢。7:30 到门口，开园冲 Rise of Resistance。公主变装 Bibbidi Bobbidi Boutique 需提前 30-60 天预约，8 月基本抢不到，替代方案 Royal Hall 排队拍照。</p>
-    </div>
-    <div class="tip-card">
-      <h4>环球影城核心攻略</h4>
-      <p>马里奥世界抢 Virtual Line 入园时间。Express Pass 旺季 $200-300/人。Studio Tour（1h）老人友好，WaterWorld 秀坐后排。9岁女孩最适合：哈利波特魔杖互动 + 小黄人 + Secret Life of Pets。</p>
-    </div>
-    <div class="tip-card">
-      <h4>带老人+孩子必读</h4>
-      <p>租 ECV 电动代步车 ($60/天) 给老人。黄石高原反应（均海拔 2400m）多喝水慢走。迪士尼有 Disneyland Railroad 环园火车适合休息。长途自驾每 2 小时休息，带颈枕+腰靠。</p>
-    </div>
-    <div class="tip-card">
-      <h4>Junior Ranger 免费福利</h4>
-      <p>9 岁女儿必参加！到黄石任一游客中心领免费小册子，完成任务（观察动物、回答自然问题）获官方徽章。孩子超有成就感，小红书家长一致推荐。</p>
-    </div>
-    <div class="tip-card">
-      <h4>明尼苏达蚊子警告</h4>
-      <p>8 月明尼苏达蚊虫极多，带强力防蚊液（DEET 30%+）。St Paul 推荐 Como Zoo（免费）、Minnesota State Fair（8月底开展，全美最大州集市之一）。</p>
-    </div>
-  </div>
+<!-- ==================== PLAN B ==================== -->
+<div class="plan" id="plan-b">
 
-  <!-- ==================== Alerts ==================== -->
-  <div class="alert">
-    <strong>紧急提醒：</strong>黄石园内 8 月住宿基本售罄。园外西黄石镇和 Gardiner 镇的房间也在快速减少。建议 <strong>48 小时内确定方案并预订</strong>，否则可能面临无房或价格翻倍。预订渠道：xanterra.com（园内官方）、Trip.com/Booking.com（园外）。
-  </div>
+<div class="summary-grid">
+  <div class="summary-card"><div class="val">$4,060</div><div class="lbl">基础总预算</div></div>
+  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">夫妻/老人+女儿</div></div>
+  <div class="summary-card"><div class="val">5晚 LA</div><div class="lbl">Anaheim 中等酒店</div></div>
+  <div class="summary-card"><div class="val">2晚 黄石</div><div class="lbl">西黄石 White Buffalo</div></div>
+  <div class="summary-card"><div class="val">3晚 StP</div><div class="lbl">夫妻 / 老人+女儿10晚</div></div>
+</div>
 
-  <div class="alert" style="background:rgba(255,217,61,0.06);border-color:rgba(255,217,61,0.2);color:#e8d090;">
-    <strong>老人+女儿 St Paul 停留 10 天（8/19-29）：</strong>如果觉得太久，可安排 2-3 天短途——芝加哥（Amtrak 火车 6h）、Duluth 苏必利尔湖（自驾 2.5h）、或 Minneapolis 市区深度游。明尼苏达州博览会 8/27 开展，老人和女儿正好能赶上。
-  </div>
+<p class="note"><strong>策略：</strong>LA 拉满5晚，迪士尼+环球+城市漫游各一天，再加一个机动日。黄石保持2天核心。住宿中等档，LA酒店离迪士尼更近。全部飞机，Southwest为主。</p>
 
-  <!-- ==================== Extras ==================== -->
-  <div class="section-title">其他费用预估 <span>门票 / 签证 / 保险</span></div>
-  <div class="cards-grid">
-    <div class="card">
-      <h3>门票</h3>
-      <table class="data-table">
-        <tr><td>迪士尼 1日票</td><td class="price">$154/人 &times;4</td><td class="price">$616</td></tr>
-        <tr><td>环球影城 1日票</td><td class="price">$144/人 &times;4</td><td class="price">$576</td></tr>
-        <tr><td>迪士尼 Genie+</td><td class="price">$25-30/人 &times;4</td><td class="price">$100</td></tr>
-        <tr><td>环球 Express Pass</td><td class="price">$200-300/人 (旺季)</td><td class="price">可选</td></tr>
-        <tr><td>黄石公园门票</td><td class="price">$35/车 (7天有效)</td><td class="price">$35</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3>签证 & 其他</h3>
-      <table class="data-table">
-        <tr><td>EVUS 登记</td><td class="price">免费 (每2年更新)</td></tr>
-        <tr><td>旅行保险</td><td class="price">约 $50-80/人</td></tr>
-        <tr><td>美国手机卡/流量</td><td class="price">T-Mobile eSIM $30起</td></tr>
-        <tr><td>黄石防熊喷雾</td><td class="price">$40-50 (当地买，不能带上飞机)</td></tr>
-        <tr><td>餐饮 (10天)</td><td class="price">约 $50/人/天 &times;10天 = $2,000</td></tr>
-      </table>
-    </div>
-  </div>
+<h2>每日行程</h2>
+<div class="timeline">
 
-  <div class="section-title">关键预订链接</div>
-  <div class="cards-grid">
-    <div class="card">
-      <h3>机票</h3>
-      <div style="font-size:14px; color:#999; line-height:2;">
-        Google Flights: flights.google.com<br>
-        Priceline: priceline.com (可能比 Google Flights 便宜 5-15%)<br>
-        Delta 官网: delta.com<br>
-        United 官网: united.com<br>
-        Southwest: southwest.com (Google Flights 不显示，需单独查)
-      </div>
-    </div>
-    <div class="card">
-      <h3>酒店</h3>
-      <div style="font-size:14px; color:#999; line-height:2;">
-        黄石园内: xanterra.com / yellowstonenationalparklodges.com<br>
-        西黄石: trip.com / booking.com 搜 "West Yellowstone"<br>
-        Anaheim: trip.com 搜 "Anaheim Disneyland"<br>
-        Airbnb: 黄石区域整栋可能比2间酒店便宜
-      </div>
-    </div>
-    <div class="card">
-      <h3>门票</h3>
-      <div style="font-size:14px; color:#999; line-height:2;">
-        迪士尼: disneyland.disney.go.com<br>
-        环球影城: universalstudioshollywood.com<br>
-        黄石: nps.gov/yell (可现场买，$35/车)
-      </div>
-    </div>
-  </div>
+<div class="day tag-la"><div class="d">8/12 周二</div><div class="loc">西安 → 首尔 → 洛杉矶</div><div class="desc">KE142 12:40-16:40 → KE011 19:40-15:20。同日抵达。取车入住Anaheim。</div></div>
 
-  <div class="footnote">
-    价格基于 Google Flights / Trip.com 2026年7月实时查询 &middot; 8月旺季价格每日波动，实际以预订时为准<br>
-    所有价格均为含税估算 &middot; 汇率参考 1 USD = 7.20 CNY &middot; 更新于 2026年7月10日
-  </div>
+<div class="day tag-la"><div class="d">8/13 周三</div><div class="loc">洛杉矶 · 迪士尼乐园</div><div class="desc">全天迪士尼。Genie+必备。女孩主打 Fantasyland + Star Wars + Pixar Pier。住 Best Western Plus，步行15分钟到园区。</div></div>
+
+<div class="day tag-la"><div class="d">8/14 周四</div><div class="loc">洛杉矶 · 环球影城</div><div class="desc">全天环球影城。Super Nintendo World + Wizarding World of Harry Potter。建议买 Express Pass 只给大人（$200/人），孩子排队有互动区不无聊。</div></div>
+
+<div class="day tag-la"><div class="d">8/15 周五</div><div class="loc">洛杉矶 · 城市漫游</div><div class="desc">Santa Monica 海滩骑行 → Getty Center → Griffith Observatory 日落。晚上 Korea Town 韩餐（老人也吃得惯）。</div></div>
+
+<div class="day tag-la"><div class="d">8/16 周六</div><div class="loc">洛杉矶 · 机动日</div><div class="desc">可选：Huntington Library 花园 / California Science Center（免费，航天飞机 Endeavour）/ La Brea Tar Pits / 或返回迪士尼二刷。轻松节奏，晚上打包。</div></div>
+
+<div class="day tag-ys"><div class="d">8/17 周日</div><div class="loc">洛杉矶 → 黄石</div><div class="desc">上午 LAX 飞 BZN（Southwest 1站）。下午取车，采购补给，开车到西黄石。入住 White Buffalo Hotel，晚上小镇闲逛。</div></div>
+
+<div class="day tag-ys"><div class="d">8/18 周一</div><div class="loc">黄石 · 下8字一日</div><div class="desc">早6:30出发。Old Faithful → Grand Prismatic → Yellowstone Lake → West Thumb → Hayden Valley。日落归。</div></div>
+
+<div class="day tag-ys"><div class="d">8/19 周二</div><div class="loc">黄石 · 上8字 → St Paul</div><div class="desc">上午 Mammoth Hot Springs + Norris Geyser Basin。中午返BZN还车，下午飞MSP。晚上到St Paul。</div></div>
+
+<div class="day tag-sp"><div class="d">8/20 周三</div><div class="loc">St Paul · 休整+买买买</div><div class="desc">Mall of America。室内过山车+乐高乐园+水族馆。大人逛 Nordstrom/Macy's 扫货。</div></div>
+
+<div class="day tag-sp"><div class="d">8/21 周四</div><div class="loc">St Paul · 双城精华</div><div class="desc">Minnehaha Falls → Minneapolis Sculpture Garden → Stone Arch Bridge。下午 Science Museum。晚上家庭聚餐告别。</div></div>
+
+<div class="day tag-sp"><div class="d">8/22 周五</div><div class="loc">St Paul → 洛杉矶 → 首尔</div><div class="desc">上午自由活动，中午 MSP 飞 LAX（Frontier 1站）。晚上23:50 KE012 返程。夫妻行程结束。</div></div>
+
+</div>
+
+<h2>夫妻段费用明细</h2>
+<table>
+  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+  <tr><td>LAX → BZN</td><td>Southwest 1站 ×4人 (8/17)</td><td>$617</td></tr>
+  <tr><td>BZN → MSP</td><td>Southwest 1站 ×4人 (8/19 预估)</td><td>$789</td></tr>
+  <tr><td>MSP → LAX (夫妻)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
+  <tr><td>MSP → LAX (老人+女儿)</td><td>Frontier 1站 ×2人 (8/29 预估)</td><td>$252</td></tr>
+  <tr><td>Anaheim 酒店 5晚</td><td>Best Western Plus $169×2间</td><td>$1,690</td></tr>
+  <tr><td>西黄石 2晚</td><td>White Buffalo Hotel $162×2间</td><td>$648</td></tr>
+  <tr><td>租车 LA 6天 + BZN 3天</td><td>中型 SUV</td><td>$400</td></tr>
+  <tr class="high"><td>基础预算合计</td><td></td><td>$4,066</td></tr>
+</table>
+
+<div class="pro-con">
+  <div class="pro"><h4>优点</h4>LA最充裕——5晚4天，多一个机动日可以慢慢玩或二刷迪士尼。黄石上下8字各一天节奏刚好。酒店步行可达迪士尼，不用开车。夫妻在St Paul 3晚够用。</div>
+  <div class="con"><h4>缺点</h4>黄石还是偏赶，上8字+Mammoth半天就得赶飞机。机动日只有1天如果前面有变化buffer不多。比方案A多$574，主要在酒店上。</div>
+</div>
+
+</div>
+
+<!-- ==================== PLAN C ==================== -->
+<div class="plan" id="plan-c">
+
+<div class="summary-grid">
+  <div class="summary-card"><div class="val">$5,480</div><div class="lbl">基础总预算</div></div>
+  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">夫妻/老人+女儿</div></div>
+  <div class="summary-card"><div class="val">5晚 LA</div><div class="lbl">Clementine 步行迪士尼</div></div>
+  <div class="summary-card"><div class="val">3晚 黄石</div><div class="lbl">Travelers Lodge 舒适</div></div>
+  <div class="summary-card"><div class="val">2晚 StP</div><div class="lbl">夫妻 / 老人+女儿9晚</div></div>
+</div>
+
+<p class="note"><strong>策略：</strong>LA 5晚和黄石3晚都做到位。黄石多1天慢节奏体验（West Thumb + 黄石湖 + 缓冲）。酒店选最好位置——LA步行5分钟到迪士尼、黄石住镇上最好之一。夫妻St Paul只待2晚但刚好够和家人道别。</p>
+
+<h2>每日行程</h2>
+<div class="timeline">
+
+<div class="day tag-la"><div class="d">8/12 周二</div><div class="loc">西安 → 首尔 → 洛杉矶</div><div class="desc">KE142 12:40-16:40 → KE011 19:40-15:20。取车，入住 Anaheim Clementine Hotel。</div></div>
+
+<div class="day tag-la"><div class="d">8/13 周三</div><div class="loc">洛杉矶 · 迪士尼乐园</div><div class="desc">步行5分钟到园区。Genie+ 抢 LL。Fantasyland → Star Wars → Pixar Pier。住得近中午可以回酒店休息避暑，下午再战。</div></div>
+
+<div class="day tag-la"><div class="d">8/14 周四</div><div class="loc">洛杉矶 · 环球影城</div><div class="desc">全天环球。Super Nintendo World 配 Express Pass。Harry Potter + Studio Tour。晚上 Universal CityWalk 吃饭。</div></div>
+
+<div class="day tag-la"><div class="d">8/15 周五</div><div class="loc">洛杉矶 · 城市漫游</div><div class="desc">Santa Monica → Getty Center → Griffith Observatory。晚上可以去看一场 MLB 道奇队比赛（8月赛季中，$30起），感受美国体育文化。</div></div>
+
+<div class="day tag-la"><div class="d">8/16 周六</div><div class="loc">洛杉矶 · 机动日</div><div class="desc">Huntington Library / La Brea Tar Pits / California Science Center（免费看航天飞机 Endeavour）。或者返回迪士尼二刷。轻松打包。</div></div>
+
+<div class="day tag-ys"><div class="d">8/17 周日</div><div class="loc">洛杉矶 → 黄石</div><div class="desc">上午 LAX 飞 BZN（Southwest 1站）。下午取车，采购，开车到西黄石。入住 Travelers Lodge，晚餐后早点休息。</div></div>
+
+<div class="day tag-ys"><div class="d">8/18 周一</div><div class="loc">黄石 · 下8字全天</div><div class="desc">Old Faithful → Grand Prismatic → Fairy Falls → Biscuit Basin → Yellowstone Lake。傍晚 Hayden Valley 看野牛群。</div></div>
+
+<div class="day tag-ys"><div class="d">8/19 周二</div><div class="loc">黄石 · 上8字 + West Thumb</div><div class="desc">上午 Norris → Mammoth Hot Springs。下午 West Thumb Geyser Basin + Yellowstone Lake 湖边 picnic。最从容的一天。</div></div>
+
+<div class="day tag-ys"><div class="d">8/20 周三</div><div class="loc">黄石 · 缓冲 → St Paul</div><div class="desc">上午补漏（Lamar Valley 看狼/熊，需早起）或二刷 Grand Prismatic。中午返BZN还车，下午飞MSP。晚上到St Paul。</div></div>
+
+<div class="day tag-sp"><div class="d">8/21 周四</div><div class="loc">St Paul · 全天家庭时光</div><div class="desc">上午 Mall of America 最后扫货+孩子玩室内游乐场。下午 Como Park Zoo。晚上家庭大餐告别。</div></div>
+
+<div class="day tag-sp"><div class="d">8/22 周五</div><div class="loc">St Paul → 洛杉矶 → 首尔</div><div class="desc">上午收拾告别。中午 MSP 飞 LAX（Frontier）。晚上 23:50 KE012 返程。夫妻行程结束。</div></div>
+
+</div>
+
+<h2>夫妻段费用明细</h2>
+<table>
+  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+  <tr><td>LAX → BZN</td><td>Southwest 1站 ×4人 (8/17)</td><td>$617</td></tr>
+  <tr><td>BZN → MSP</td><td>Southwest 1站 ×4人 (8/20 预估)</td><td>$789</td></tr>
+  <tr><td>MSP → LAX (夫妻)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
+  <tr><td>MSP → LAX (老人+女儿)</td><td>Frontier 1站 ×2人 (8/29 预估)</td><td>$252</td></tr>
+  <tr><td>Anaheim 酒店 5晚</td><td>Clementine Hotel $205×2间</td><td>$2,050</td></tr>
+  <tr><td>西黄石 3晚</td><td>Travelers Lodge $185×2间</td><td>$1,110</td></tr>
+  <tr><td>租车 LA 6天 + BZN 3天</td><td>中型 SUV</td><td>$410</td></tr>
+  <tr class="high"><td>基础预算合计</td><td></td><td>$5,480</td></tr>
+</table>
+
+<div class="pro-con">
+  <div class="pro"><h4>优点</h4>最从容的黄石——3晚够玩上下8字+缓冲，不用赶。LA 5晚步行迪士尼，中午能回酒店休息。酒店品质最高。每个点都不赶路。</div>
+  <div class="con"><h4>缺点</h4>比方案A贵$1,988。夫妻在St Paul只有2晚（其中1天还是购物），和老人相处时间短。老人+女儿在St Paul的9晚需自己安排活动。</div>
+</div>
+
+</div>
+
+<!-- ==================== 共同内容 ==================== -->
+
+<h2>三方案对比速览</h2>
+<table>
+  <tr><th></th><th>方案A 省钱</th><th>方案B 经典</th><th>方案C 深度</th></tr>
+  <tr><td>预算</td><td>$3,490</td><td>$4,060</td><td>$5,480</td></tr>
+  <tr><td>LA</td><td>4晚 (Fairfield Inn)</td><td>5晚 (Best Western+)</td><td>5晚 (Clementine)</td></tr>
+  <tr><td>黄石</td><td>2晚 (Brandin' Iron)</td><td>2晚 (White Buffalo)</td><td>3晚 (Travelers Lodge)</td></tr>
+  <tr><td>St Paul 夫妻</td><td>4晚</td><td>3晚</td><td>2晚</td></tr>
+  <tr><td>St Paul 老人+女儿</td><td>11晚</td><td>10晚</td><td>9晚</td></tr>
+  <tr><td>交通</td><td>3飞 全中转</td><td>3飞 全中转</td><td>3飞 全中转</td></tr>
+  <tr><td>迪士尼距离</td><td>开车15分钟</td><td>步行15分钟</td><td>步行5分钟</td></tr>
+</table>
+
+<h2>附加费用（所有方案通用）</h2>
+<table>
+  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+  <tr><td>迪士尼 1日票</td><td>$154/人 ×4</td><td>$616</td></tr>
+  <tr><td>环球影城 1日票</td><td>$144/人 ×4</td><td>$576</td></tr>
+  <tr><td>迪士尼 Genie+</td><td>$25-30/人 ×4</td><td>$100</td></tr>
+  <tr><td>环球 Express Pass</td><td>$200-300/人 (旺季，大人才买)</td><td>$400-600 可选</td></tr>
+  <tr><td>黄石公园门票</td><td>$35/车 7天有效</td><td>$35</td></tr>
+  <tr><td>EVUS 登记</td><td>免费，每2年更新</td><td>$0</td></tr>
+  <tr><td>旅行保险</td><td>约$50-80/人</td><td>$200-320</td></tr>
+  <tr><td>美国手机卡</td><td>T-Mobile eSIM $30起</td><td>$60+</td></tr>
+  <tr><td>黄石防熊喷雾</td><td>$40-50 当地买（禁上飞机）</td><td>$45</td></tr>
+  <tr><td>餐饮 10天</td><td>约$50/人/天 ×10天</td><td>$2,000</td></tr>
+  <tr class="high"><td>附加费用合计</td><td>(不含可选Express Pass)</td><td>$3,632</td></tr>
+  <tr class="high"><td>全部总计 (方案A)</td><td>$3,490 + $3,632</td><td>$7,122</td></tr>
+  <tr class="high"><td>全部总计 (方案B)</td><td>$4,060 + $3,632</td><td>$7,692</td></tr>
+  <tr class="high"><td>全部总计 (方案C)</td><td>$5,480 + $3,632 + $500</td><td>$9,080</td></tr>
+</table>
+
+<div class="stpaul-box">
+<h3>老人+女儿 St Paul 期间建议 (8/19-29 共10-11天)</h3>
+<table>
+  <tr><th>活动</th><th>说明</th><th>费用</th></tr>
+  <tr><td>Mall of America</td><td>换个日子再去，孩子玩不腻。室内 Nickelodeon Universe 过山车 $40</td><td>$40</td></tr>
+  <tr><td>Minnesota Zoo</td><td>比 Como Zoo 大，有灰狼/驼鹿/水獭。$20/成人 $14/儿童</td><td>$54</td></tr>
+  <tr><td>Duluth + 苏必利尔湖 1日游</td><td>明州最美湖滨城市，2.5h车程。Great Lakes Aquarium + 湖边散步</td><td>油费$30</td></tr>
+  <tr><td>Stillwater 小镇半日</td><td>密西西比河畔古董小镇，40分钟车程。冰淇淋+古董店+河边野餐</td><td>免费</td></tr>
+  <tr><td>芝加哥 Amtrak 2-3日</td><td>火车6h从St Paul到芝加哥，$56/人。Field Museum + Navy Pier + 千禧公园</td><td>$400+</td></tr>
+  <tr><td>St Paul Saints 棒球赛</td><td>小联盟棒球，票$15起，氛围好，孩子爱看。8月赛季中</td><td>$60</td></tr>
+</table>
+</div>
+
+<h2>攻略要点</h2>
+<div class="tips-grid">
+  <div class="tip"><h4>黄石 8 月生存法则</h4><p>早6:30出发避开人潮+高温。车上备足水和零食，园内餐厅排队久。加满油进园，园内加油站少且贵。Bison堵路是常态别按喇叭。Old Faithful 每90分钟喷发，app可查预报。</p></div>
+  <div class="tip"><h4>迪士尼 8 月旺季策略</h4><p>买 Genie+，早7点准时抢。先冲 Rise of the Resistance（最火），然后 Millennium Falcon。下午热+人多可回酒店休息，傍晚再进园看烟花。手机下 Disneyland App 看实时排队。</p></div>
+  <div class="tip"><h4>环球影城核心攻略</h4><p>Super Nintendo World 需要 Power-Up Band（$40）才能玩互动游戏。Early Access $20-30提前1小时入园。Mario Kart: Bowser's Challenge 是AR赛车，排队最恐怖。Harry Potter 黄油啤酒 $9。</p></div>
+  <div class="tip"><h4>带老人+孩子必读</h4><p>黄石海拔 7000-8000ft，老人注意高反。防晒霜+帽子+墨镜必带（高原紫外线强）。孩子 Junior Ranger Program 免费领手册完成任务换徽章。St Paul 8月蚊子多，Deep Woods OFF! 必备。</p></div>
+  <div class="tip"><h4>廉价航空注意事项</h4><p>Southwest 免费托运2件，但不对号入座（先到先得），提前24h check-in抢A组。Frontier 只含背包，登机箱$60，托运$55。建议全家共用大托运箱。Southwest不在 Google Flights 显示，官网查。</p></div>
+  <div class="tip"><h4>租车与驾驶</h4><p>中国驾照+翻译件可在加州/蒙大拿/明州开车。建议租 SUV（黄石路段可能颠簸）。BZN机场小，租车公司少，提前订。黄石园内限速45mph，夜间动物出没小心驾驶。加油站间隔远，半箱油就加。</p></div>
+</div>
+
+<h2>预订链接</h2>
+
+<h3>机票</h3>
+<div class="links">
+  <a href="https://southwest.com" target="_blank">Southwest 官网</a>
+  <a href="https://flights.google.com" target="_blank">Google Flights</a>
+  <a href="https://priceline.com" target="_blank">Priceline</a>
+  <a href="https://kayak.com" target="_blank">Kayak</a>
+  <a href="https://flyfrontier.com" target="_blank">Frontier 官网</a>
+</div>
+
+<h3>酒店</h3>
+<div class="links">
+  <a href="https://trip.com" target="_blank">携程 Trip.com</a>
+  <a href="https://booking.com" target="_blank">Booking.com</a>
+  <a href="https://airbnb.com" target="_blank">Airbnb</a>
+  <a href="https://priceline.com" target="_blank">Priceline 酒店</a>
+</div>
+
+<h3>门票</h3>
+<div class="links">
+  <a href="https://disneyland.disney.go.com" target="_blank">迪士尼 官网</a>
+  <a href="https://universalstudioshollywood.com" target="_blank">环球影城 官网</a>
+  <a href="https://nps.gov/yell" target="_blank">黄石 NPS 官网</a>
+  <a href="https://undercovertourist.com" target="_blank">Undercover Tourist (折扣票)</a>
+</div>
+
+<p class="note" style="margin-top:32px"><strong>注意：</strong>以上机票价格为8月中旬参考价（Google Flights实时查询）。Southwest/Frontier价格波动大，建议确定方案后立即预订。酒店8月旺季余房紧张，尤其是西黄石镇，尽早锁定。</p>
 
 </div>
 
 <script>
-function switchPlan(plan) {
-  document.querySelectorAll('.plan-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.plan-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector(`.plan-tab:nth-child(${plan === 'a' ? 1 : plan === 'b' ? 2 : 3})`).classList.add('active');
-  document.getElementById(`plan-${plan}`).classList.add('active');
+function switchPlan(p) {
+  document.querySelectorAll('.plan').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(el => el.classList.remove('active'));
+  document.getElementById('plan-'+p).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top: 200, behavior: 'smooth'});
 }
 </script>
 
