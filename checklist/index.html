@@ -3,691 +3,356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>美国西部行程核对清单</title>
+<title>美国西部行程 Checklist</title>
 <style>
   :root {
     --bg: #0a0a0f; --card: #14141f; --card2: #1a1a28; --border: #252535;
     --text: #c8c8d4; --text-dim: #7878a0; --text-bright: #e8e8f0;
-    --green: #22c55e; --green-bg: rgba(34,197,94,.12);
-    --amber: #f59e0b; --amber-bg: rgba(245,158,11,.12);
-    --red: #ef4444; --red-bg: rgba(239,68,68,.12);
-    --blue: #3b82f6; --sky: #5b9bd5; --flight: #c084fc;
+    --accent-a: #ff6b6b; --accent-b: #ffd93d; --accent-c: #6bcb77;
+    --gold: #d4a843; --sky: #5b9bd5; --flight: #c084fc;
+    --done: #3a5a3a;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
     background: var(--bg); color: var(--text);
     font-family: -apple-system, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
-    line-height: 1.6; min-height: 100vh;
+    line-height: 1.7; min-height: 100vh;
   }
-  .hero {
-    text-align: center; padding: 50px 20px 32px;
-    background: linear-gradient(180deg, #0d1117 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--border);
-  }
-  .hero h1 { font-size: 2em; font-weight: 700; color: #fff; letter-spacing: 2px; }
+  .hero { text-align: center; padding: 40px 20px 30px; background: linear-gradient(180deg, #0d1117 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); }
+  .hero h1 { font-size: 1.8em; font-weight: 700; color: #fff; letter-spacing: 1px; }
   .hero p { color: var(--text-dim); margin-top: 6px; font-size: .9em; }
-  .hero .meta { margin-top: 14px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .hero .meta span { background: var(--card); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; font-size: .78em; color: var(--text-dim); }
-  .container { max-width: 780px; margin: 0 auto; padding: 28px 20px 60px; }
-
-  /* Progress summary */
-  .progress-summary {
-    display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 32px;
-  }
-  .progress-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    padding: 16px; text-align: center;
-  }
-  .progress-card .val { font-size: 1.5em; font-weight: 700; }
-  .progress-card .lbl { font-size: .72em; color: var(--text-dim); margin-top: 3px; }
-  .progress-card.green .val { color: var(--green); }
-  .progress-card.amber .val { color: var(--amber); }
-  .progress-card.red .val { color: var(--red); }
-
-  /* Timeline day */
-  .day-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
-  }
-  .day-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 18px; background: var(--card2);
-    border-bottom: 1px solid var(--border); cursor: pointer;
-    user-select: none;
-  }
-  .day-header:hover { background: #1e1e30; }
-  .day-header .date { font-size: 1.05em; font-weight: 700; color: #fff; min-width: 120px; }
-  .day-header .date .wkday { font-size: .72em; color: var(--text-dim); font-weight: 400; margin-left: 4px; }
-  .day-header .loc { font-size: .82em; font-weight: 600; flex: 1; }
-  .day-header .loc.la { color: var(--sky); }
-  .day-header .loc.ys { color: var(--amber); }
-  .day-header .loc.sp { color: var(--green); }
-  .day-header .loc.fly { color: var(--flight); }
-  .day-header .status-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: .7em; font-weight: 600; padding: 2px 10px; border-radius: 12px;
-  }
-  .status-badge.done { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,.25); }
-  .status-badge.partial { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,158,11,.25); }
-  .status-badge.pending { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239,68,68,.25); }
-  .day-body { padding: 0; display: none; }
-  .day-body.open { display: block; }
-
-  /* Checklist items */
-  .checklist { padding: 4px 0; }
-  .check-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 10px 18px; border-bottom: 1px solid rgba(255,255,255,.03);
-  }
-  .check-item:last-child { border-bottom: none; }
-  .check-icon {
-    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: .7em; font-weight: 700; margin-top: 2px;
-  }
-  .check-icon.done { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
-  .check-icon.partial { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
-  .check-icon.pending { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239,68,68,.3); }
-  .check-icon.skip { background: rgba(255,255,255,.04); color: var(--text-dim); border: 1px solid var(--border); }
-
-  .check-content { flex: 1; }
-  .check-title { font-size: .85em; color: var(--text-bright); font-weight: 500; }
-  .check-title .hl { color: #fff; }
-  .check-detail { font-size: .78em; color: var(--text-dim); margin-top: 2px; }
-  .check-status {
-    font-size: .72em; font-weight: 600; white-space: nowrap; flex-shrink: 0;
-    padding: 2px 10px; border-radius: 10px; margin-top: 2px;
-  }
-  .check-status.done { color: var(--green); }
-  .check-status.partial { color: var(--amber); }
-  .check-status.pending { color: var(--red); }
-
-  /* Activity row */
-  .day-activities { padding: 6px 18px 14px; }
-  .act-row { font-size: .82em; color: var(--text); padding: 4px 0; }
-  .act-row .time { color: var(--text-dim); font-size: .78em; font-variant-numeric: tabular-nums; margin-right: 8px; }
-
-  /* Toggle */
-  .toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 18px; border-top: 1px solid rgba(255,255,255,.03);
-  }
-  .toggle-row span { font-size: .78em; color: var(--text-dim); cursor: pointer; }
-  .toggle-row span:hover { color: var(--text-bright); }
-
-  /* Sticky status bar */
-  .sticky-bar {
-    position: sticky; bottom: 0; z-index: 10;
-    background: linear-gradient(180deg, transparent, var(--bg) 30%);
-    padding: 20px 20px 16px;
-    display: flex; justify-content: center; gap: 12px;
-  }
-  .sticky-bar .legend {
-    display: flex; gap: 16px; background: var(--card2);
-    border: 1px solid var(--border); border-radius: 30px;
-    padding: 8px 20px; backdrop-filter: blur(8px);
-  }
-  .sticky-bar .legend span { font-size: .72em; display: flex; align-items: center; gap: 5px; }
-
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 1.4em; }
-    .progress-summary { grid-template-columns: repeat(2,1fr); }
-    .day-header .date { min-width: 100px; font-size: .92em; }
-    .check-item { flex-wrap: wrap; }
-    .check-status { margin-left: 34px; }
-  }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 20px 60px; }
+  .day-section { margin-bottom: 20px; }
+  .day-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card2); border-radius: 10px 10px 0 0; border: 1px solid var(--border); border-bottom: none; }
+  .day-header .date { font-size: 1.1em; font-weight: 700; color: #fff; }
+  .day-body { border: 1px solid var(--border); border-radius: 0 0 10px 10px; overflow: hidden; }
+  .item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.03); cursor: pointer; transition: background .15s; font-size: .88em; }
+  .item:last-child { border-bottom: none; }
+  .item:hover { background: rgba(255,255,255,.02); }
+  .item.done { color: var(--done); text-decoration: line-through; }
+  .item.done .check { color: var(--accent-c); }
+  .check { flex-shrink: 0; width: 20px; text-align: center; color: var(--text-dim); font-family: monospace; }
+  .item .tag { display: inline-block; font-size: .72em; padding: 1px 7px; border-radius: 3px; margin-left: 6px; font-weight: 600; flex-shrink: 0; }
+  .item .tag.book { background: rgba(212,168,67,.15); color: var(--gold); }
+  .item .tag.ticket { background: rgba(91,155,213,.15); color: var(--sky); }
+  .item .tag.pack { background: rgba(192,132,252,.15); color: var(--flight); }
+  .item .tag.doc { background: rgba(107,203,119,.15); color: var(--accent-c); }
+  .item .tag.tip { background: rgba(255,107,107,.15); color: var(--accent-a); }
+  .item .tag.done-tag { background: rgba(107,203,119,.2); color: var(--accent-c); }
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .summary-card h3 { color: #fff; font-size: .95em; margin-bottom: 10px; }
+  .summary-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .stat { min-width: 100px; text-align: center; }
+  .stat .num { font-size: 1.4em; font-weight: 700; color: #fff; }
+  .stat .lbl { font-size: .72em; color: var(--text-dim); }
+  .controls { display: flex; gap: 8px; margin: 12px 0 20px; flex-wrap: wrap; }
+  .controls button { padding: 8px 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; font-size: .82em; font-family: inherit; transition: all .15s; }
+  .controls button:hover { background: var(--card2); border-color: var(--text-dim); }
+  h2 { font-size: 1.1em; color: #fff; margin: 28px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
 </style>
 </head>
 <body>
-
 <div class="hero">
-  <h1>美国西部行程核对清单</h1>
-  <p>洛杉矶 · 黄石 · 圣保罗 &nbsp;|&nbsp; 2026年8月12日 — 8月22日</p>
-  <div class="meta">
-    <span>康杰 + 白雪 8/12-22</span>
-    <span>白文 + Sybils (9岁) 8/12-29</span>
-    <span>全部飞机 · 不自驾长途</span>
-    <span>方案B 经典均衡</span>
-  </div>
+  <h1>美国西部行程 Checklist</h1>
+  <p>康杰 + 白雪 + 白文 + Sybils (9岁) | 2026年8月12-22日</p>
 </div>
-
 <div class="container">
 
-<!-- Progress Summary -->
-<div class="progress-summary">
-  <div class="progress-card green">
-    <div class="val">7/7</div>
-    <div class="lbl">机票 ✓</div>
-    <div class="lbl" style="font-size:.65em;color:var(--text-dim);margin-top:1px">全部已购</div>
-  </div>
-  <div class="progress-card amber">
-    <div class="val">0/3</div>
-    <div class="lbl">酒店</div>
-    <div class="lbl" style="font-size:.65em;color:var(--text-dim);margin-top:1px">全部未订</div>
-  </div>
-  <div class="progress-card red">
-    <div class="val">0/2</div>
-    <div class="lbl">门票</div>
-    <div class="lbl" style="font-size:.65em;color:var(--text-dim);margin-top:1px">购买中</div>
-  </div>
-  <div class="progress-card red">
-    <div class="val">0/2</div>
-    <div class="lbl">租车</div>
-    <div class="lbl" style="font-size:.65em;color:var(--text-dim);margin-top:1px">未订</div>
+<div class="summary-card">
+  <h3>搞定进度</h3>
+  <div class="summary-grid" id="stats">
+    <div class="stat"><div class="num" id="done-count">0</div><div class="lbl">已完成</div></div>
+    <div class="stat"><div class="num" id="total-count">0</div><div class="lbl">总计</div></div>
   </div>
 </div>
 
-<!-- ============ DAY 1: 8/12 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/12 <span class="wkday">周二</span></span>
-    <span class="loc fly">&#9992; 西安 → 首尔 → 洛杉矶</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body open">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">KE142</span> 西安 → 首尔 12:40-16:40</div>
-          <div class="check-detail">大韩航空，2h50m</div>
-        </div>
-        <div class="check-status done">已购</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">KE011</span> 首尔 → 洛杉矶 19:40-15:20(同日)</div>
-          <div class="check-detail">大韩航空，11h飞行</div>
-        </div>
-        <div class="check-status done">已购</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">取车 — 洛杉矶租车</div>
-          <div class="check-detail">LAX取车，中型SUV，6天。需现场提车</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">San Bernardino 午餐</div>
-          <div class="check-detail">沿路 Rancho Cucamonga 中餐</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">Montclair Hospital</span> — Sybil出生医院，拍照打卡</div>
-          <div class="check-detail">沿路停，下车拍个照，15分钟</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">Best Western Plus Anaheim Inn</span> — 未订</div>
-          <div class="check-detail">$169/间 x2间，步行15分钟到迪士尼</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">11:00</span>西安咸阳机场 T3 值机</div>
-      <div class="act-row"><span class="time">12:40-16:40</span>KE142 西安→首尔</div>
-      <div class="act-row"><span class="time">19:40-15:20</span>KE011 首尔→洛杉矶</div>
-      <div class="act-row"><span class="time">15:20</span>抵达LAX，取车</div>
-      <div class="act-row"><span class="time">17:00</span>San Bernardino 午餐（推荐：Rancho Cucamonga 中餐）</div>
-      <div class="act-row"><span class="time">18:30</span><span class="hl">Montclair Hospital</span> — Sybil出生医院，拍照15分钟</div>
-      <div class="act-row"><span class="time">20:00</span>入住 Anaheim，Downtown Disney 逛吃</div>
-    </div>
-  </div>
+<div class="controls">
+  <button onclick="checkAll()">全部打勾</button>
+  <button onclick="uncheckAll()">全部取消</button>
+  <button onclick="saveState()">保存当前</button>
 </div>
 
-<!-- ============ DAY 2: 8/13 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/13 <span class="wkday">周三</span></span>
-    <span class="loc la">&#9733; 迪士尼乐园</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">迪士尼 1日票 x4</div>
-          <div class="check-detail">$154/人 x4人 = $616</div>
-        </div>
-        <div class="check-status pending">购买中</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">Genie+ x4</div>
-          <div class="check-detail">$25-30/人，当天早7点抢</div>
-        </div>
-        <div class="check-status pending">未购</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">酒店住宿 — 未订</div>
-          <div class="check-detail">Best Western Plus（步行15min）$169/间 x2间</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">06:45</span>抢 Genie+ LL，首选 Rise of the Resistance</div>
-      <div class="act-row"><span class="time">08:00</span>步行入园 → Star Wars: Galaxy's Edge</div>
-      <div class="act-row"><span class="time">12:00</span>Plaza Inn 午餐</div>
-      <div class="act-row"><span class="time">14:30</span>可回酒店午休（步行近的优势）</div>
-      <div class="act-row"><span class="time">21:30</span>烟花秀，步行回酒店</div>
-    </div>
-  </div>
+<!-- ============ 行前准备 ============ -->
+<h2>行前准备</h2>
+<div class="day-section">
+<div class="day-header"><span class="date">出发前</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>EVUS 登记确认 (有效期2年) <span class="tag doc">文件</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>护照有效期 6 个月以上 <span class="tag doc">文件</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>中国驾照 + 国际翻译认证件 <span class="tag doc">文件</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>旅行保险购买 <span class="tag book">预订</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>美国手机卡 (T-Mobile eSIM / 国内漫游包) <span class="tag pack">准备</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>买迪士尼 1日票</strong> 8/13 Disneyland Park ($154/人 x4) <span class="tag ticket">票</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>买环球影城 1日票</strong> 8/14 Universal Studios Hollywood ($144/人 x4) <span class="tag ticket">票</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><span style="color:var(--accent-c)">KE142+KE011 已购</span> 8/12 西安→首尔→洛杉矶 <span class="tag done-tag">已购</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><span style="color:var(--accent-c)">UA319 已购</span> 8/17 LAX T7→BZN 10:40→14:13 (4人) <span class="tag done-tag">已购</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><span style="color:var(--accent-c)">DL2946 已购</span> 8/19 BZN→MSP 15:55→19:15 (4人, ¥10,094) <span class="tag done-tag">已购</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><span style="color:var(--accent-c)">SY425 已购</span> 8/22 MSP→LAX 15:25→17:15 (康杰+白雪) <span class="tag done-tag">已购</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>订 KE012 LAX→ICN 返程 (8/22 康杰+白雪) <span class="tag book">机票</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>订 8/29 长辈+女儿返程机票 (MSP→LAX→ICN) <span class="tag book">机票</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><span style="color:var(--accent-c)">SpringHill Suites Anaheim 已订</span> 5JWD78LS74 8/12-17 <span class="tag done-tag">已订</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>订西黄石酒店 (2晚 8/17-18) <span class="tag book">酒店</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>租车预订：LA段 + BZN段 (经济SUV) <span class="tag book">租车</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>下载 Disneyland App + Universal CA App <span class="tag tip">攻略</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>下载 Uber/Lyft App (备用) <span class="tag tip">攻略</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>准备美元现金 ($500-800小费+停车+应急用) <span class="tag pack">准备</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>黄石门票预订 (America the Beautiful Pass $80/车) <span class="tag ticket">票</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>防熊喷雾 (当地买 ~$45) <span class="tag pack">准备</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 3: 8/14 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/14 <span class="wkday">周四</span></span>
-    <span class="loc la">&#9733; 环球影城 + Caltech</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">环球影城 1日票 x4</div>
-          <div class="check-detail">$144/人 x4人 = $576</div>
-        </div>
-        <div class="check-status pending">购买中</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">Express Pass（可选）</div>
-          <div class="check-detail">$200-300/人，旺季价，建议至少大人买</div>
-        </div>
-        <div class="check-status pending">待定</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">Caltech</span> 校园溜达1小时</div>
-          <div class="check-detail">Pasadena，环球影城开车约50min，停车方便。进门左转 Millikan Library 前草坪拍个照</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">酒店住宿 — 未订</div>
-          <div class="check-detail">Best Western Plus</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">07:45</span>开车40min到环球</div>
-      <div class="act-row"><span class="time">08:30</span>Super Nintendo World → Mario Kart</div>
-      <div class="act-row"><span class="time">17:00</span>开往 Caltech（1h），傍晚校园散步</div>
-      <div class="act-row"><span class="time">19:30</span>回酒店 / Pasadena 晚餐</div>
-    </div>
-  </div>
+<!-- ============ 8/12 飞行日 ============ -->
+<h2>8/12 周二 西安 → 首尔 → 洛杉矶</h2>
+<div class="day-section">
+<div class="day-header"><span class="date"><span class="loc fly">飞行日</span></span><span class="loc fly">KE142 + KE011</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>打包！2件托运行李, 每人手提1件 <span class="tag pack">打包</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>护照 + 打印行程单 + EVUS确认页 <span class="tag doc">文件</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>孩子: 零食+iPad+下载动画片 (机上11h) <span class="tag pack">打包</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>外套/披肩 (机上冷气足) <span class="tag pack">打包</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 到西安咸阳 T3 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:40 KE142 起飞 XIY→ICN 2h50m <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>16:40 首尔仁川转机: 逛免税店 + 韩餐 <span class="tag tip">转机</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:40 KE011 首尔→洛杉矶 11h <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>15:20 抵达 LAX, 过海关(约1h) <span class="tag tip">抵达</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>取租车, 开车到 Anaheim (45min) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>入住 SpringHill Suites by Marriott (5JWD78LS74) <span class="tag tip">抵达</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:00 Downtown Disney 逛+轻晚餐, 倒时差 <span class="tag tip">晚餐</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 4: 8/15 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/15 <span class="wkday">周五</span></span>
-    <span class="loc la">&#9733; 洛杉矶城市漫游</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">Santa Monica 海滩 + 码头</div>
-          <div class="check-detail">免费，开车1h，Pacific Park 摩天轮 $10/人</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">Getty Center</div>
-          <div class="check-detail">免费，停车$20，梵高莫奈</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">Griffith Observatory 日落</div>
-          <div class="check-detail">免费，Hollywood Sign 最佳拍摄点</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">酒店住宿 — 未订</div>
-          <div class="check-detail">Best Western Plus</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-  </div>
+<!-- ============ 8/13 迪士尼 ============ -->
+<h2>8/13 周三 迪士尼乐园</h2>
+<div class="day-section" style="border-left:3px solid var(--sky); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--sky)"><span class="date" style="color:var(--sky)">8/13 周三</span><span class="loc la">迪士尼乐园</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:15 起床, 酒店简餐 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>06:45 抢 Genie+ Lightning Lane!</strong> 首选 Rise of the Resistance <span class="tag ticket">必抢</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 步行15分钟到迪士尼入口 (不用开车!) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 Rise of the Resistance (先刷最火) <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 Millennium Falcon: Smugglers Run (让女儿当飞行员) <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:00 Fantasyland: Peter Pan → Mr. Toad → Alice → Small World <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 午餐 Plaza Inn 炸鸡 ($18/人) <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>13:00 Tomorrowland: Space Mountain, Buzz Lightyear <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>14:30 走回酒店午休1h (步行优势! 避暑充电) <span class="tag tip">休息</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>15:30 Pixar Pier + Adventureland: Indiana Jones <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:00 Star Wars区二刷或 Oga's Cantina (蓝奶/绿奶 $8) <span class="tag tip">自由</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:30 晚餐 Bengal Barbecue ($12/人) <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:30 Fantasmic! 水上秀 (河边提前30min占位) <span class="tag tip">表演</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>21:30 烟花秀 Disneyland Forever <span class="tag tip">表演</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>22:00 步行10分钟回酒店 (闭园不用挤停车场!) <span class="tag tip">收尾</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 5: 8/16 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/16 <span class="wkday">周六</span></span>
-    <span class="loc la">&#9733; San Diego 动物园</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">San Diego Zoo 门票 x4</div>
-          <div class="check-detail">$72/成人，$62/儿童，约$278全家</div>
-        </div>
-        <div class="check-status pending">购买中</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">自驾 San Diego 当日往返</div>
-          <div class="check-detail">Anaheim → SD Zoo 约1.5h车程</div>
-        </div>
-        <div class="check-status done">有车</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">酒店住宿（最后一晚LA）— 未订</div>
-          <div class="check-detail">Best Western Plus，回酒店打包行李</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">08:00</span>出发往 San Diego（1.5h）</div>
-      <div class="act-row"><span class="time">09:30-16:00</span>San Diego Zoo全天</div>
-      <div class="act-row"><span class="time">19:00</span>回Anaheim，打包行李，早休息</div>
-    </div>
-  </div>
+<!-- ============ 8/14 环球影城 ============ -->
+<h2>8/14 周四 环球影城</h2>
+<div class="day-section" style="border-left:3px solid var(--accent-a); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--accent-a)"><span class="date" style="color:var(--accent-a)">8/14 周四</span><span class="loc" style="color:var(--accent-a)">环球影城</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:30 起床, 酒店早餐 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:15 开车出发 (40min到环球) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 入园! 直奔 Super Nintendo World <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:10 Mario Kart: Bowser's Challenge (AR赛车, 趁早刷) <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 任天堂区互动小游戏, Power-Up Band ($40) <span class="tag tip">互动</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:00 Upper Lot: Harry Potter Forbidden Journey <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 Flight of the Hippogriff + 逛魔法商店 <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:30 黄油啤酒! ($9/杯) <span class="tag tip">必喝</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:30 午餐 Three Broomsticks ($20/人) <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>13:30 Studio Tour (金刚360+速度激情, 约1h) <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>15:00 Lower Lot: Transformers 3D + Jurassic World (会湿!) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>16:30 Revenge of the Mummy (康杰+白雪, 长辈+女儿跳过) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:30 Minion Mayhem + Super Silly Fun Land (孩子天堂) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:00 CityWalk 晚餐 <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:30 开车回 Anaheim 酒店 <span class="tag tip">收尾</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 6: 8/17 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/17 <span class="wkday">周日</span></span>
-    <span class="loc fly">&#9992; 洛杉矶 → 黄石</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">UA319</span> 美联航 LAX T7 → BZN</div>
-          <div class="check-detail">10:40 → 13:44/14:13，出行人：BA/XUE、KANG/JIE</div>
-        </div>
-        <div class="check-status done">已购 ✓</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">租车 — 博兹曼(BZN)取车</div>
-          <div class="check-detail">中型SUV，3天，黄石需要。BZN机场小，租车公司少</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">西黄石酒店 2晚</div>
-          <div class="check-detail">White Buffalo Hotel $162/间 x2间 x2晚 = $648</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">Walmart 采购补给</div>
-          <div class="check-detail">水、零食、三明治材料、防熊喷雾（$45）</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">07:00</span>退房 LA，还LA租车，去LAX T7</div>
-      <div class="act-row"><span class="time">13:44</span>抵达博兹曼 BZN，取新车</div>
-      <div class="act-row"><span class="time">15:00</span>Walmart 大采购</div>
-      <div class="act-row"><span class="time">17:00</span>开车到西黄石镇（1.5h，US-191）</div>
-      <div class="act-row"><span class="time">19:00</span>入住，晚餐早休息</div>
-    </div>
-  </div>
+<!-- ============ 8/15 城市游 ============ -->
+<h2>8/15 周五 洛杉矶城市漫游</h2>
+<div class="day-section">
+<div class="day-header"><span class="date">8/15 周五</span><span class="loc la">洛杉矶</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 睡到自然醒, 酒店早餐 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:30 Santa Monica 海滩 + 码头摩天轮 <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 午餐 Santa Monica Pier <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>13:30 Getty Center (免费, 停车$20) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>16:30 Griffith Observatory (Hollywood Sign拍照点) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:30 天文台看日落 <span class="tag tip">必看</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:30 Koreatown 韩餐晚餐 <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>21:00 回酒店 <span class="tag tip">收尾</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 7: 8/18 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/18 <span class="wkday">周一</span></span>
-    <span class="loc ys">&#9733; 黄石 · 下8字</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">黄石国家公园门票</div>
-          <div class="check-detail">$35/车，7天有效。也可用 America the Beautiful 年票</div>
-        </div>
-        <div class="check-status pending">未购</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">下8字全天路线</div>
-          <div class="check-detail">Old Faithful → Grand Prismatic + Fairy Falls Overlook → West Thumb → Yellowstone Lake → Hayden Valley → Mud Volcano → Canyon</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">酒店住宿</div>
-          <div class="check-detail">White Buffalo Hotel $162/间 x2间</div>
-        </div>
-        <div class="check-status pending">未订</div>
-      </div>
-    </div>
-  </div>
+<!-- ============ 8/16 自由日 ============ -->
+<h2>8/16 周六 自由日</h2>
+<div class="day-section">
+<div class="day-header"><span class="date">8/16 周六</span><span class="loc la">洛杉矶 自由活动</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>选项A: Huntington Library 沙漠花园+日本园 ($25/人) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>选项B: California Science Center 免费看 Endeavour <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>选项C: 迪士尼 California Adventure 二刷 <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>选项D: 逛街/休息/打包准备明天飞黄石 <span class="tag tip">自由</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>打包行李, 早休息 (明早赶飞机) <span class="tag tip">收尾</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 8: 8/19 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/19 <span class="wkday">周二</span></span>
-    <span class="loc ys fly">&#9733; 黄石上8字 → 飞圣保罗</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">DL2946</span> 达美 BZN → MSP T1</div>
-          <div class="check-detail">15:55 → 19:15（2h20m），波音737，经济舱+小食</div>
-          <div class="check-detail" style="color:var(--amber);margin-top:1px">订单号：1128149520511604 &nbsp; 总计 <strong>¥10,094</strong></div>
-        </div>
-        <div class="check-status done">已购 ✓</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon pending">&nbsp;?</div>
-        <div class="check-content">
-          <div class="check-title">BZN 还车</div>
-          <div class="check-detail">11:30前还车，预留充裕时间</div>
-        </div>
-        <div class="check-status pending">租车关联</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">上8字上午行程</div>
-          <div class="check-detail">Norris Geyser Basin → Mammoth Hot Springs 梯田温泉</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">St Paul 住宿</div>
-          <div class="check-detail">朋友家，免费</div>
-        </div>
-        <div class="check-status done">朋友安排</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">07:00</span>退房，出发 Norris + Mammoth</div>
-      <div class="act-row"><span class="time">11:30</span>回 BZN，还车，机场午餐</div>
-      <div class="act-row"><span class="time">15:55</span>DL2946 BZN→MSP</div>
-      <div class="act-row"><span class="time">19:15</span>抵达 MSP，朋友接机，St Paul 家里</div>
-    </div>
-  </div>
+<!-- ============ 8/17 飞黄石 ============ -->
+<h2>8/17 周日 飞黄石</h2>
+<div class="day-section" style="border-left:3px solid var(--accent-b); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--accent-b)"><span class="date" style="color:var(--accent-b)">8/17 周日</span><span class="loc" style="color:var(--accent-b)">UA319 洛杉矶→博兹曼</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 退房, 开车到 LAX T7 <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:30 还车. LAX T7 美联航值机 <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>10:40 UA319 LAX→BZN</strong> 飞行约2.5h <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>14:13 抵达 Bozeman BZN, 取租车 (中型SUV) <span class="tag tip">抵达</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>Walmart / Town & Country 采购: 水x2箱, 三明治, 零食, 水果, 防熊喷雾($45) <span class="tag pack">补给</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:00 开车到西黄石镇 (1.5h, US-191风景线) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:30 入住西黄石酒店 <span class="tag tip">抵达</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:00 晚餐 Buffalo Bar 或 Running Bear <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:30 早休息 (明早6:30出发硬仗!) <span class="tag tip">休息</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 9: 8/20 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/20 <span class="wkday">周三</span></span>
-    <span class="loc sp">&#9733; St Paul · 休整</span>
-    <span class="status-badge done">全部完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title">St Paul 住宿（朋友家）</div>
-          <div class="check-detail">免费，朋友接送</div>
-        </div>
-        <div class="check-status done">朋友安排</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">Mall of America 全天</div>
-          <div class="check-detail">室内游乐场 Nickelodeon Universe，SEA LIFE 水族馆，乐高</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-    </div>
-  </div>
+<!-- ============ 8/18 黄石 ============ -->
+<h2>8/18 周一 黄石下8字精华一日</h2>
+<div class="day-section" style="border-left:3px solid var(--accent-b); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--accent-b)"><span class="date" style="color:var(--accent-b)">8/18 周一</span><span class="loc" style="color:var(--accent-b)">黄石国家公园</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:00 起床, 打包早餐 (提前买好的三明治+水果) <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:30 出发! 西入口进园→直奔 Old Faithful <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:30 Old Faithful, 查app确认喷发时间 <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 看喷发! Old Faithful Inn 历史旅馆逛逛 <span class="tag tip">必看</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 Grand Prismatic Spring 木栈道近观 <span class="tag tip">必看</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:30 Fairy Falls Trail 徒步往返回 (2.5km) 俯瞰全景 <span class="tag tip">必走</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 车上三明治野餐 <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:30 West Thumb Geyser Basin 湖边间歇泉 <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>14:00 Yellowstone Lake + Fishing Bridge <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>15:30 Hayden Valley 看 Bison 群 <span class="tag tip">必看</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:00 Mud Volcano / Sulphur Caldron <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:00 Canyon Village 远眺 Lower Falls <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:00 从 Canyon 经 Norris 返回西黄石 (注意黄昏动物) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:00 晚餐西黄石镇  Wild West Pizzeria 或 Madison Crossing <span class="tag pack">晚餐</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 10: 8/21 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/21 <span class="wkday">周四</span></span>
-    <span class="loc sp">&#9733; St Paul · 告别</span>
-    <span class="status-badge done">全部完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title">St Paul 住宿（朋友家）</div>
-          <div class="check-detail">最后一晚</div>
-        </div>
-        <div class="check-status done">朋友安排</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon skip">-</div>
-        <div class="check-content">
-          <div class="check-title">双城探索 + 告别晚餐</div>
-          <div class="check-detail">Minnehaha Falls → Sculpture Garden → Science Museum → 告别大餐</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-    </div>
-  </div>
+<!-- ============ 8/19 黄石收尾→St Paul ============ -->
+<h2>8/19 周二 黄石收尾 → St Paul</h2>
+<div class="day-section" style="border-left:3px solid var(--accent-c); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--accent-c)"><span class="date" style="color:var(--accent-c)">8/19 周二</span><span class="loc" style="color:var(--accent-c)">DL2946 博兹曼→明尼阿波利斯</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 退房, 行李装车 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:30 Norris Geyser Basin (黄石最热区, Porcelain Basin 30min) <span class="tag tip">黄石</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 开车出园回 Bozeman (1.5h, Madison River段最后看动物) <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:30 到 BZN 还车 <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 BZN 机场简餐 <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:55 DL2946 BZN→MSP</strong> 飞行约3h20m <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:15 抵达 Minneapolis MSP, 朋友接机 <span class="tag tip">抵达</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>入住 St Paul 家里! 朋友接风晚餐 <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>赶路结束! 享受休整模式 <span class="tag tip">休息</span></div>
+</div>
 </div>
 
-<!-- ============ DAY 11: 8/22 ============ -->
-<div class="day-card">
-  <div class="day-header" onclick="toggleDay(this)">
-    <span class="date">8/22 <span class="wkday">周五</span></span>
-    <span class="loc fly">&#9992; 圣保罗 → 洛杉矶 → 首尔</span>
-    <span class="status-badge partial">部分完成</span>
-  </div>
-  <div class="day-body">
-    <div class="checklist">
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">SY425</span> 太阳城航空 MSP → LAX T1</div>
-          <div class="check-detail">15:25 → 17:15，KANG/JIE 订座号 W4UKHF，BAM/XUE 订座号 I6HPJM</div>
-        </div>
-        <div class="check-status done">已购 ✓</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title"><span class="hl">KE012</span> 大韩 LAX → ICN</div>
-          <div class="check-detail">23:50 起飞，康杰+白雪回国。需转国际航站楼TBIT</div>
-        </div>
-        <div class="check-status done">已购</div>
-      </div>
-      <div class="check-item">
-        <div class="check-icon done">&#10003;</div>
-        <div class="check-content">
-          <div class="check-title">长辈+女儿继续留 St Paul</div>
-          <div class="check-detail">朋友家住到8/29，之后MSP→LAX→ICN返程</div>
-        </div>
-        <div class="check-status done">计划</div>
-      </div>
-    </div>
-    <div class="day-activities">
-      <div class="act-row"><span class="time">10:00</span>告别长辈女儿，朋友送机 MSP</div>
-      <div class="act-row"><span class="time">17:15</span>抵达LAX，转TBIT，晚餐+免税店</div>
-      <div class="act-row"><span class="time">23:50</span>KE012 起飞，康杰+白雪行程结束</div>
-    </div>
-  </div>
+<!-- ============ 8/20 St Paul ============ -->
+<h2>8/20 周三 St Paul · Mall of America</h2>
+<div class="day-section">
+<div class="day-header"><span class="date">8/20 周三</span><span class="loc sp">St Paul</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 睡到自然醒. 朋友家早餐 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 Mall of America (全美最大, 开车20min) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>Nickelodeon Universe 室内游乐场 (过山车!) <span class="tag tip">必玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:30 午餐 Mall Food Court (Shake Shack/熊猫) <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>14:00 SEA LIFE 水族馆 ($20/人) 孩子爱看 <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>16:00 乐高乐园 LEGO Imagination Center (免费玩) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:00 家庭聚餐 <span class="tag pack">晚餐</span></div>
+</div>
 </div>
 
-<!-- Sticky legend bar -->
-<div class="sticky-bar">
-  <div class="legend">
-    <span><span style="color:var(--green)">&#10003; 已落实</span></span>
-    <span><span style="color:var(--amber)">~ 部分完成</span></span>
-    <span><span style="color:var(--red)">? 未订/待办</span></span>
-    <span><span style="color:var(--text-dim)">- 计划/不适用</span></span>
-  </div>
+<!-- ============ 8/21 St Paul ============ -->
+<h2>8/21 周四 St Paul · 双城探索 + 告别</h2>
+<div class="day-section">
+<div class="day-header"><span class="date">8/21 周四</span><span class="loc sp">St Paul</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 Minnehaha Falls 城市瀑布 (免费) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 Minneapolis Sculpture Garden 勺子桥樱桃 <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 午餐 Uptown区 <span class="tag pack">午餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>13:30 Stone Arch Bridge + Mill City Museum ($12) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>15:00 Science Museum of Minnesota ($20/$13) <span class="tag tip">游玩</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:30 Grand Ave 逛独立书店+冰淇淋 (Grand Ole Creamery) <span class="tag tip">自由</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:30 告别晚餐 (朋友家或中餐馆) <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>21:00 康杰+白雪打包行李, 明早返程 <span class="tag tip">收尾</span></div>
+</div>
+</div>
+
+<!-- ============ 8/22 返程 ============ -->
+<h2>8/22 周五 康杰+白雪返程</h2>
+<div class="day-section" style="border-left:3px solid var(--flight); border-radius:10px; padding-left:0">
+<div class="day-header" style="border-color:var(--flight)"><span class="date" style="color:var(--flight)">8/22 周五</span><span class="loc" style="color:var(--flight)">SY425 + KE012 返回中国</span></div>
+<div class="day-body">
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 最后收拾. 和长辈+女儿道别 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:00 朋友送机到 MSP <span class="tag tip">交通</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:25 SY425 MSP→LAX T1</strong> 飞行约3h <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:15 抵达 LAX. 转国际航站楼 TBIT <span class="tag tip">转机</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:00 机场晚餐 + 免税店最后购物 <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>23:50 KE012 LAX→ICN 起飞 <span class="tag tip">飞行</span></div>
+</div>
 </div>
 
 </div><!-- end container -->
 
 <script>
-function toggleDay(header) {
-  const body = header.nextElementSibling;
-  body.classList.toggle('open');
+// 从 localStorage 恢复状态
+document.querySelectorAll('.item').forEach(el => {
+  const id = el.innerHTML.trim();
+  const saved = localStorage.getItem('check_' + id);
+  if (saved === 'done') {
+    el.classList.add('done');
+    el.querySelector('.check').textContent = '?';
+  }
+});
+updateStats();
+
+function toggle(el) {
+  el.classList.toggle('done');
+  const check = el.querySelector('.check');
+  if (el.classList.contains('done')) {
+    check.textContent = '?';
+    localStorage.setItem('check_' + el.innerHTML.trim(), 'done');
+  } else {
+    check.textContent = '?';
+    localStorage.removeItem('check_' + el.innerHTML.trim());
+  }
+  updateStats();
+}
+
+function checkAll() {
+  document.querySelectorAll('.item:not(.done)').forEach(el => {
+    el.classList.add('done');
+    el.querySelector('.check').textContent = '?';
+    localStorage.setItem('check_' + el.innerHTML.trim(), 'done');
+  });
+  updateStats();
+}
+
+function uncheckAll() {
+  document.querySelectorAll('.item.done').forEach(el => {
+    el.classList.remove('done');
+    el.querySelector('.check').textContent = '?';
+    localStorage.removeItem('check_' + el.innerHTML.trim());
+  });
+  updateStats();
+}
+
+function saveState() {
+  localStorage.setItem('checklist_saved', new Date().toISOString());
+  alert('状态已保存到浏览器');
+}
+
+function updateStats() {
+  const total = document.querySelectorAll('.item').length;
+  const done = document.querySelectorAll('.item.done').length;
+  document.getElementById('done-count').textContent = done;
+  document.getElementById('total-count').textContent = total;
 }
 </script>
-
 </body>
 </html>

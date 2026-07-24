@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>美国西部行程方案对比</title>
+<title>确认行程 | 美国西部家庭之旅 2026年8月</title>
 <style>
   :root {
     --bg: #0a0a0f; --card: #14141f; --card2: #1a1a28; --border: #252535;
@@ -26,13 +26,8 @@
   .hero p { color: var(--text-dim); margin-top: 8px; font-size: .95em; }
   .hero .meta { margin-top: 16px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
   .hero .meta span { background: var(--card); border: 1px solid var(--border); padding: 4px 14px; border-radius: 20px; font-size: .82em; color: var(--text-dim); }
-  .tab-bar { display: flex; gap: 0; justify-content: center; padding: 0 20px; margin-top: -1px; position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--border); }
-  .tab-bar button { background: none; border: none; color: var(--text-dim); padding: 14px 24px; cursor: pointer; font-size: .95em; border-bottom: 2px solid transparent; transition: all .2s; font-family: inherit; white-space: nowrap; }
-  .tab-bar button:hover { color: #fff; }
-  .tab-bar button.active { color: #fff; border-bottom-color: var(--gold); }
+  .hero .badge { display: inline-block; background: var(--gold); color: #000; padding: 2px 16px; border-radius: 20px; font-size: .75em; font-weight: 600; margin-left: 8px; }
   .container { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
-  .plan { display: none; }
-  .plan.active { display: block; }
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 32px; }
   .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
   .summary-card .val { font-size: 1.6em; font-weight: 700; color: #fff; }
@@ -40,19 +35,18 @@
   .summary-card .sub { font-size: .72em; color: var(--text-dim); }
   h2 { font-size: 1.3em; color: #fff; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
   h3 { font-size: 1.05em; color: #ddd; margin: 24px 0 10px; }
+  h4 { font-size: .95em; color: #ddd; margin: 18px 0 8px; }
   .note { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 14px 0; font-size: .85em; color: var(--text-dim); }
   .note strong { color: #e0e0e0; }
+  .note.pending { border-left: 3px solid var(--gold); }
+  .note.confirmed { border-left: 3px solid var(--accent-c); }
   table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: .88em; }
   th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
   th { color: var(--text-dim); font-weight: 600; font-size: .8em; text-transform: uppercase; }
   td { color: var(--text); }
   tr.high td { color: var(--gold); font-weight: 600; }
-  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
-  .pro, .con { padding: 14px 16px; border-radius: 8px; font-size: .85em; }
-  .pro { background: rgba(107,203,119,.08); border: 1px solid rgba(107,203,119,.2); }
-  .con { background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.2); }
-  .pro h4 { color: var(--accent-c); margin-bottom: 6px; }
-  .con h4 { color: var(--accent-a); margin-bottom: 6px; }
+  tr.pending td { color: var(--text-dim); }
+  tr.spent td { color: var(--accent-c); }
 
   /* === Outlook Calendar Styles === */
   .calendar { margin: 20px 0; }
@@ -102,6 +96,7 @@
   .cal-act .tag.meal { background: rgba(212,168,67,.15); color: var(--gold); }
   .cal-act .tag.move { background: rgba(192,132,252,.15); color: var(--flight); }
   .cal-act .tag.tip { background: rgba(91,155,213,.15); color: var(--sky); }
+  .cal-act .tag.ticket { background: rgba(107,203,119,.15); color: var(--accent-c); }
   .cal-note {
     padding: 8px 18px 10px 78px; font-size: .78em; color: var(--text-dim);
     font-style: italic; border-top: 1px solid rgba(255,255,255,.03);
@@ -116,21 +111,15 @@
   .links a:hover { background: var(--card2); border-color: var(--sky); }
   .stpaul-box { background: linear-gradient(135deg, rgba(107,203,119,.06), rgba(91,155,213,.06)); border: 1px solid rgba(107,203,119,.15); border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
   .stpaul-box h3 { color: var(--accent-c); margin-top: 0; }
-  .sched-wrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--border); border-radius: 10px; }
-  .sched-wrap table { margin: 0; min-width: 700px; }
-  .sched-wrap th { position: sticky; top: 0; background: var(--card); z-index: 1; white-space: nowrap; }
-  .sched-wrap td { font-size: .82em; vertical-align: top; }
-  .sched-wrap .row-la { background: rgba(91,155,213,.06); }
-  .sched-wrap .row-ys { background: rgba(255,217,61,.05); }
-  .sched-wrap .row-sp { background: rgba(107,203,119,.05); }
-  .sched-wrap .row-fly { background: rgba(212,168,67,.06); }
-  .sched-wrap .diverge { color: var(--gold); font-size: .75em; display: block; margin-top: 2px; }
+
+  .cost-section { margin: 32px 0; }
+  .cost-table { margin-bottom: 24px; }
+  .cost-table .spent-total { background: rgba(107,203,119,.08); }
+  .cost-table .pending-total { background: rgba(255,217,61,.06); }
 
   @media (max-width: 600px) {
     .hero h1 { font-size: 1.5em; }
-    .tab-bar button { padding: 10px 14px; font-size: .82em; }
     .summary-grid { grid-template-columns: repeat(2,1fr); }
-    .pro-con { grid-template-columns: 1fr; }
     .cal-date { min-width: 100px; font-size: .95em; }
     .cal-time { min-width: 48px; padding-left: 10px; font-size: .72em; }
     .cal-act { font-size: .8em; padding-right: 10px; }
@@ -140,681 +129,302 @@
 </head>
 <body>
 <div class="hero">
-  <h1>美国西部行程方案</h1>
-  <p>洛杉矶 · 黄石 · 圣保罗 &nbsp;|&nbsp; 2026年8月12-29日 &nbsp;|&nbsp; 4人家庭出行</p>
+  <h1>确认行程 <span class="badge">已出票</span></h1>
+  <p>洛杉矶 · 黄石 · 圣保罗 &nbsp;|&nbsp; 2026年8月12-22日 &nbsp;|&nbsp; 4人家庭出行</p>
   <div class="meta">
     <span>康杰 + 白雪 8/12-22</span>
-    <span>白文 + Sybils (9岁) 8/12-29</span>
-    <span>全部飞机 · 无自驾长途</span>
-    <span>按便宜航班估算</span>
+    <span>白文 + Sybils (9岁) 8/12-22</span>
+    <span>机票已全部出票</span>
+    <span>Best Western Plus Anaheim Inn</span>
   </div>
-</div>
-<div class="tab-bar">
-  <button class="active" onclick="switchPlan('a')">方案 A &nbsp;$3,490&nbsp; 省钱精华</button>
-  <button onclick="switchPlan('b')">方案 B &nbsp;$4,060&nbsp; 经典均衡</button>
-  <button onclick="switchPlan('c')">方案 C &nbsp;$5,480&nbsp; 舒适深度</button>
 </div>
 <div class="container">
 
-<!-- ==================== PLAN A ==================== -->
-<div class="plan active" id="plan-a">
 <div class="summary-grid">
-  <div class="summary-card"><div class="val">$3,490</div><div class="lbl">基础总预算</div></div>
-  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">康杰+白雪/白文+Sybils</div></div>
-  <div class="summary-card"><div class="val">4晚 LA</div><div class="lbl">Anaheim 经济酒店</div></div>
-  <div class="summary-card"><div class="val">2晚 黄石</div><div class="lbl">西黄石 Brandin' Iron</div></div>
-  <div class="summary-card"><div class="val">4晚 StP</div><div class="lbl">康杰+白雪 / 白文+Sybils 11晚</div></div>
+  <div class="summary-card"><div class="val">8/12-22</div><div class="lbl">全程天数</div><div class="sub">四人均全程参与</div></div>
+  <div class="summary-card"><div class="val">11天</div><div class="lbl">康杰+白雪行程</div><div class="sub">8/22夜返程回国</div></div>
+  <div class="summary-card"><div class="val">4晚 LA</div><div class="lbl">Best Western Plus</div><div class="sub">步行15分钟迪士尼</div></div>
+  <div class="summary-card"><div class="val">1晚 黄石</div><div class="lbl">西黄石酒店待定</div><div class="sub">8/17入住</div></div>
+  <div class="summary-card"><div class="val">3晚 StP</div><div class="lbl">朋友家住</div><div class="sub">8/19-21</div></div>
 </div>
-<p class="note"><strong>策略：</strong>全程廉价航空（Southwest + Frontier）。LA 4晚紧凑高效，黄石2天刷完核心，St Paul 康杰+白雪留4晚从容。住宿挑最便宜，钱省在门票和体验上。</p>
 
-<h2>日程日历</h2>
+<p class="note confirmed"><strong>已出票确认：</strong>国际段 KE142/KE011 8/12 西安→首尔→洛杉矶 | UA319 8/17 LAX→BZN | DL2946 8/19 BZN→MSP（订单号 1128149520511604, RMB 10,094）| SY425 8/22 MSP→LAX（康杰+白雪）</p>
+<p class="note pending"><strong>待确认：</strong>西黄石酒店（1晚 8/17） | 租车（LA SUV + BZN SUV） | 景点门票（迪士尼+环球+黄石）</p>
+
+<h2>每日行程日历</h2>
 <div class="calendar">
 
+<!-- 8/12 周二：国际航班日 -->
 <div class="cal-day fly">
 <div class="cal-header"><span class="cal-date">8/12<span class="wkday">周二</span></span><span class="cal-loc fly-c">西安 → 首尔 → 洛杉矶</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">抵达西安咸阳机场 T3，办理值机、托运行李</span></div>
-<div class="cal-row"><span class="cal-time">12:40</span><span class="cal-act"><span class="hl">KE142 起飞</span> XIY → ICN，飞行约2h50m <span class="tag move">国际</span></span></div>
-<div class="cal-row"><span class="cal-time">16:40</span><span class="cal-act">抵达首尔仁川 ICN，转机。机场内逛逛免税店、吃韩餐</span></div>
-<div class="cal-row"><span class="cal-time">19:40</span><span class="cal-act"><span class="hl">KE011 起飞</span> ICN → LAX，飞行约11h，机上晚餐+早餐</span></div>
-<div class="cal-row"><span class="cal-time">15:20</span><span class="cal-act"><span class="hl">抵达洛杉矶 LAX</span>（同日！）过海关（约1h），取租车</span></div>
-<div class="cal-row"><span class="cal-time">17:30</span><span class="cal-act">开车到 Anaheim 酒店（约45min），入住 Fairfield Inn Anaheim Resort</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">步行逛 Downtown Disney（免费），轻晚餐适应时差 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act">早点休息，倒时差。明早迪士尼硬仗</span></div>
+<div class="cal-row"><span class="cal-time">10:30</span><span class="cal-act">抵达西安咸阳机场 T3，办理值机、托运行李。KE142 柜台在 T3</span></div>
+<div class="cal-row"><span class="cal-time">12:40</span><span class="cal-act"><span class="hl">KE142 起飞</span> XIY → ICN，飞行约2h50m <span class="tag move">国际</span> <span class="tag ticket">已出票</span></span></div>
+<div class="cal-row"><span class="cal-time">16:40</span><span class="cal-act">抵达首尔仁川 ICN，转机时间约3h。4楼免税店逛逛、吃韩餐（推荐 Bongeunsa 素食/韩式拌饭）</span></div>
+<div class="cal-row"><span class="cal-time">19:40</span><span class="cal-act"><span class="hl">KE011 起飞</span> ICN → LAX，飞行约11h。机上提供晚餐+早餐。建议机上多睡倒时差 <span class="tag move">国际</span> <span class="tag ticket">已出票</span></span></div>
+<div class="cal-row"><span class="cal-time">15:20</span><span class="cal-act"><span class="hl">抵达洛杉矶 LAX</span>（同日！过美国海关，持 B1/B2 签证走自助机。预计1-1.5h通关）</span></div>
+<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act"><span class="hl">取租车</span> — LAX 租车中心坐穿梭巴士。SUV车型（4人+3大箱+2登机箱）<span class="tag tip">待租车</span></span></div>
+<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">开车到 Anaheim（约45min，走 I-105 E → I-5 S），入住 <span class="hl">Best Western Plus Anaheim Inn</span></span></div>
+<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">步行逛 Downtown Disney（免费进入），轻晚餐适应时差 <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act"><span class="hl">早点休息！</span>明天迪士尼硬仗。酒店有早餐，设好闹钟6:00</span></div>
 </div>
+<div class="cal-note">时差建议：机上尽量按洛杉矶时间作息。到达后多接触自然光帮助调整。Sybils 9岁机上可以看电影玩游戏打发时间。</div>
 </div>
 
+<!-- 8/13 周三：迪士尼 -->
 <div class="cal-day la">
 <div class="cal-header"><span class="cal-date">8/13<span class="wkday">周三</span></span><span class="cal-loc la-c">洛杉矶 · 迪士尼乐园</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">06:15</span><span class="cal-act">起床，酒店简餐（咖啡+面包/麦片，省时间）</span></div>
-<div class="cal-row"><span class="cal-time">06:45</span><span class="cal-act"><span class="hl">打开 Disneyland App，抢 Genie+ 第一个 Lightning Lane！</span>首选 Rise of the Resistance <span class="tag tip">必抢</span></span></div>
-<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">开车出发，15分钟到 Mickey & Friends 停车场（$30停车费）</span></div>
+<div class="cal-row"><span class="cal-time">06:00</span><span class="cal-act">起床，楼下酒店早餐（Best Western 含早，简单吃节省时间）</span></div>
+<div class="cal-row"><span class="cal-time">06:45</span><span class="cal-act"><span class="hl">打开 Disneyland App，抢 Genie+ 第一个 Lightning Lane！</span> 首选 Rise of the Resistance <span class="tag tip">必抢</span></span></div>
+<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">步行出发，15分钟到迪士尼入口。不用开车省停车费$30</span></div>
 <div class="cal-row"><span class="cal-time">07:45</span><span class="cal-act">安检、扫码入园。直奔 Star Wars: Galaxy's Edge</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act"><span class="hl">Rise of the Resistance</span> — 趁人少先刷最火项目</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Millennium Falcon: Smugglers Run，9岁女孩当飞行员</span></div>
+<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act"><span class="hl">Rise of the Resistance</span> — 趁人少先刷最火项目，沉浸式星战体验约15min</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Millennium Falcon: Smugglers Run，9岁女孩可以当飞行员角色</span></div>
 <div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">Fantasyland 区域：Peter Pan → Mr. Toad → Alice in Wonderland → It's a Small World</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Plaza Inn 炸鸡（$18/人，分量大可分享） <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">Tomorrowland：Space Mountain（LL）、Buzz Lightyear Astro Blasters</span></div>
-<div class="cal-row"><span class="cal-time">14:30</span><span class="cal-act">Pixar Pier：Incredicoaster（大人）、Pixar Pal-A-Round（全家）</span></div>
+<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Plaza Inn 炸鸡（$18/人，分量大可分享，4人点3份够） <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">Tomorrowland：Space Mountain（LL）、Buzz Lightyear Astro Blasters、Star Tours</span></div>
+<div class="cal-row"><span class="cal-time">14:30</span><span class="cal-act">Pixar Pier：Incredicoaster（大人）、Pixar Pal-A-Round 摩天轮（全家）</span></div>
 <div class="cal-row"><span class="cal-time">15:30</span><span class="cal-act">Adventureland：Indiana Jones Adventure（LL排队）、Jungle Cruise</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回 Star Wars 区二刷或逛 Oga's Cantina（蓝奶/绿奶 $8）</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> — Bengal Barbecue 烤肉串（$12/人）或带零食垫肚子 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">Fantasmic! 水上秀（河边占位置，提前30min）</span></div>
+<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回 Star Wars 区二刷或逛 Oga's Cantina 买蓝奶/绿奶（$8，孩子喜欢）</span></div>
+<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> — Bengal Barbecue 烤肉串（$12/人）或 Rancho del Zocalo 墨西哥餐 <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">Fantasmic! 水上秀（河边占位置）</span></div>
 <div class="cal-row"><span class="cal-time">21:30</span><span class="cal-act"><span class="hl">Disneyland Forever 烟花秀</span> — 城堡前最佳观赏位</span></div>
-<div class="cal-row"><span class="cal-time">22:00</span><span class="cal-act">随着人流离开，开车回酒店。孩子车上就能睡着</span></div>
+<div class="cal-row"><span class="cal-time">22:00</span><span class="cal-act">步行回酒店10分钟，孩子车上就能睡着</span></div>
 </div>
 </div>
 
+<!-- 8/14 周四：环球影城 -->
 <div class="cal-day la">
 <div class="cal-header"><span class="cal-date">8/14<span class="wkday">周四</span></span><span class="cal-loc la-c">洛杉矶 · 环球影城</span></div>
 <div class="cal-body">
 <div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">起床，酒店早餐</span></div>
-<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">开车出发，40分钟到 Universal Studios Hollywood</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">入园！<span class="hl">直奔 Super Nintendo World</span>（下楼左手）</span></div>
-<div class="cal-row"><span class="cal-time">08:10</span><span class="cal-act"><span class="hl">Mario Kart: Bowser's Challenge</span> — AR赛车，排队最恐怖，趁早刷</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">任天堂区玩互动小游戏，买 Power-Up Band（$40，可多人轮流用一个）</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">上扶梯到 Upper Lot：Harry Potter and the Forbidden Journey</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">Flight of the Hippogriff（全家过山车，9岁女孩友好）</span></div>
-<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act"><span class="hl">黄油啤酒！</span>Hogsmeade 村逛魔法商店，买魔杖 $9/杯 <span class="tag tip">必喝</span></span></div>
+<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">开车出发（40min到 Universal Studios Hollywood）</span></div>
+<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">入园！<span class="hl">直奔 Super Nintendo World</span>（下扶梯左手边）</span></div>
+<div class="cal-row"><span class="cal-time">08:10</span><span class="cal-act"><span class="hl">Mario Kart: Bowser's Challenge</span> — AR赛车，排队最恐怖的项，趁早刷</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">任天堂区玩互动小游戏，Power-Up Band（$40，可多人轮流用一个）</span></div>
+<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">上扶梯到 Upper Lot：Harry Potter and the Forbidden Journey（沉浸式飞行体验）</span></div>
+<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">Flight of the Hippogriff（全家过山车，9岁友好）</span></div>
+<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act"><span class="hl">黄油啤酒</span> $9/杯，Hogsmeade 村逛魔法商店 <span class="tag tip">必喝</span></span></div>
 <div class="cal-row"><span class="cal-time">12:30</span><span class="cal-act"><span class="hl">午餐</span> — Three Broomsticks 英式烤肉拼盘（$20/人，魔法世界沉浸餐） <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">Studio Tour（约1h）：金刚360、速度与激情、地震洪水特效</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">Lower Lot：Transformers 3D、Jurassic World（会湿身！）</span></div>
-<div class="cal-row"><span class="cal-time">16:30</span><span class="cal-act">Revenge of the Mummy 室内过山车（康杰+白雪，长辈+女儿跳过）</span></div>
+<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">Studio Tour（约1h）：金刚360、速度与激情、地震洪水特效实景</span></div>
+<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">Lower Lot：Transformers 3D、Jurassic World（会湿身！备一次性雨衣）</span></div>
+<div class="cal-row"><span class="cal-time">16:30</span><span class="cal-act">Revenge of the Mummy 室内过山车（康杰+白雪，长辈+女儿跳过，旁边商店等）</span></div>
 <div class="cal-row"><span class="cal-time">17:30</span><span class="cal-act">Despicable Me Minion Mayhem + Super Silly Fun Land（孩子天堂）</span></div>
 <div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act"><span class="hl">CityWalk 晚餐</span> — 选择多：Panda Express 便宜、Toothsome 巧克力工厂 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">开车回 Anaheim 酒店</span></div>
+<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">开车回 Anaheim 酒店。今天比迪士尼轻松一些</span></div>
 </div>
 </div>
 
+<!-- 8/15 周五：洛杉矶城市游 -->
 <div class="cal-day la">
 <div class="cal-header"><span class="cal-date">8/15<span class="wkday">周五</span></span><span class="cal-loc la-c">洛杉矶 · 城市漫游</span></div>
 <div class="cal-body">
 <div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">睡到自然醒，酒店早餐</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act">开车到 <span class="hl">Santa Monica</span>（约1h），海边散步、码头游乐园</span></div>
-<div class="cal-row"><span class="cal-time">10:30</span><span class="cal-act">Pacific Park 太平洋乐园：摩天轮 $10/人，看太平洋全景</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Santa Monica Pier 海鲜快餐或 Third Street Promenade <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">开车到 <span class="hl">Getty Center</span>（免费！停车$20），山顶俯瞰洛杉矶全景</span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">参观梵高《鸢尾花》、莫奈、花园迷宫。孩子爱中央花园水景</span></div>
+<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act">开车到 <span class="hl">Santa Monica</span>（约1h车程），海边散步、码头游乐园</span></div>
+<div class="cal-row"><span class="cal-time">10:30</span><span class="cal-act">Pacific Park 太平洋乐园：摩天轮 $10/人，看太平洋全景。孩子玩小型过山车</span></div>
+<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Santa Monica 码头海鲜快餐或 Third Street Promenade <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">开车到 <span class="hl">Getty Center</span>（免费！停车$20），坐小火车上山，俯瞰洛杉矶全景</span></div>
+<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">参观梵高《鸢尾花》、莫奈睡莲、中央花园水景。长辈喜欢花园，孩子爱探索</span></div>
 <div class="cal-row"><span class="cal-time">16:30</span><span class="cal-act">开车到 <span class="hl">Griffith Observatory</span>（免费），Hollywood Sign 最佳拍摄点</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act">天文台看日落、洛杉矶全景。周末人较多，早占位置</span></div>
+<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act">天文台看日落、洛杉矶全景。周末人较多，建议早到找停车位</span></div>
 <div class="cal-row"><span class="cal-time">19:30</span><span class="cal-act"><span class="hl">晚餐</span> — Koreatown 韩餐（长辈吃得惯）：BCD Tofu House 或 Sun Nong Dan <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act">回酒店。打包行李，明早赶飞机</span></div>
+<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act">回酒店。晚上简单整理行李</span></div>
 </div>
 </div>
 
+<!-- 8/16 周六：自由日 -->
+<div class="cal-day la">
+<div class="cal-header"><span class="cal-date">8/16<span class="wkday">周六</span></span><span class="cal-loc la-c">洛杉矶 · 自由日</span></div>
+<div class="cal-body">
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">睡到自然醒。几个选项灵活选择：</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项A: <span class="hl">Huntington Library</span> 沙漠花园+日本园+玫瑰园（$25/人，中文导览器）</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项B: <span class="hl">California Science Center</span> 免费看航天飞机 Endeavour（I-5旁，顺路）</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项C: 酒店泳池休息 + Anaheim GardenWalk 逛街，轻松日倒时差</span></div>
+<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> 根据选择就近解决 <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">下午如果体力好可去 La Brea Tar Pits 沥青坑（$15，冰河世纪化石）</span></div>
+<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回酒店整理行李、打包。明早10:40飞 Bozeman</span></div>
+<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> — Anaheim GardenWalk 小肥羊火锅或 Bubba Gump Shrimp <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">20:00</span><span class="cal-act"><span class="hl">提前还车</span>（如果租车公司24h还车）或明早还。早点休息</span></div>
+</div>
+</div>
+
+<!-- 8/17 周日：飞往黄石 -->
 <div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/16<span class="wkday">周六</span></span><span class="cal-loc fly-c">洛杉矶 → 黄石</span></div>
+<div class="cal-header"><span class="cal-date">8/17<span class="wkday">周日</span></span><span class="cal-loc fly-c">洛杉矶 → 博兹曼 → 黄石</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">早起退房，开车到 LAX（预留堵车时间）</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">还车。LAX Terminal 1（Southwest 专用航站楼）</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act"><span class="hl">Southwest LAX → BZN</span>（中转1次，总约5-6h）每人免费托运2件 <span class="tag move">国内</span></span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">抵达 Bozeman BZN。取租车（中型SUV，黄石需要）</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act"><span class="hl">Walmart / Town & Country Foods 大采购：</span>水×2箱、三明治材料、零食、水果、防晒霜、防熊喷雾（$45）</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">开车到西黄石镇（约1.5h，US-191），沿途风光壮美</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act">入住 <span class="hl">Brandin' Iron Inn</span>，$71/间×2间</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act"><span class="hl">晚餐</span> — Buffalo Bar（野牛汉堡 $14）或 Running Bear Pancake House <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">早点休息！明早6:30出发硬仗</span></div>
+<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">起床退房，装车行李</span></div>
+<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">开车到 LAX（预留堵车时间），LAX 还车。UA在 Terminal 7</span></div>
+<div class="cal-row"><span class="cal-time">08:30</span><span class="cal-act">LAX T7 安检。UA319 登机口候机</span></div>
+<div class="cal-row"><span class="cal-time">10:40</span><span class="cal-act"><span class="hl">UA319 起飞</span> LAX T7 → BZN，飞行约3h33m <span class="tag move">国内</span> <span class="tag ticket">已出票</span></span></div>
+<div class="cal-row"><span class="cal-time">14:13</span><span class="cal-act"><span class="hl">抵达 Bozeman BZN</span>。BZN机场很小，取行李5分钟</span></div>
+<div class="cal-row"><span class="cal-time">14:45</span><span class="cal-act"><span class="hl">取租车</span> — BZN租SUV，4人+行李走黄石需要SUV（底盤高、装得多）<span class="tag tip">待租车</span></span></div>
+<div class="cal-row"><span class="cal-time">15:30</span><span class="cal-act"><span class="hl">Walmart / Town & Country Foods 大采购：</span>水x2箱、三明治材料、零食、水果、防晒霜、防熊喷雾（$45，当地买）</span></div>
+<div class="cal-row"><span class="cal-time">16:30</span><span class="cal-act">开车到西黄石镇（约1.5h，US-191一路向北，沿途 Gallatin Valley 风光壮美）</span></div>
+<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">入住西黄石酒店（待定）</span></div>
+<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> — 西黄石镇 Buffalo Bar（野牛汉堡 $14）或 Running Bear Pancake House <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">20:00</span><span class="cal-act">早点休息。明早6:30出发进黄石！</span></div>
 </div>
 </div>
 
+<!-- 8/18 周一：黄石全天 -->
 <div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/17<span class="wkday">周日</span></span><span class="cal-loc ys-c">黄石 · 下8字精华一日</span></div>
+<div class="cal-header"><span class="cal-date">8/18<span class="wkday">周一</span></span><span class="cal-loc ys-c">黄石 · 下8字全天精华</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">06:00</span><span class="cal-act">起床，酒店打包早餐（提前一天买好的三明治+水果）</span></div>
-<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act"><span class="hl">出发进园！</span>西入口进黄石，直奔 Old Faithful 方向</span></div>
-<div class="cal-row"><span class="cal-time">07:30</span><span class="cal-act">抵达 <span class="hl">Old Faithful</span>，查 app 确认下次喷发时间（约每90min一次）</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">看喷发！水柱40-55m，持续1.5-5分钟。逛 Old Faithful Inn 历史旅馆</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">开车到 <span class="hl">Grand Prismatic Spring</span> 停车场（10min），走木栈道近观</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act"><span class="hl">Fairy Falls Trail 徒步</span>（往返约2.5km），上 Overlook 俯瞰 Grand Prismatic 全景 <span class="tag tip">必走</span></span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">Biscuit Basin + Black Sand Basin 快速过</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — 车上三明治野餐。Old Faithful 区域有餐厅但排队久 <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">06:00</span><span class="cal-act">起床，酒店打包简易早餐（前一天买好的三明治+水果+酸奶）</span></div>
+<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act"><span class="hl">出发进园！</span> 西入口进黄石，直奔 Old Faithful 方向（约40min车程）</span></div>
+<div class="cal-row"><span class="cal-time">07:15</span><span class="cal-act">抵达 <span class="hl">Old Faithful</span> 区域，查 app 确认下次喷发时间（约每90min一次）</span></div>
+<div class="cal-row"><span class="cal-time">07:30</span><span class="cal-act">看喷发！水柱40-55m，持续1.5-5分钟。逛 Old Faithful Inn 历史旅馆（内部超美）</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">开车到 <span class="hl">Grand Prismatic Spring</span> 停车场（10min车程），走木栈道近观大棱镜</span></div>
+<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act"><span class="hl">Fairy Falls Trail 徒步</span>（往返约2.5km，30-40min），上 Overlook 俯瞰 Grand Prismatic 全景 <span class="tag tip">必走</span></span></div>
+<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">Biscuit Basin + Black Sand Basin 快速路过</span></div>
+<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — 车上三明治野餐，Old Faithful 区域有餐厅但排队久 <span class="tag meal">午餐</span></span></div>
 <div class="cal-row"><span class="cal-time">12:30</span><span class="cal-act">开车南下经 Craig Pass 到 <span class="hl">West Thumb Geyser Basin</span>（约40min）</span></div>
-<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">West Thumb：湖边间歇泉，独特的"水中喷泉"景观</span></div>
-<div class="cal-row"><span class="cal-time">14:30</span><span class="cal-act"><span class="hl">Yellowstone Lake</span> 湖滨停留，北美最大高山湖。Fishing Bridge 观景点</span></div>
+<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act">West Thumb：湖边间歇泉，独特的"水中喷泉"景观，Yellowstone Lake 背景绝美</span></div>
+<div class="cal-row"><span class="cal-time">14:30</span><span class="cal-act"><span class="hl">Yellowstone Lake</span> 湖滨停留拍照，北美最大高山湖。Fishing Bridge 观景点</span></div>
 <div class="cal-row"><span class="cal-time">15:30</span><span class="cal-act">北上经 <span class="hl">Hayden Valley</span>（野生动物天堂），路边停车看 Bison 群 <span class="tag tip">拍照</span></span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">Mud Volcano / Sulphur Caldron 快速停留</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">Canyon Village 短暂停留看 Lower Falls 远眺（如果还有体力）</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">从 Canyon 经 Norris 返回西黄石（约1h），注意黄昏动物出没</span></div>
+<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">Mud Volcano / Sulphur Caldron 快速停留（泥浆火山，气味重但有趣）</span></div>
+<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">Canyon Village 短暂停留看 Lower Falls 远眺（如果还有体力，可以走 Brink of the Lower Falls）</span></div>
+<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">从 Canyon 经 Norris 返回西黄石（约1h），注意黄昏时段动物出没开慢点</span></div>
 <div class="cal-row"><span class="cal-time">20:00</span><span class="cal-act"><span class="hl">晚餐</span> — 西黄石镇 Wild West Pizzeria 或 Madison Crossing Lounge <span class="tag meal">晚餐</span></span></div>
 </div>
-<div class="cal-note">体力要求高的一天，全程车程+徒步。长辈量力而行，可跳过 Fairy Falls 徒步在 Grand Prismatic 停车场等。</div>
+<div class="cal-note">高体力要求日，全程车程+徒步约11h。长辈可跳过 Fairy Falls 徒步在 Grand Prismatic 停车场休息。车上备足水+零食。</div>
 </div>
 
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/18<span class="wkday">周一</span></span><span class="cal-loc ys-c">黄石 · 上午收尾 → St Paul</span></div>
+<!-- 8/19 周二：Norris/Mammoth → 飞圣保罗 -->
+<div class="cal-day fly">
+<div class="cal-header"><span class="cal-date">8/19<span class="wkday">周二</span></span><span class="cal-loc fly-c">黄石 · Norris → 博兹曼 → 圣保罗</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">起床退房。行李装车</span></div>
-<div class="cal-row"><span class="cal-time">07:30</span><span class="cal-act"><span class="hl">Norris Geyser Basin</span>（黄石最热、最古老的间歇泉区），走 Porcelain Basin 木栈道（30min）</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">开车出园，回 Bozeman BZN（约1.5h）。沿途 Madison River 段可最后看野生动物</span></div>
-<div class="cal-row"><span class="cal-time">10:30</span><span class="cal-act">到 BZN 机场，还车</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">Southwest BZN → MSP</span>（中转1次），机场简餐 <span class="tag move">国内</span></span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">抵达 Minneapolis MSP。朋友接机</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act"><span class="hl">入住 St Paul 家里！</span>朋友准备接风晚餐 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act">好好休息，告别奔波模式</span></div>
+<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">起床退房。行李装车</span></div>
+<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act"><span class="hl">Norris Geyser Basin</span> — 黄石最热、最古老的间歇泉区，走 Porcelain Basin 木栈道（30min）</span></div>
+<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">开车到 <span class="hl">Mammoth Hot Springs</span>（约20min），看梯田温泉 Upper Terrace + Lower Terrace（1h）</span></div>
+<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act">从 Mammoth 开车出园回 Bozeman（经 Gardiner 北门出，约1.5h。沿途看最后一眼 Yellowstone River）</span></div>
+<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">到 BZN 机场还车，还车后步行进航站楼</span></div>
+<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">BZN 安检后候机。机场很小，餐厅选择少，可在 Bozeman 镇上先吃午饭再还车</span></div>
+<div class="cal-row"><span class="cal-time">15:55</span><span class="cal-act"><span class="hl">DL2946 起飞</span> BZN → MSP，飞行约2h20m <span class="tag move">国内</span> <span class="tag ticket">已出票</span></span></div>
+<div class="cal-row"><span class="cal-time">19:15</span><span class="cal-act"><span class="hl">抵达 Minneapolis MSP</span>，朋友接机（提前沟通好到达口）</span></div>
+<div class="cal-row"><span class="cal-time">20:00</span><span class="cal-act"><span class="hl">入住 St Paul 朋友家！</span> 朋友准备接风晚餐 <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">21:30</span><span class="cal-act">好好休息，告别奔波模式。和朋友叙旧</span></div>
 </div>
+<div class="cal-note">今天行程紧凑，Norris + Mammoth 各看1h足够。如果早上起不来可只选 Norris（更近西黄石），放弃 Mammoth。</div>
 </div>
 
+<!-- 8/20 周三：圣保罗 Mall of America -->
 <div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/19<span class="wkday">周二</span></span><span class="cal-loc sp-c">St Paul · 休整</span></div>
+<div class="cal-header"><span class="cal-date">8/20<span class="wkday">周三</span></span><span class="cal-loc sp-c">圣保罗 · Mall of America</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">睡到自然醒。朋友家早餐，和长辈叙旧</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act"><span class="hl">Mall of America</span>（全美最大商场，开车20min）。室内 Nickelodeon Universe 游乐场（过山车！$40）</span></div>
-<div class="cal-row"><span class="cal-time">12:30</span><span class="cal-act"><span class="hl">午餐</span> — Mall 里 Food Court 选择多：Shake Shack、Panda Express <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">Mall 里 SEA LIFE Aquarium（水族馆 $20）孩子爱看</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">乐高乐园 LEGO Imagination Center（免费玩，买纪念品）</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">睡到自然醒。朋友家早餐，和长辈朋友叙旧</span></div>
+<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act"><span class="hl">Mall of America</span>（全美最大商场，从St Paul开车约20min）</span></div>
+<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act">室内 <span class="hl">Nickelodeon Universe</span> 游乐场 — 室内过山车、旋转木马、海绵宝宝主题区（$40/人全天通票）</span></div>
+<div class="cal-row"><span class="cal-time">12:30</span><span class="cal-act"><span class="hl">午餐</span> — Mall 里 Food Court 选择多：Shake Shack 汉堡、Panda Express 中餐 <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act"><span class="hl">SEA LIFE Aquarium</span>（水族馆 $20/人，鲨鱼隧道+触摸池，孩子爱看）</span></div>
+<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">LEGO Imagination Center（免费玩，买纪念品），大人逛 Nordstrom / Macy's</span></div>
 <div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act"><span class="hl">家庭聚餐</span> — 朋友安排的中餐馆或家里大餐 <span class="tag meal">晚餐</span></span></div>
 </div>
 </div>
 
+<!-- 8/21 周四：圣保罗双城探索 -->
 <div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/20<span class="wkday">周三</span></span><span class="cal-loc sp-c">St Paul · 双城探索</span></div>
+<div class="cal-header"><span class="cal-date">8/21<span class="wkday">周四</span></span><span class="cal-loc sp-c">圣保罗 · 双城探索 + 告别晚餐</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">出发到 <span class="hl">Minnehaha Falls</span>（城市里的瀑布公园，免费）</span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">出发到 <span class="hl">Minnehaha Falls</span>（城市里的瀑布公园，免费，落差16m）</span></div>
 <div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">沿 Minnehaha Creek 散步到密西西比河汇合处</span></div>
 <div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">开车到 <span class="hl">Minneapolis Sculpture Garden</span>（标志性 Spoonbridge & Cherry 勺子桥樱桃雕塑，免费）</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Walker Art Center 旁或 Uptown 区找餐厅 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act"><span class="hl">Stone Arch Bridge</span> 密西西比河畔步行，老磨坊区 Mill City Museum（$12/人）</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act"><span class="hl">Science Museum of Minnesota</span>（$20/成人 $13/儿童），恐龙化石+互动实验</span></div>
-<div class="cal-row"><span class="cal-time">17:30</span><span class="cal-act">回 St Paul。Grand Avenue 逛独立书店+冰淇淋（Grand Ole Creamery）</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act"><span class="hl">晚餐</span> — Cossetta's 意大利市场（St Paul 地标，$15/人） <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Uptown 区或 Walker Art Center 旁找餐厅 <span class="tag meal">午餐</span></span></div>
+<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act"><span class="hl">Stone Arch Bridge</span> 密西西比河畔步行，Mill City Museum（$12/人，了解面粉工业历史）</span></div>
+<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act"><span class="hl">Science Museum of Minnesota</span>（$20/成人 $13/儿童），恐龙化石+互动实验+人体展</span></div>
+<div class="cal-row"><span class="cal-time">17:30</span><span class="cal-act">回家收拾行李。康杰+白雪整理好明天回程行李</span></div>
+<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">告别晚餐</span> — 朋友家大餐或中餐馆包间。和白文+Sybils 拥抱道别 <span class="tag meal">晚餐</span></span></div>
 </div>
 </div>
 
-<div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/21<span class="wkday">周四</span></span><span class="cal-loc sp-c">St Paul · 明州自然 + 告别准备</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act"><span class="hl">Como Park Zoo & Conservatory</span>（免费！动物园+热带温室）看北极熊、长颈鹿、蝴蝶园</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Como Park 野餐或附近 Dino's Gyros <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act"><span class="hl">Minnesota Children's Museum</span>（$15/人），4层互动展区</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回家收拾行李。康杰+白雪整理登机箱，多余物品留给长辈带回国</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">告别晚餐</span> — 朋友家大餐或中餐馆包间 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">21:00</span><span class="cal-act">和长辈、女儿道别，早休息</span></div>
-</div>
-</div>
-
+<!-- 8/22 周五：康杰+白雪返程 -->
 <div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/22<span class="wkday">周五</span></span><span class="cal-loc fly-c">St Paul → 洛杉矶 → 首尔</span></div>
+<div class="cal-header"><span class="cal-date">8/22<span class="wkday">周五</span></span><span class="cal-loc fly-c">圣保罗 → 洛杉矶 → 首尔（康杰+白雪）</span></div>
 <div class="cal-body">
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">最后收拾。和长辈女儿拥抱告别</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">朋友送机到 MSP</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">Frontier MSP → LAX</span>（1站中转）<span class="tag move">国内</span></span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">抵达 LAX。转国际航站楼 TBIT</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">机场晚餐、免税店最后购物</span></div>
-<div class="cal-row"><span class="cal-time">23:50</span><span class="cal-act"><span class="hl">KE012 LAX → ICN 起飞</span>，康杰+白雪行程结束 <span class="tag move">国际</span></span></div>
+<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">康杰+白雪最后收拾行李。和长辈女儿拥抱告别。白文+Sybils 继续在 St Paul 朋友家</span></div>
+<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">朋友送机到 MSP</span></div>
+<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">MSP 安检，Delta/Sun Country 柜台值机。SY425 是 Sun Country Airlines</span></div>
+<div class="cal-row"><span class="cal-time">15:25</span><span class="cal-act"><span class="hl">SY425 起飞</span> MSP → LAX，飞行约3h50m <span class="tag move">国内</span> <span class="tag ticket">已出票</span></span></div>
+<div class="cal-row"><span class="cal-time">17:15</span><span class="cal-act"><span class="hl">抵达洛杉矶 LAX</span>。Sun Country 到达 Terminal 2，需转 TBIT（Tom Bradley 国际航站楼）</span></div>
+<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">LAX TBIT 值机，安检，进国际出发区。有4.5h富裕时间</span></div>
+<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">TBIT 免税店购物 + 晚餐（里面餐厅选择：Border Grill、Petit Trois） <span class="tag meal">晚餐</span></span></div>
+<div class="cal-row"><span class="cal-time">23:50</span><span class="cal-act"><span class="hl">KE012 LAX → ICN 起飞</span>，康杰+白雪行程结束！飞行约13h <span class="tag move">国际</span></span></div>
 </div>
+<div class="cal-note">转机时间约4.5h非常充裕。建议先确认 KE012 登机口位置后再购物。白文+Sybils 在 St Paul 朋友家住到8/29回国。</div>
 </div>
 
 </div><!-- end calendar -->
 
-<h2>康杰+白雪 段费用明细</h2>
-<table>
-  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
-  <tr><td>LAX → BZN</td><td>Southwest 中转1次 ×4人 (8/16)</td><td>$617</td></tr>
-  <tr><td>BZN → MSP</td><td>Southwest 中转1次 ×4人 (8/18)</td><td>$789</td></tr>
-  <tr><td>MSP → LAX (康杰+白雪)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
-  <tr><td>MSP → LAX (长辈+女儿)</td><td>Frontier 1站 ×2人 (8/29)</td><td>$252</td></tr>
-  <tr><td>Anaheim 酒店 4晚</td><td>Fairfield Inn $116×2间</td><td>$928</td></tr>
-  <tr><td>西黄石 2晚</td><td>Brandin' Iron Inn $71×2间</td><td>$284</td></tr>
-  <tr><td>租车 LA 5天 + BZN 2天</td><td>经济型 SUV</td><td>$370</td></tr>
-  <tr class="high"><td>基础预算合计</td><td></td><td>$3,492</td></tr>
-  <tr><td colspan="3" style="color:var(--text-dim);font-size:.8em">* St Paul住宿由朋友安排（住家里），不计入基础预算</td></tr>
-</table>
-<div class="pro-con">
-  <div class="pro"><h4>优点</h4>LA 4晚紧凑高效，迪士尼+环球+城市游全覆盖。全程廉价航空省钱。黄石2天核心全刷。康杰+白雪在St Paul有4晚不赶。</div>
-  <div class="con"><h4>缺点</h4>黄石D2早起+赶飞机，半天 Norris 不够尽兴。下8字一天体能要求高（早6到晚8）。Anaheim酒店需开车15分钟到迪士尼。</div>
-</div>
-</div>
+<!-- ==================== 费用明细 ==================== -->
+<div class="cost-section">
+<h2>费用明细</h2>
 
-<!-- ==================== PLAN B ==================== -->
-<div class="plan" id="plan-b">
-<div class="summary-grid">
-  <div class="summary-card"><div class="val">$4,060</div><div class="lbl">基础总预算</div></div>
-  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">康杰+白雪/白文+Sybils</div></div>
-  <div class="summary-card"><div class="val">5晚 LA</div><div class="lbl">Best Western+ 步行迪士尼</div></div>
-  <div class="summary-card"><div class="val">2晚 黄石</div><div class="lbl">White Buffalo Hotel</div></div>
-  <div class="summary-card"><div class="val">3晚 StP</div><div class="lbl">康杰+白雪 / 白文+Sybils 10晚</div></div>
-</div>
-<p class="note"><strong>策略：</strong>LA拉满5晚，多一个机动日。黄石2天上下8字各一天。中等住宿，酒店步行可达迪士尼。康杰+白雪St Paul 3晚节奏正好。</p>
-
-<h2>日程日历</h2>
-<div class="calendar">
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/12<span class="wkday">周二</span></span><span class="cal-loc fly-c">西安 → 首尔 → 洛杉矶</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">抵达西安咸阳机场，办理值机</span></div>
-<div class="cal-row"><span class="cal-time">12:40</span><span class="cal-act"><span class="hl">KE142</span> XIY→ICN 2h50m</span></div>
-<div class="cal-row"><span class="cal-time">16:40</span><span class="cal-act">首尔仁川转机，免税店、晚餐</span></div>
-<div class="cal-row"><span class="cal-time">19:40</span><span class="cal-act"><span class="hl">KE011</span> ICN→LAX 11h，同日15:20抵达</span></div>
-<div class="cal-row"><span class="cal-time">15:20</span><span class="cal-act">抵达LAX，过海关取车</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">入住 <span class="hl">Best Western Plus Anaheim Inn</span>，$169/间×2间</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">步行逛 Downtown Disney + 晚餐（Naples Ristorante 意面$18）</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/13<span class="wkday">周三</span></span><span class="cal-loc la-c">洛杉矶 · 迪士尼乐园</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">起床，酒店早餐</span></div>
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act"><span class="hl">抢 Genie+ LL！</span>Rise of the Resistance 首选</span></div>
-<div class="cal-row"><span class="cal-time">07:45</span><span class="cal-act"><span class="hl">步行15分钟到迪士尼入口</span>，不用开车不用停车费</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">Rise of the Resistance → Millennium Falcon</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act">Fantasyland 全套：Peter Pan, Mr. Toad, Alice, Small World, Matterhorn</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> Plaza Inn $18/人 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">Tomorrowland: Space Mountain, Buzz Lightyear, Star Tours</span></div>
-<div class="cal-row"><span class="cal-time">14:30</span><span class="cal-act"><span class="hl">走回酒店午休1h</span>（步行近的优势！）避暑充电 <span class="tag tip">B方案优势</span></span></div>
-<div class="cal-row"><span class="cal-time">15:30</span><span class="cal-act">回园：Pixar Pier → Adventureland (Indiana Jones)</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> Blue Bayou 沉浸餐厅（加勒比海盗旁，$50/人，需预约）或 Bengal BBQ <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">Fantasmic! 水上秀</span></div>
-<div class="cal-row"><span class="cal-time">21:30</span><span class="cal-act"><span class="hl">烟花秀</span>，步行回酒店10分钟</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/14<span class="wkday">周四</span></span><span class="cal-loc la-c">洛杉矶 · 环球影城</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">起床，酒店早餐</span></div>
-<div class="cal-row"><span class="cal-time">07:45</span><span class="cal-act">开车出发（约40min到环球）</span></div>
-<div class="cal-row"><span class="cal-time">08:30</span><span class="cal-act"><span class="hl">入园直奔 Super Nintendo World</span> → Mario Kart</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">Harry Potter 区：Forbidden Journey + 黄油啤酒</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> Three Broomsticks $20/人 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">Studio Tour 1h → Lower Lot 侏罗纪+变形金刚+木乃伊</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">小黄人、辛普森、动物演员秀</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">CityWalk 晚餐</span>，开车回酒店 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/15<span class="wkday">周五</span></span><span class="cal-loc la-c">洛杉矶 · 城市漫游</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">08:30</span><span class="cal-act">睡到自然醒</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act"><span class="hl">Santa Monica 海滩</span>，码头摩天轮，骑行海滨道</span></div>
-<div class="cal-row"><span class="cal-time">12:30</span><span class="cal-act"><span class="hl">午餐</span> Third Street Promenade <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act"><span class="hl">Getty Center</span>（免费，停车$20），梵高莫奈+山顶全景</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act"><span class="hl">Griffith Observatory</span> 日落+Hollywood Sign</span></div>
-<div class="cal-row"><span class="cal-time">19:30</span><span class="cal-act"><span class="hl">晚餐</span> Koreatown 韩餐 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/16<span class="wkday">周六</span></span><span class="cal-loc la-c">洛杉矶 · 机动日</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项A: <span class="hl">Huntington Library</span> 沙漠花园+日本园+玫瑰园（$25/人）</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项B: <span class="hl">California Science Center</span> 免费看航天飞机 Endeavour</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项C: 返回 <span class="hl">迪士尼二刷</span> 或 Disney California Adventure</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act">园区/博物馆午餐</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">La Brea Tar Pits 沥青坑+冰河世纪化石（$15）</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act"><span class="hl">晚餐</span> + 打包行李。明早飞黄石 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/17<span class="wkday">周日</span></span><span class="cal-loc fly-c">洛杉矶 → 黄石</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">退房，开车到 LAX</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act"><span class="hl">Southwest LAX→BZN</span> 中转1次</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">抵达 Bozeman，取车。Walmart 采购补给</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">开车到西黄石（1.5h）</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act">入住 <span class="hl">White Buffalo Hotel</span>，$162/间×2间</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">晚餐 Buffalo Bar，早休息 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/18<span class="wkday">周一</span></span><span class="cal-loc ys-c">黄石 · 下8字全天</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">06:30</span><span class="cal-act">出发！Old Faithful → 喷发 → Grand Prismatic + Fairy Falls Overlook</span></div>
-<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act">Biscuit Basin → West Thumb 湖边间歇泉 <span class="tag meal">午餐</span>（车上三明治）</span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">Yellowstone Lake → Hayden Valley 看 Bison</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">Mud Volcano → Canyon Lower Falls 远眺</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">回西黄石，晚餐 Madison Crossing <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/19<span class="wkday">周二</span></span><span class="cal-loc ys-c">黄石 · 上8字 → St Paul</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">退房。Norris Geyser Basin → <span class="hl">Mammoth Hot Springs</span> 梯田温泉（壮观）</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">从 Mammoth 开车回 BZN（经 Gardiner 北门，约1.5h），沿途 Lamar Valley 支线看狼群</span></div>
-<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act">BZN 还车</span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act"><span class="hl">Southwest BZN→MSP</span> 中转1次 <span class="tag move">国内</span></span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">抵达 MSP，朋友接机。入住 St Paul 家里 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/20<span class="wkday">周三</span></span><span class="cal-loc sp-c">St Paul · 休整+购物</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">自然醒。朋友家早餐</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act"><span class="hl">Mall of America</span> 全天：室内游乐场+乐高+水族馆。大人逛 Nordstrom/Macy's 扫货</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act"><span class="hl">晚餐</span> 家庭聚餐 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/21<span class="wkday">周四</span></span><span class="cal-loc sp-c">St Paul · 双城精华 + 告别</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Minnehaha Falls → Minneapolis Sculpture Garden → Stone Arch Bridge</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act">Mill City Museum 午餐 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act"><span class="hl">Science Museum of Minnesota</span>（2h）</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回家收拾行李</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">告别晚餐</span> — 朋友家大餐 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/22<span class="wkday">周五</span></span><span class="cal-loc fly-c">St Paul → 洛杉矶 → 首尔</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">告别长辈女儿。朋友送机 MSP</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act"><span class="hl">Frontier MSP→LAX</span> 1站</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">抵达LAX，转国际航站楼，晚餐+免税店</span></div>
-<div class="cal-row"><span class="cal-time">23:50</span><span class="cal-act"><span class="hl">KE012 LAX→ICN</span> 康杰+白雪行程结束 <span class="tag move">国际</span></span></div>
-</div>
-</div>
-
-</div>
-
-<h2>康杰+白雪 段费用明细</h2>
-<table>
-  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
-  <tr><td>LAX → BZN</td><td>Southwest 中转1次 ×4人 (8/17)</td><td>$617</td></tr>
-  <tr><td>BZN → MSP</td><td>Southwest 中转1次 ×4人 (8/19)</td><td>$789</td></tr>
-  <tr><td>MSP → LAX (康杰+白雪)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
-  <tr><td>MSP → LAX (长辈+女儿)</td><td>Frontier 1站 ×2人 (8/29)</td><td>$252</td></tr>
-  <tr><td>Anaheim 酒店 5晚</td><td>Best Western Plus $169×2间</td><td>$1,690</td></tr>
-  <tr><td>西黄石 2晚</td><td>White Buffalo Hotel $162×2间</td><td>$648</td></tr>
-  <tr><td>租车 LA 6天 + BZN 3天</td><td>中型 SUV</td><td>$400</td></tr>
-  <tr class="high"><td>基础预算合计</td><td></td><td>$4,066</td></tr>
-</table>
-<div class="pro-con">
-  <div class="pro"><h4>优点</h4>LA 5晚最充裕，多一个机动日可选迪士尼二刷。酒店步行15分钟到迪士尼，中午可回酒店午休。黄石上下8字各一天节奏刚好。St Paul 3晚不赶。</div>
-  <div class="con"><h4>缺点</h4>上8字+Mammoth半天就得赶飞机，Mammoth走马观花。比方案A多$574（主要在酒店）。机动日如果前面顺利可能浪费。</div>
-</div>
-</div>
-
-<!-- ==================== PLAN C ==================== -->
-<div class="plan" id="plan-c">
-<div class="summary-grid">
-  <div class="summary-card"><div class="val">$5,480</div><div class="lbl">基础总预算</div></div>
-  <div class="summary-card"><div class="val">10/17天</div><div class="lbl">康杰+白雪/白文+Sybils</div></div>
-  <div class="summary-card"><div class="val">5晚 LA</div><div class="lbl">Clementine 步行5分钟</div></div>
-  <div class="summary-card"><div class="val">3晚 黄石</div><div class="lbl">Travelers Lodge 舒适</div></div>
-  <div class="summary-card"><div class="val">2晚 StP</div><div class="lbl">康杰+白雪 / 白文+Sybils 9晚</div></div>
-</div>
-<p class="note"><strong>策略：</strong>LA 5晚+黄石3晚都做足。黄石多1天不赶路，West Thumb+黄石湖 picnic。酒店品质最高——LA步行5分钟到迪士尼，中午轻松回酒店。康杰+白雪St Paul 2晚紧凑但够用。</p>
-
-<h2>日程日历</h2>
-<div class="calendar">
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/12<span class="wkday">周二</span></span><span class="cal-loc fly-c">西安 → 首尔 → 洛杉矶</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">西安咸阳机场 T3</span></div>
-<div class="cal-row"><span class="cal-time">12:40</span><span class="cal-act">KE142 XIY→ICN</span></div>
-<div class="cal-row"><span class="cal-time">16:40</span><span class="cal-act">首尔转机，免税店</span></div>
-<div class="cal-row"><span class="cal-time">19:40</span><span class="cal-act">KE011 ICN→LAX，同日15:20抵达</span></div>
-<div class="cal-row"><span class="cal-time">15:20</span><span class="cal-act">抵达LAX，取车</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">入住 <span class="hl">Clementine Hotel & Suites</span>，$205/间×2间。套房含小厨房</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">Downtown Disney 逛吃，早休息</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/13<span class="wkday">周三</span></span><span class="cal-loc la-c">洛杉矶 · 迪士尼乐园</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">起床，酒店丰盛自助早餐</span></div>
-<div class="cal-row"><span class="cal-time">07:30</span><span class="cal-act"><span class="hl">抢 Genie+ LL</span></span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act"><span class="hl">步行5分钟到入口！</span>最近酒店之一。Rise of the Resistance → Millennium Falcon</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">Fantasyland 全套 + Toontown</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act"><span class="hl">午餐</span> — Blue Bayou 预约 $50/人 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:30</span><span class="cal-act"><span class="hl">步行回酒店休息！</span>游泳、午睡1.5h，避开最热时段 <span class="tag tip">C方案最大优势</span></span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">回园：Pixar Pier + Adventureland + New Orleans Square</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">晚餐</span> Carnation Cafe 室外座位 <span class="tag meal">晚餐</span></span></div>
-<div class="cal-row"><span class="cal-time">20:30</span><span class="cal-act">Fantasmic! → 烟花秀 → 步行5分钟回酒店</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/14<span class="wkday">周四</span></span><span class="cal-loc la-c">洛杉矶 · 环球影城</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">早餐。买 Express Pass 给大人（$200/人），孩子排队有互动区不无聊</span></div>
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">入园 → Super Nintendo World → Mario Kart</span></div>
-<div class="cal-row"><span class="cal-time">10:00</span><span class="cal-act">Harry Potter 全套 + 黄油啤酒</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act">Three Broomsticks 午餐 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">Express Pass 走专用通道刷完所有项目（无排队焦虑）</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">CityWalk 逛吃，早点回酒店</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/15<span class="wkday">周五</span></span><span class="cal-loc la-c">洛杉矶 · 城市漫游</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Santa Monica 海滩骑行+码头摩天轮</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act">海边海鲜午餐 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">Getty Center</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">Griffith Observatory 日落</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act"><span class="hl">MLB 道奇队比赛！</span>Dodger Stadium（$30起），8月赛季中，纯正美国体育文化 <span class="tag tip">特别体验</span></span></div>
-<div class="cal-row"><span class="cal-time">22:00</span><span class="cal-act">回酒店</span></div>
-</div>
-</div>
-
-<div class="cal-day la">
-<div class="cal-header"><span class="cal-date">8/16<span class="wkday">周六</span></span><span class="cal-loc la-c">洛杉矶 · 机动日</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项A: 返回迪士尼二刷（Disney California Adventure）</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项B: Huntington Library 沙漠花园+日本园（$25）</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">选项C: California Science Center 免费航天飞机</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">The Grove / Original Farmers Market 逛街下午茶</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">打包行李，明早飞黄石 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/17<span class="wkday">周日</span></span><span class="cal-loc fly-c">洛杉矶 → 黄石</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">退房，开往 LAX</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act">Southwest LAX→BZN 中转1次</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act">BZN取车，Walmart采购</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">开到西黄石，入住 <span class="hl">Travelers Lodge</span> $185/间×2间</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">晚餐 Madison Crossing Lounge <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/18<span class="wkday">周一</span></span><span class="cal-loc ys-c">黄石 · 下8字全天</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">从容出发！Old Faithful + 喷发</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Grand Prismatic + Fairy Falls Overlook 徒步（往返2.5km）</span></div>
-<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act">Biscuit Basin → West Thumb 湖滨间歇泉 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act"><span class="hl">Yellowstone Lake 湖滨 picnic</span>（从容的下午！）湖边散步、扔石头、拍照</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">Hayden Valley 看 Bison → Mud Volcano</span></div>
-<div class="cal-row"><span class="cal-time">18:00</span><span class="cal-act">Canyon Village Lower Falls 远眺</span></div>
-<div class="cal-row"><span class="cal-time">19:30</span><span class="cal-act">回西黄石，晚餐 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/19<span class="wkday">周二</span></span><span class="cal-loc ys-c">黄石 · 上8字深度</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:30</span><span class="cal-act">从容出发！Norris Geyser Basin 完整走完全程（1h）</span></div>
-<div class="cal-row"><span class="cal-time">09:30</span><span class="cal-act"><span class="hl">Mammoth Hot Springs</span> 梯田温泉，走 Upper + Lower Terraces（1.5h）</span></div>
-<div class="cal-row"><span class="cal-time">11:30</span><span class="cal-act">Mammoth 游客中心午餐、休息 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act">经 Tower-Roosevelt 到 Lamar Valley，看狼群+野牛+叉角羚</span></div>
-<div class="cal-row"><span class="cal-time">15:00</span><span class="cal-act"><span class="hl">West Thumb Geyser Basin</span> 二刷或深入探索（昨天意犹未尽的话）</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">Yellowstone Lake 湖边黄昏，最美光线拍照</span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">回西黄石晚餐 <span class="tag meal">晚餐</span></span></div>
-</div>
-<div class="cal-note">最从容的一天。不用赶飞机，完整享受黄石。上8字+Lamar Valley 野生动物+West Thumb 二刷。</div>
-</div>
-
-<div class="cal-day ys">
-<div class="cal-header"><span class="cal-date">8/20<span class="wkday">周三</span></span><span class="cal-loc ys-c">黄石 · 缓冲 → St Paul</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">07:00</span><span class="cal-act">退房。可选：Lamar Valley 晨间看狼（需5:30起床）/ 二刷 Grand Prismatic</span></div>
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">开车出园回 BZN（1.5h），沿途 Madison River 最后看野生动物</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">BZN 还车</span></div>
-<div class="cal-row"><span class="cal-time">13:00</span><span class="cal-act"><span class="hl">Southwest BZN→MSP</span> 中转1次 <span class="tag move">国内</span></span></div>
-<div class="cal-row"><span class="cal-time">19:00</span><span class="cal-act">抵达 MSP，朋友接机。St Paul 家里 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day sp">
-<div class="cal-header"><span class="cal-date">8/21<span class="wkday">周四</span></span><span class="cal-loc sp-c">St Paul · 全天家庭时光 + 告别</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">09:00</span><span class="cal-act">Mall of America 最后扫货+孩子室内游乐场</span></div>
-<div class="cal-row"><span class="cal-time">12:00</span><span class="cal-act">Mall 午餐 <span class="tag meal">午餐</span></span></div>
-<div class="cal-row"><span class="cal-time">14:00</span><span class="cal-act">Como Park Zoo（免费），和女儿最后一起看动物</span></div>
-<div class="cal-row"><span class="cal-time">17:00</span><span class="cal-act">回家收拾行李</span></div>
-<div class="cal-row"><span class="cal-time">18:30</span><span class="cal-act"><span class="hl">家庭大餐告别</span> — 朋友家隆重晚餐，和长辈女儿道别 <span class="tag meal">晚餐</span></span></div>
-</div>
-</div>
-
-<div class="cal-day fly">
-<div class="cal-header"><span class="cal-date">8/22<span class="wkday">周五</span></span><span class="cal-loc fly-c">St Paul → 洛杉矶 → 首尔</span></div>
-<div class="cal-body">
-<div class="cal-row"><span class="cal-time">08:00</span><span class="cal-act">拥抱告别。朋友送机 MSP</span></div>
-<div class="cal-row"><span class="cal-time">11:00</span><span class="cal-act">Frontier MSP→LAX 1站</span></div>
-<div class="cal-row"><span class="cal-time">16:00</span><span class="cal-act">LAX转国际，晚餐+免税店</span></div>
-<div class="cal-row"><span class="cal-time">23:50</span><span class="cal-act"><span class="hl">KE012 LAX→ICN</span> 康杰+白雪行程结束</span></div>
-</div>
-</div>
-
-</div>
-
-<h2>康杰+白雪 段费用明细</h2>
-<table>
-  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
-  <tr><td>LAX → BZN</td><td>Southwest 中转1次 ×4人 (8/17)</td><td>$617</td></tr>
-  <tr><td>BZN → MSP</td><td>Southwest 中转1次 ×4人 (8/20)</td><td>$789</td></tr>
-  <tr><td>MSP → LAX (康杰+白雪)</td><td>Frontier 1站 ×2人 (8/22)</td><td>$252</td></tr>
-  <tr><td>MSP → LAX (长辈+女儿)</td><td>Frontier 1站 ×2人 (8/29)</td><td>$252</td></tr>
-  <tr><td>Anaheim 酒店 5晚</td><td>Clementine Hotel $205×2间</td><td>$2,050</td></tr>
-  <tr><td>西黄石 3晚</td><td>Travelers Lodge $185×2间</td><td>$1,110</td></tr>
-  <tr><td>租车 LA 6天 + BZN 3天</td><td>中型 SUV</td><td>$410</td></tr>
-  <tr class="high"><td>基础预算合计</td><td></td><td>$5,480</td></tr>
-</table>
-<div class="pro-con">
-  <div class="pro"><h4>优点</h4>黄石最从容——3晚够玩上下8字+缓冲。LA步行5分钟到迪士尼，中午回酒店午睡。住宿品质最高。每个点都不赶。</div>
-  <div class="con"><h4>缺点</h4>比方案A贵$1,988。康杰+白雪在St Paul仅2晚（1天购物+1天游览告别），和长辈相处时间短。长辈+女儿St Paul需自安排9晚活动。</div>
-</div>
-</div>
-
-<!-- ==================== 共同内容 ==================== -->
-<h2>三方案对比速览</h2>
-<table>
-  <tr><th></th><th>方案A 省钱</th><th>方案B 经典</th><th>方案C 深度</th></tr>
-  <tr><td>预算</td><td>$3,490</td><td>$4,060</td><td>$5,480</td></tr>
-  <tr><td>LA</td><td>4晚 (Fairfield Inn)</td><td>5晚 (Best Western+)</td><td>5晚 (Clementine)</td></tr>
-  <tr><td>黄石</td><td>2晚 (Brandin' Iron)</td><td>2晚 (White Buffalo)</td><td>3晚 (Travelers Lodge)</td></tr>
-  <tr><td>St Paul 康杰+白雪</td><td>4晚</td><td>3晚</td><td>2晚</td></tr>
-  <tr><td>St Paul 长辈+女儿</td><td>11晚</td><td>10晚</td><td>9晚</td></tr>
-  <tr><td>交通</td><td>3飞 全中转</td><td>3飞 全中转</td><td>3飞 全中转</td></tr>
-  <tr><td>迪士尼距离</td><td>开车15分钟</td><td>步行15分钟</td><td>步行5分钟</td></tr>
+<h3>已支出（已购机票）</h3>
+<table class="cost-table">
+  <tr><th>项目</th><th>明细</th><th>金额</th><th>备注</th></tr>
+  <tr><td>KE142 西安→首尔</td><td>8/12 12:40-16:40 x4人</td><td>已含国际联程</td><td>已出票</td></tr>
+  <tr><td>KE011 首尔→洛杉矶</td><td>8/12 19:40-15:20 x4人</td><td>已含国际联程</td><td>已出票</td></tr>
+  <tr><td>UA319 洛杉矶→博兹曼</td><td>8/17 10:40-14:13 x4人</td><td>已购</td><td>已出票</td></tr>
+  <tr class="spent"><td>DL2946 博兹曼→明尼阿波利斯</td><td>8/19 15:55-19:15 x4人</td><td>RMB 10,094</td><td>订单号 1128149520511604</td></tr>
+  <tr><td>SY425 明尼阿波利斯→洛杉矶</td><td>8/22 15:25-17:15 康杰+白雪x2人</td><td>已购</td><td>已出票</td></tr>
+  <tr><td>KE012 洛杉矶→首尔</td><td>8/22 23:50 康杰+白雪x2人</td><td>已含国际联程</td><td>已出票</td></tr>
+  <tr class="spent"><td colspan="4">国际段机票（西安→首尔→洛杉矶往返）价格较高，已包含在 KE 联程出票中</td></tr>
 </table>
 
-<h2>日程总览 (方案B 为基准)</h2>
-<div class="sched-wrap">
-<table>
-  <tr><th>日期</th><th>星期</th><th>地点</th><th>上午</th><th>下午</th><th>晚上 / 住宿</th><th>方案差异</th></tr>
-  <tr class="row-fly"><td>8/12</td><td>二</td><td>飞行</td><td>西安→首尔 KE142</td><td>首尔→洛杉矶 KE011</td><td>15:20抵LAX 取车 入住Anaheim</td><td>一致</td></tr>
-  <tr class="row-la"><td>8/13</td><td>三</td><td>LA</td><td>迪士尼乐园全天</td><td>Fantasyland Star Wars</td><td>烟花秀 Anaheim酒店</td><td>一致</td></tr>
-  <tr class="row-la"><td>8/14</td><td>四</td><td>LA</td><td>环球影城全天</td><td>Mario World Harry Potter</td><td>CityWalk 晚餐 Anaheim酒店</td><td>一致</td></tr>
-  <tr class="row-la"><td>8/15</td><td>五</td><td>LA</td><td>Santa Monica海滩</td><td>Getty Center</td><td>Griffith日落 Anaheim酒店</td><td>一致</td></tr>
-  <tr class="row-la"><td>8/16</td><td>六</td><td>LA</td><td>Huntington/科技馆</td><td>机动 打包行李</td><td>Anaheim酒店 <span class="diverge">A: 上午飞BZN 黄石D1</span></td><td>A: 已飞BZN B/C: LA最后1晚</td></tr>
-  <tr class="row-ys"><td>8/17</td><td>日</td><td>黄石</td><td><span class="diverge">A: 下8字 Old Faithful</span>B/C: LA飞BZN 取车</td><td>Grand Prismatic → Lake</td><td>西黄石镇 <span class="diverge">A: Brandin' Iron</span>B: White Buffalo C: Travelers Lodge</td><td>A: 黄石D2 B/C: 黄石D1</td></tr>
-  <tr class="row-ys"><td>8/18</td><td>一</td><td>黄石</td><td><span class="diverge">A: Norris → BZN → MSP</span>B: 下8字 Old Faithful</td><td>Grand Prismatic → Lake</td><td><span class="diverge">A: St Paul家里</span>B: 西黄石 White Buffalo C: Travelers Lodge</td><td>A: 已到St Paul B: 黄石D2 C: 黄石D2</td></tr>
-  <tr class="row-ys"><td>8/19</td><td>二</td><td>黄石</td><td><span class="diverge">A: St Paul休整</span>B: Mammoth+Norris 中午BZN→MSP</td><td><span class="diverge">B: 飞MSP</span>C: Norris Mammoth</td><td><span class="diverge">A: St Paul家里</span>B: St Paul家里 C: 西黄石 Travelers Lodge</td><td>A: StPaul D2 B: 到St Paul C: 黄石D3</td></tr>
-  <tr class="row-ys"><td>8/20</td><td>三</td><td></td><td><span class="diverge">A: St Paul双城探索</span>B: St Paul休整+Mall</td><td></td><td><span class="diverge">C: 黄石缓冲 中午BZN→MSP</span></td><td>A: StPaul D3 B: StPaul D2 C: 到St Paul</td></tr>
-  <tr class="row-sp"><td>8/21</td><td>四</td><td>St Paul</td><td>Como Zoo / Mall of America</td><td>Science Museum / 家庭聚餐</td><td>St Paul家里 <span class="diverge">C: 家庭大餐告别</span></td><td>A: StPaul D4 B: StPaul D3 C: StPaul D2</td></tr>
-  <tr class="row-sp"><td>8/22</td><td>五</td><td>St Paul→LA</td><td>收拾告别 MSP飞LAX</td><td>LAX转机</td><td>23:50 KE012 返程 <span class="diverge">康杰+白雪行程结束</span></td><td>一致 长辈+女儿继续St Paul</td></tr>
-  <tr class="row-sp"><td>8/23</td><td>六</td><td>St Paul</td><td colspan="3">长辈+女儿: 休整 Mall of America室内游乐场 Nickelodeon Universe</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-sp"><td>8/24</td><td>日</td><td>St Paul</td><td colspan="3">长辈+女儿: Minnesota Zoo (灰狼/驼鹿/水獭) + Como Park Conservatory</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-sp"><td>8/25</td><td>一</td><td>St Paul</td><td colspan="3">长辈+女儿: Duluth苏必利尔湖1日游 Great Lakes Aquarium 湖边散步</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-sp"><td>8/26</td><td>二</td><td>St Paul</td><td colspan="3">长辈+女儿: Stillwater古董小镇半日 冰淇淋+河边野餐 轻松日</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-sp"><td>8/27</td><td>三</td><td>St Paul</td><td colspan="3">长辈+女儿: Science Museum + St Paul Saints棒球赛(晚场)</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-sp"><td>8/28</td><td>四</td><td>St Paul</td><td colspan="3">长辈+女儿: Mall of America最后扫货 打包行李 晚上早休息</td><td>仅长辈+女儿</td></tr>
-  <tr class="row-fly"><td>8/29</td><td>五</td><td>St Paul→LA</td><td>MSP飞LAX Frontier</td><td>LAX转机</td><td>23:50 KE012 返程 <span class="diverge">长辈+女儿行程结束</span></td><td>仅长辈+女儿 公务舱</td></tr>
+<h3>待支出（未购）</h3>
+<table class="cost-table">
+  <tr><th>项目</th><th>明细</th><th>预估金额</th><th>备注</th></tr>
+  <tr class="pending"><td>Best Western Plus Anaheim Inn 4晚</td><td>8/12-16 入住4晚x2间</td><td>$169/间/晚 x2 = $1,352</td><td>待预订</td></tr>
+  <tr class="pending"><td>西黄石酒店 1晚</td><td>8/17 入住1晚x2间</td><td>$100-200/间/晚 x2</td><td>待预订</td></tr>
+  <tr class="pending"><td>租车 洛杉矶 LAX</td><td>8/12-16 SUV 4天</td><td>约 $300-400</td><td>待租</td></tr>
+  <tr class="pending"><td>租车 博兹曼 BZN</td><td>8/17-19 SUV 2天</td><td>约 $150-250</td><td>待租</td></tr>
+  <tr class="pending"><td>迪士尼 1日票</td><td>$154/人 x4人</td><td>$616</td><td>旺季票价</td></tr>
+  <tr class="pending"><td>迪士尼 Genie+</td><td>$25-30/人 x4人</td><td>$100-120</td><td>建议买</td></tr>
+  <tr class="pending"><td>环球影城 1日票</td><td>$144/人 x4人</td><td>$576</td><td>旺季票价</td></tr>
+  <tr class="pending"><td>黄石公园门票</td><td>$35/车 7天有效</td><td>$35</td><td>仅需1车票</td></tr>
+  <tr class="pending"><td>防熊喷雾</td><td>当地买</td><td>$45</td><td>不能用完带上飞机</td></tr>
+  <tr class="pending"><td>餐饮预算 11天</td><td>约 $40-50/人/天</td><td>$1,760-2,200</td><td>4人合计</td></tr>
+  <tr class="pending"><td>EVUS / 旅行保险</td><td>签证更新+保险</td><td>$200-320</td><td>4人合计</td></tr>
 </table>
 </div>
 
-<h2>附加费用（所有方案通用）</h2>
-<table>
-  <tr><th>项目</th><th>明细</th><th>金额</th></tr>
-  <tr><td>迪士尼 1日票</td><td>$154/人 ×4</td><td>$616</td></tr>
-  <tr><td>环球影城 1日票</td><td>$144/人 ×4</td><td>$576</td></tr>
-  <tr><td>迪士尼 Genie+</td><td>$25-30/人 ×4</td><td>$100</td></tr>
-  <tr><td>环球 Express Pass</td><td>$200-300/人 (旺季，大人才买)</td><td>$400-600 可选</td></tr>
-  <tr><td>黄石公园门票</td><td>$35/车 7天有效</td><td>$35</td></tr>
-  <tr><td>EVUS 登记</td><td>免费，每2年更新</td><td>$0</td></tr>
-  <tr><td>旅行保险</td><td>约$50-80/人</td><td>$200-320</td></tr>
-  <tr><td>美国手机卡</td><td>T-Mobile eSIM $30起</td><td>$60+</td></tr>
-  <tr><td>黄石防熊喷雾</td><td>$40-50 当地买（禁上飞机）</td><td>$45</td></tr>
-  <tr><td>餐饮 10天</td><td>约$50/人/天 ×10天</td><td>$2,000</td></tr>
-  <tr class="high"><td>附加费用合计</td><td>(不含可选Express Pass)</td><td>$3,632</td></tr>
-  <tr class="high"><td>全部总计 (方案A)</td><td>$3,490 + $3,632</td><td>$7,122</td></tr>
-  <tr class="high"><td>全部总计 (方案B)</td><td>$4,060 + $3,632</td><td>$7,692</td></tr>
-  <tr class="high"><td>全部总计 (方案C)</td><td>$5,480 + $3,632 + $500</td><td>$9,080</td></tr>
-</table>
-
-<div class="stpaul-box">
-<h3>长辈+女儿 St Paul 期间建议 (8/19-29 共10-11天)</h3>
-<table>
-  <tr><th>活动</th><th>说明</th><th>费用</th></tr>
-  <tr><td>Mall of America</td><td>换个日子再去，孩子玩不腻。室内 Nickelodeon Universe 过山车 $40</td><td>$40</td></tr>
-  <tr><td>Minnesota Zoo</td><td>比 Como Zoo 大，有灰狼/驼鹿/水獭。$20/成人 $14/儿童</td><td>$54</td></tr>
-  <tr><td>Duluth + 苏必利尔湖 1日游</td><td>明州最美湖滨城市，2.5h车程。Great Lakes Aquarium + 湖边散步</td><td>油费$30</td></tr>
-  <tr><td>Stillwater 小镇半日</td><td>密西西比河畔古董小镇，40分钟车程。冰淇淋+古董店+河边野餐</td><td>免费</td></tr>
-  <tr><td>芝加哥 Amtrak 2-3日</td><td>火车6h从St Paul到芝加哥，$56/人。Field Museum + Navy Pier + 千禧公园</td><td>$400+</td></tr>
-  <tr><td>St Paul Saints 棒球赛</td><td>小联盟棒球，票$15起，氛围好，孩子爱看。8月赛季中</td><td>$60</td></tr>
-</table>
-</div>
-
+<!-- ==================== 攻略要点 ==================== -->
 <h2>攻略要点</h2>
 <div class="tips-grid">
-  <div class="tip"><h4>黄石 8 月生存法则</h4><p>早6:30出发避开人潮+高温。车上备足水和零食，园内餐厅排队久。加满油进园，园内加油站少且贵。Bison堵路是常态别按喇叭。Old Faithful 每90分钟喷发，app可查预报。</p></div>
-  <div class="tip"><h4>迪士尼 8 月旺季策略</h4><p>买 Genie+，早7点准时抢。先冲 Rise of the Resistance（最火），然后 Millennium Falcon。下午热+人多可回酒店休息，傍晚再进园看烟花。手机下 Disneyland App 看实时排队。</p></div>
-  <div class="tip"><h4>环球影城核心攻略</h4><p>Super Nintendo World 需要 Power-Up Band（$40）才能玩互动游戏。Early Access $20-30提前1小时入园。Mario Kart: Bowser's Challenge 是AR赛车，排队最恐怖。Harry Potter 黄油啤酒 $9。</p></div>
-  <div class="tip"><h4>带长辈+孩子必读</h4><p>黄石海拔 7000-8000ft，长辈注意高反。防晒霜+帽子+墨镜必带（高原紫外线强）。孩子 Junior Ranger Program 免费领手册完成任务换徽章。St Paul 8月蚊子多，Deep Woods OFF! 必备。</p></div>
-  <div class="tip"><h4>廉价航空注意事项</h4><p>Southwest 免费托运2件，但不对号入座（先到先得），提前24h check-in抢A组。Frontier 只含背包，登机箱$60，托运$55。建议全家共用大托运箱。Southwest不在 Google Flights 显示，官网查。</p></div>
-  <div class="tip"><h4>租车与驾驶</h4><p>中国驾照+翻译件可在加州/蒙大拿/明州开车。建议租 SUV（黄石路段可能颠簸）。BZN机场小，租车公司少，提前订。黄石园内限速45mph，夜间动物出没小心驾驶。加油站间隔远，半箱油就加。</p></div>
+
+<div class="tip">
+<h4>迪士尼 8月旺季策略</h4>
+<p>买 Genie+，早7点准时抢第一个 LL。先冲 Rise of the Resistance（最火项目），然后 Millennium Falcon。下午热+人多可回酒店休息（Best Western 步行5min），傍晚再进园看烟花。手机下 Disneyland App 看实时排队时间。带空水瓶，园内免费接水。</p>
 </div>
 
-<h2>预订链接</h2>
-<h3>机票 — 按航段直达搜索</h3>
-<div class="links">
-  <a href="https://www.southwest.com/air/booking/?originationAirportCode=LAX&destinationAirportCode=BZN&returnAirportCode=&departureDate=2026-08-16&returnDate=&adultPassengersCount=4" target="_blank">Southwest LAX→BZN (8/16 方案A)</a>
-  <a href="https://www.southwest.com/air/booking/?originationAirportCode=LAX&destinationAirportCode=BZN&returnAirportCode=&departureDate=2026-08-17&returnDate=&adultPassengersCount=4" target="_blank">Southwest LAX→BZN (8/17 方案B/C)</a>
-  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-18&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/18 方案A)</a>
-  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-19&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/19 方案B)</a>
-  <a href="https://www.southwest.com/air/booking/?originationAirportCode=BZN&destinationAirportCode=MSP&returnAirportCode=&departureDate=2026-08-20&returnDate=&adultPassengersCount=4" target="_blank">Southwest BZN→MSP (8/20 方案C)</a>
-  <a href="https://www.flyfrontier.com/book/?origin=MSP&destination=LAX&departure=2026-08-22&adults=2" target="_blank">Frontier MSP→LAX (8/22 康杰+白雪)</a>
-  <a href="https://www.flyfrontier.com/book/?origin=MSP&destination=LAX&departure=2026-08-29&adults=2" target="_blank">Frontier MSP→LAX (8/29 长辈+女儿)</a>
-  <a href="https://flights.google.com" target="_blank">Google Flights 比价</a>
-  <a href="https://kayak.com" target="_blank">Kayak 比价</a>
+<div class="tip">
+<h4>环球影城核心攻略</h4>
+<p>Super Nintendo World 需要 Power-Up Band（$40）才能玩互动游戏。可买 Early Access 提前1h入园（$20-30）。Mario Kart: Bowser's Challenge 是AR赛车，排队最恐怖。Harry Potter 区黄油啤酒 $9/杯必喝。Studio Tour 坐左边看得更清楚。带一次性雨衣给 Jurassic World。</p>
 </div>
 
-<h3>酒店 — 按名称直达预订</h3>
-<table style="margin-bottom:14px">
-  <tr><th>方案</th><th>酒店</th><th>直达链接</th><th>比价链接</th></tr>
-  <tr><td>A</td><td>Fairfield Inn Anaheim Resort</td><td><a href="https://www.marriott.com/hotels/travel/laxaf-fairfield-inn-anaheim-resort/" target="_blank" style="color:var(--sky)">Marriott 官网</a></td><td><a href="https://www.booking.com/searchresults.html?ss=Fairfield+Inn+Anaheim+Resort" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-1045071/fairfield-inn-anaheim-resort/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td></tr>
-  <tr><td>B</td><td>Best Western Plus Anaheim Inn</td><td><a href="https://www.bestwestern.com/en_US/book/hotels-in-anaheim/best-western-plus-anaheim-inn/propertyCode.05085.html" target="_blank" style="color:var(--sky)">Best Western 官网</a></td><td><a href="https://www.booking.com/searchresults.html?ss=Best+Western+Plus+Anaheim+Inn" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-220891/best-western-plus-anaheim-inn/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td></tr>
-  <tr><td>C</td><td>Clementine Hotel & Suites Anaheim</td><td><a href="https://www.clementinehotel.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td><td><a href="https://www.booking.com/searchresults.html?ss=Clementine+Hotel+Suites+Anaheim" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/anaheim-hotel-detail-745172/clementine-hotel-and-suites-anaheim/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td></tr>
-  <tr><td>A</td><td>Brandin' Iron Inn (西黄石)</td><td><a href="https://www.brandiniron.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td><td><a href="https://www.booking.com/searchresults.html?ss=Brandin+Iron+Inn+West+Yellowstone" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-1850326/brandin-iron-inn/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td></tr>
-  <tr><td>B</td><td>White Buffalo Hotel (西黄石)</td><td><a href="https://www.whitebuffaloclub.com/" target="_blank" style="color:var(--sky)">酒店官网</a></td><td><a href="https://www.booking.com/searchresults.html?ss=White+Buffalo+Hotel+West+Yellowstone" target="_blank" style="color:var(--text-dim)">Booking</a> <a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-101599515/white-buffalo-hotel/" target="_blank" style="color:var(--text-dim)">Trip.com</a></td></tr>
-  <tr><td>C</td><td>Travelers Lodge (西黄石)</td><td><a href="https://www.booking.com/searchresults.html?ss=Travelers+Lodge+West+Yellowstone" target="_blank" style="color:var(--sky)">Booking 预订</a></td><td><a href="https://www.trip.com/hotels/west-yellowstone-hotel-detail-1850328/travelers-lodge/" target="_blank" style="color:var(--text-dim)">Trip.com</a> <a href="https://www.expedia.com/West-Yellowstone-Hotels-Travelers-Lodge.h1863493.Hotel-Information" target="_blank" style="color:var(--text-dim)">Expedia</a></td></tr>
-  <tr><td>通用</td><td>Anaheim 区域全部酒店</td><td colspan="2"><a href="https://www.booking.com/searchresults.html?ss=Anaheim%2C+California&checkin=2026-08-12&checkout=2026-08-17&group_adults=2&no_rooms=2" target="_blank" style="color:var(--sky)">Booking Anaheim 8/12-17</a> &nbsp; <a href="https://www.airbnb.com/s/Anaheim--California/homes?checkin=2026-08-12&checkout=2026-08-17&adults=4" target="_blank" style="color:var(--sky)">Airbnb Anaheim</a></td></tr>
-</table>
+<div class="tip">
+<h4>黄石 8月生存法则</h4>
+<p>早6:30出发避开人潮+高温。车上备足水和零食，园内餐厅排队久且贵。加满油进园，园内加油站少。Bison 堵路是常态，千万别按喇叭，耐心等。Old Faithful 每90分钟喷发一次，App可查预报。Grand Prismatic Overlook 的 Fairy Falls 徒步是必走小径。海拔7000-8000ft注意防晒+高反。</p>
+</div>
+
+<div class="tip">
+<h4>带长辈+孩子出行必读</h4>
+<p>黄石海拔较高，长辈注意高反症状（头痛/恶心），车上备氧气罐$15。防晒霜+帽子+墨镜必带（高原紫外线极强）。孩子可参加 Junior Ranger Program（免费领手册，完成任务换徽章，黄石+迪士尼都有）。St Paul 8月蚊子多，Deep Woods OFF! 驱蚊必备。每天保持1-2顿热餐，长辈肠胃需要。</p>
+</div>
+
+<div class="tip">
+<h4>租车与驾驶提醒</h4>
+<p>中国驾照+翻译件可在加州/蒙大拿/明州合法开车。建议租中型SUV（黄石路段颠簸+行李空间需大）。BZN机场小租车公司少，提前网上订好。黄石园内限速45mph，夜间动物出没小心驾驶。加油站间隔远，半箱油就加。LA停车贵，注意街边停车时间限制。</p>
+</div>
+
+<div class="tip">
+<h4>时差与体力管理</h4>
+<p>8/12到LA是下午，当晚早点睡。8/13迪士尼是硬仗但有时差兴奋感顶着。8/16的自由日是缓冲日，如果体力透支建议选选项C（休息）。黄石8/18是第二个体力高峰日。8/19飞St Paul后节奏变慢。行程设计前紧后松，越往后越轻松。</p>
+</div>
+
+</div>
 
 </div><!-- end container -->
-
-<script>
-function switchPlan(id) {
-  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
-  document.getElementById('plan-' + id).classList.add('active');
-  event.target.classList.add('active');
-}
-</script>
 </body>
 </html>
