@@ -21,10 +21,65 @@
   .hero { text-align: center; padding: 40px 20px 30px; background: linear-gradient(180deg, #0d1117 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); }
   .hero h1 { font-size: 1.8em; font-weight: 700; color: #fff; letter-spacing: 1px; }
   .hero p { color: var(--text-dim); margin-top: 6px; font-size: .9em; }
-  .container { max-width: 800px; margin: 0 auto; padding: 24px 20px 60px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* 顶部统计 + 航班总览 */
+  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .summary-card h3 { color: #fff; font-size: .95em; margin-bottom: 10px; }
+  .summary-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .stat { min-width: 100px; text-align: center; }
+  .stat .num { font-size: 1.4em; font-weight: 700; color: #fff; }
+  .stat .lbl { font-size: .72em; color: var(--text-dim); }
+
+  .flight-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .flight-card h3 { color: #fff; font-size: .95em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .flight-card h3 .sub { font-size: .75em; color: var(--text-dim); font-weight: 400; }
+  .flight-row { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 6px; margin-bottom: 6px; background: var(--card2); border: 1px solid rgba(255,255,255,.04); flex-wrap: wrap; }
+  .flight-row:last-child { margin-bottom: 0; }
+  .flight-route { flex: 1 1 220px; min-width: 220px; }
+  .flight-route .fn { font-weight: 700; color: #fff; font-size: .92em; }
+  .flight-route .rt { color: var(--text-dim); font-size: .78em; }
+  .flight-time { color: var(--text-bright); font-size: .85em; white-space: nowrap; }
+  .flight-airline { font-size: .78em; color: var(--text-dim); white-space: nowrap; }
+  .flight-status { font-size: .75em; font-weight: 600; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .st-done { background: rgba(107,203,119,.18); color: var(--accent-c); }
+  .st-wait { background: rgba(255,217,61,.15); color: var(--accent-b); }
+  .st-todo { background: rgba(255,107,107,.15); color: var(--accent-a); }
+
+  .important-card { background: linear-gradient(135deg, rgba(212,168,67,.08), rgba(192,132,252,.08)); border: 1px solid rgba(212,168,67,.35); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .important-card h3 { color: var(--gold); font-size: .95em; margin-bottom: 10px; }
+  .important-card .imp-item { display: flex; gap: 10px; align-items: baseline; font-size: .88em; padding: 4px 0; }
+  .important-card .imp-item .when { color: var(--accent-b); font-weight: 700; white-space: nowrap; font-size: .85em; }
+  .important-card .imp-item .what { color: var(--text); }
+
+  .controls { display: flex; gap: 8px; margin: 12px 0 20px; flex-wrap: wrap; }
+  .controls button { padding: 8px 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; font-size: .82em; font-family: inherit; transition: all .15s; }
+  .controls button:hover { background: var(--card2); border-color: var(--text-dim); }
+  h2 { font-size: 1.1em; color: #fff; margin: 28px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  h2 .hint { font-size: .72em; color: var(--text-dim); font-weight: 400; margin-left: 8px; }
+
+  /* 行前准备分类网格 */
+  .prep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 8px; }
+  @media (max-width: 640px) { .prep-grid { grid-template-columns: 1fr; } }
+  .prep-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .prep-card h4 { color: var(--text-bright); font-size: .85em; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .prep-item { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; font-size: .83em; cursor: pointer; border-radius: 4px; }
+  .prep-item:hover { background: rgba(255,255,255,.02); }
+  .prep-item .check { flex-shrink: 0; width: 18px; text-align: center; color: var(--text-dim); font-family: monospace; }
+  .prep-item.done { color: var(--done); text-decoration: line-through; }
+  .prep-item.done .check { color: var(--accent-c); }
+  .prep-item .tag { display: inline-block; font-size: .68em; padding: 0 6px; border-radius: 3px; margin-left: 4px; font-weight: 600; flex-shrink: 0; }
+  .prep-item .tag.ok { background: rgba(107,203,119,.2); color: var(--accent-c); }
+  .prep-item .tag.wait { background: rgba(255,217,61,.15); color: var(--accent-b); }
+  .prep-item .tag.info { background: rgba(91,155,213,.15); color: var(--sky); }
+  .prep-item .tag.price { background: rgba(192,132,252,.15); color: var(--flight); }
+  .prep-item .code { color: var(--gold); font-family: monospace; font-size: .9em; }
+
+  /* 每日行程 */
   .day-section { margin-bottom: 20px; }
   .day-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card2); border-radius: 10px 10px 0 0; border: 1px solid var(--border); border-bottom: none; }
   .day-header .date { font-size: 1.1em; font-weight: 700; color: #fff; }
+  .day-header .loc { font-size: .8em; color: var(--text-dim); }
   .day-body { border: 1px solid var(--border); border-radius: 0 0 10px 10px; overflow: hidden; }
   .item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.03); cursor: pointer; transition: background .15s; font-size: .88em; }
   .item:last-child { border-bottom: none; }
@@ -39,16 +94,7 @@
   .item .tag.doc { background: rgba(107,203,119,.15); color: var(--accent-c); }
   .item .tag.tip { background: rgba(255,107,107,.15); color: var(--accent-a); }
   .item .tag.done-tag { background: rgba(107,203,119,.2); color: var(--accent-c); }
-  .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
-  .summary-card h3 { color: #fff; font-size: .95em; margin-bottom: 10px; }
-  .summary-grid { display: flex; gap: 12px; flex-wrap: wrap; }
-  .stat { min-width: 100px; text-align: center; }
-  .stat .num { font-size: 1.4em; font-weight: 700; color: #fff; }
-  .stat .lbl { font-size: .72em; color: var(--text-dim); }
-  .controls { display: flex; gap: 8px; margin: 12px 0 20px; flex-wrap: wrap; }
-  .controls button { padding: 8px 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; font-size: .82em; font-family: inherit; transition: all .15s; }
-  .controls button:hover { background: var(--card2); border-color: var(--text-dim); }
-  h2 { font-size: 1.1em; color: #fff; margin: 28px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .item .tag.must { background: rgba(255,217,61,.2); color: var(--accent-b); }
 </style>
 </head>
 <body>
@@ -58,6 +104,67 @@
 </div>
 <div class="container">
 
+<!-- ============ 航班总览 ============ -->
+<div class="flight-card">
+  <h3>航班总览（7段）<span class="sub">点下方每日行程逐项打勾</span></h3>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">KE142 大韩航空</div><div class="rt">西安 XIY → 首尔 ICN</div></div>
+    <div class="flight-time">8/12 12:40 → 16:40</div>
+    <div class="flight-airline">记录号 KEQ8SD</div>
+    <div class="flight-status st-done">已值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">KE011 大韩航空</div><div class="rt">首尔 ICN → 洛杉矶 LAX</div></div>
+    <div class="flight-time">8/12 19:40 → 15:20 (+1)</div>
+    <div class="flight-airline">约11h · 转机3h</div>
+    <div class="flight-status st-done">已值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">UA319 美联航</div><div class="rt">洛杉矶 LAX T7 → 博兹曼 BZN</div></div>
+    <div class="flight-time">8/17 10:40 → 14:13</div>
+    <div class="flight-airline">4人 · 约2.5h</div>
+    <div class="flight-status st-wait">8/16 10:40 起可值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">DL2946 达美</div><div class="rt">博兹曼 BZN → 明尼阿波利斯 MSP</div></div>
+    <div class="flight-time">8/19 15:55 → 19:15</div>
+    <div class="flight-airline">4人 · 约3h20m · ¥10,094</div>
+    <div class="flight-status st-wait">8/18 15:55 起可值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">SY425 Sun Country</div><div class="rt">明尼阿波利斯 MSP → 洛杉矶 LAX T1</div></div>
+    <div class="flight-time">8/22 15:25 → 17:15</div>
+    <div class="flight-airline">约3h</div>
+    <div class="flight-status st-wait">8/21 15:25 起可值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">KE012 大韩航空</div><div class="rt">洛杉矶 LAX → 首尔 ICN</div></div>
+    <div class="flight-time">8/22 23:50 → (+1)</div>
+    <div class="flight-airline">4人 · 记录号 KEQ8SD</div>
+    <div class="flight-status st-wait">8/20 23:50 起可值机</div>
+  </div>
+  <div class="flight-row">
+    <div class="flight-route"><div class="fn">KE141 大韩航空</div><div class="rt">首尔 ICN → 西安 XIY</div></div>
+    <div class="flight-time">8/24 09:10 →</div>
+    <div class="flight-airline">4人 · 记录号 KEQ8SD</div>
+    <div class="flight-status st-wait">8/22 09:10 起可值机</div>
+  </div>
+</div>
+
+<!-- ============ 重要时间点 ============ -->
+<div class="important-card">
+  <h3>重要时间点（别错过）</h3>
+  <div class="imp-item"><span class="when">8/12 11:00</span><span class="what">到西安咸阳机场 T5，国际航班提前 2h</span></div>
+  <div class="imp-item"><span class="when">8/13 06:45</span><span class="what">迪士尼开园前抢 Genie+ Lightning Lane，首选 Rise of the Resistance</span></div>
+  <div class="imp-item"><span class="when">8/16 10:40</span><span class="what">UA319 开放网上值机（起飞前24h）</span></div>
+  <div class="imp-item"><span class="when">8/17 07:00</span><span class="what">退房出发去 LAX T7，10:40 起飞</span></div>
+  <div class="imp-item"><span class="when">8/18 15:55</span><span class="what">DL2946 开放网上值机（起飞前24h）</span></div>
+  <div class="imp-item"><span class="when">8/21 15:25</span><span class="what">SY425 开放网上值机（起飞前24h）</span></div>
+  <div class="imp-item"><span class="when">8/20 23:50</span><span class="what">返程 KE012 开放网上值机（起飞前48h）</span></div>
+  <div class="imp-item"><span class="when">随时</span><span class="what">黄石门票：America the Beautiful Pass $80/车（西入口也可现场买 $35/7天）</span></div>
+</div>
+
+<!-- ============ 进度统计 ============ -->
 <div class="summary-card">
   <h3>搞定进度</h3>
   <div class="summary-grid" id="stats">
@@ -72,46 +179,74 @@
   <button onclick="saveState()">保存当前</button>
 </div>
 
-<!-- ============ 行前准备 ============ -->
-<h2>行前准备</h2>
-<div class="day-section">
-<div class="day-header"><span class="date">出发前</span></div>
-<div class="day-body">
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">EVUS已登记</span> (8/3确认, 多人组) <span class="tag done-tag">已登记</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>护照有效期 6 个月以上 <span class="tag doc">文件</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">中国驾照 + 国际翻译认证件</span> 已准备好 <span class="tag done-tag">已备</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>旅行保险购买 <span class="tag book">预订</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">美国手机卡</span> 已准备好 <span class="tag done-tag">已备</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">迪士尼1日票已购</span> 8/13 Disneyland Park x4 <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">环球影城1日票已购</span> 8/14 Universal Studios x4 <span class="tag done-tag">已购</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>圣地亚哥动物园门票 (如选8/16) $65/成人 $55/儿童 <span class="tag ticket">票</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">KE142+KE011 已购</span> 8/12 西安→首尔→洛杉矶 (记录号KEQ8SD/DUL7NS) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">UA319 已购</span> 8/17 LAX T7→BZN 10:40→14:13 (4人) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">DL2946 已购</span> 8/19 BZN→MSP 15:55→19:15 (4人, ¥10,094) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">SY425 已购</span> 8/22 MSP→LAX 15:25→17:15 (确认是否4人) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">KE012+KE141 已购</span> 8/22 LAX 23:50→ICN + 8/24 ICN→西安 09:10 (4人) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">长辈+女儿返程已含</span> 8/22 KE012 同机 (记录号KEQ8SD/DUL7NS) <span class="tag done-tag">已购</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">SpringHill Suites Anaheim 已订</span> 5JWD78LS74 8/12-17 <span class="tag done-tag">已订</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">Kelly Inn West Yellowstone 已订</span> Booking 6042514654 PIN 8576, 2晚 8/17-19, King双大床房, outlook确认邮件已收 <span class="tag done-tag">已订</span></div>
-  <div class="item done" onclick="toggle(this)"><span class="check">☑</span><span style="color:var(--accent-c)">租车已订</span> 携程单1128149581060669 含保险 <span class="tag done-tag">已订</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>下载 Disneyland App + Universal CA App <span class="tag tip">攻略</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>下载 Uber/Lyft App (备用) <span class="tag tip">攻略</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>准备美元现金 ($500-800小费+停车+应急用) <span class="tag pack">准备</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>黄石门票预订 (America the Beautiful Pass $80/车) <span class="tag ticket">票</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>防熊喷雾 (当地买 ~$45) <span class="tag pack">准备</span></div>
-</div>
+<!-- ============ 行前准备（分类） ============ -->
+<h2>行前准备 <span class="hint">已办事项标绿，未办待处理</span></h2>
+<div class="prep-grid">
+
+  <div class="prep-card">
+    <h4>证件与文件</h4>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>EVUS 已登记 <span class="tag ok">8/3确认</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>中国驾照 + 国际翻译认证件 <span class="tag ok">已备</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>护照有效期 6 个月以上 <span class="tag info">检查</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>打印：行程单 + EVUS 确认页 <span class="tag info">文件</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>机票（7段全部已购）</h4>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>KE142+KE011 去程 <span class="code">KEQ8SD</span> <span class="tag ok">已值机</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>UA319 8/17 <span class="tag wait">8/16值机</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>DL2946 8/19 <span class="tag wait">8/18值机</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>SY425 8/22 <span class="tag wait">8/21值机</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>KE012+KE141 返程 <span class="code">KEQ8SD</span> <span class="tag wait">8/20值机</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>住宿</h4>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>SpringHill Suites Anaheim <span class="code">5JWD78LS74</span> <span class="tag ok">8/12-17</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>Kelly Inn West Yellowstone <span class="code">6042514654</span> <span class="tag ok">8/17-19</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>St Paul 住朋友家 <span class="tag ok">8/19-22</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>交通与租车</h4>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>LA 租车已订 <span class="code">1128149581060669</span> <span class="tag ok">含保险</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>BZN 机场租车（中型SUV）<span class="tag info">待办</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>下载 Uber/Lyft App（备用）<span class="tag ok">已装</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>门票</h4>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>迪士尼 1 日票 8/13 x4 <span class="tag ok">已购</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>环球影城 1 日票 8/14 x4 <span class="tag ok">已购</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>黄石 America the Beautiful Pass <span class="tag price">$80/车</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>圣地亚哥动物园门票（如选 8/16）<span class="tag price">$65/$55</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>保险与现金</h4>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>旅行保险购买 <span class="tag wait">待办</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>美元现金 <span class="tag price">$500-800</span> <span class="tag info">小费+停车+应急</span></div>
+  </div>
+
+  <div class="prep-card">
+    <h4>App 与装备</h4>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>下载 Disneyland App + Universal CA App <span class="tag info">攻略</span></div>
+    <div class="prep-item done" onclick="toggle(this)"><span class="check">☑</span>美国手机卡 <span class="tag ok">已备</span></div>
+    <div class="prep-item" onclick="toggle(this)"><span class="check">☐</span>防熊喷雾（西黄石当地买）<span class="tag price">~$45</span></div>
+  </div>
+
 </div>
 
 <!-- ============ 8/12 飞行日 ============ -->
-<h2>8/12 周二 西安 → 首尔 → 洛杉矶</h2>
+<h2>每日行程</h2>
 <div class="day-section">
-<div class="day-header"><span class="date"><span class="loc fly">飞行日</span></span><span class="loc fly">KE142 + KE011</span></div>
+<div class="day-header"><span class="date">8/12 周二</span><span class="loc">西安 → 首尔 → 洛杉矶 · KE142 + KE011</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>打包！1件托运行李(23kg), 每人手提1件 <span class="tag pack">打包</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>护照 + 打印行程单 + EVUS确认页 <span class="tag doc">文件</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>孩子: 零食+iPad+下载动画片 (机上11h) <span class="tag pack">打包</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>外套/披肩 (机上冷气足) <span class="tag pack">打包</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 到西安咸阳 T5 <span class="tag tip">时间</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 到西安咸阳 T5 <span class="tag must">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:40 KE142 起飞 XIY→ICN 2h50m <span class="tag tip">飞行</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>16:40 首尔仁川转机: 逛免税店 + 韩餐 <span class="tag tip">转机</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:40 KE011 首尔→洛杉矶 11h <span class="tag tip">飞行</span></div>
@@ -123,12 +258,11 @@
 </div>
 
 <!-- ============ 8/13 迪士尼 ============ -->
-<h2>8/13 周三 迪士尼乐园</h2>
 <div class="day-section" style="border-left:3px solid var(--sky); border-radius:10px; padding-left:0">
 <div class="day-header" style="border-color:var(--sky)"><span class="date" style="color:var(--sky)">8/13 周三</span><span class="loc la">迪士尼乐园</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:15 起床, 酒店简餐 <span class="tag tip">时间</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>06:45 抢 Genie+ Lightning Lane!</strong> 首选 Rise of the Resistance <span class="tag ticket">必抢</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>06:45 抢 Genie+ Lightning Lane!</strong> 首选 Rise of the Resistance <span class="tag must">必抢</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 步行15分钟到迪士尼入口 (不用开车!) <span class="tag tip">交通</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 Rise of the Resistance (先刷最火) <span class="tag tip">必玩</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 Millennium Falcon: Smugglers Run (让女儿当飞行员) <span class="tag tip">必玩</span></div>
@@ -146,7 +280,6 @@
 </div>
 
 <!-- ============ 8/14 环球影城 ============ -->
-<h2>8/14 周四 环球影城</h2>
 <div class="day-section" style="border-left:3px solid var(--accent-a); border-radius:10px; padding-left:0">
 <div class="day-header" style="border-color:var(--accent-a)"><span class="date" style="color:var(--accent-a)">8/14 周四</span><span class="loc" style="color:var(--accent-a)">环球影城</span></div>
 <div class="day-body">
@@ -169,9 +302,8 @@
 </div>
 
 <!-- ============ 8/15 城市游 ============ -->
-<h2>8/15 周五 洛杉矶城市漫游</h2>
 <div class="day-section">
-<div class="day-header"><span class="date">8/15 周五</span><span class="loc la">洛杉矶</span></div>
+<div class="day-header"><span class="date">8/15 周五</span><span class="loc la">洛杉矶城市漫游</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 睡到自然醒, 酒店早餐 <span class="tag tip">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:30 Santa Monica 海滩 + 码头摩天轮 <span class="tag tip">游玩</span></div>
@@ -185,7 +317,6 @@
 </div>
 
 <!-- ============ 8/16 自由日 ============ -->
-<h2>8/16 周六 自由日</h2>
 <div class="day-section">
 <div class="day-header"><span class="date">8/16 周六</span><span class="loc la">洛杉矶 自由活动</span></div>
 <div class="day-body">
@@ -200,13 +331,12 @@
 </div>
 
 <!-- ============ 8/17 飞黄石 ============ -->
-<h2>8/17 周日 飞黄石</h2>
 <div class="day-section" style="border-left:3px solid var(--accent-b); border-radius:10px; padding-left:0">
 <div class="day-header" style="border-color:var(--accent-b)"><span class="date" style="color:var(--accent-b)">8/17 周日</span><span class="loc" style="color:var(--accent-b)">UA319 洛杉矶→博兹曼</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 退房, 开车到 LAX T7 <span class="tag tip">交通</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:30 还车. LAX T7 美联航值机 <span class="tag tip">交通</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>10:40 UA319 LAX→BZN</strong> 飞行约2.5h <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>10:40 UA319 LAX→BZN</strong> 飞行约2.5h <span class="tag must">飞行</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>14:13 抵达 Bozeman BZN, 取租车 (中型SUV) <span class="tag tip">抵达</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>Walmart / Town & Country 采购: 水x2箱, 三明治, 零食, 水果, 防熊喷雾($45) <span class="tag pack">补给</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:00 开车到西黄石镇 (1.5h, US-191风景线) <span class="tag tip">交通</span></div>
@@ -217,9 +347,8 @@
 </div>
 
 <!-- ============ 8/18 黄石 ============ -->
-<h2>8/18 周一 黄石下8字精华一日</h2>
 <div class="day-section" style="border-left:3px solid var(--accent-b); border-radius:10px; padding-left:0">
-<div class="day-header" style="border-color:var(--accent-b)"><span class="date" style="color:var(--accent-b)">8/18 周一</span><span class="loc" style="color:var(--accent-b)">黄石国家公园</span></div>
+<div class="day-header" style="border-color:var(--accent-b)"><span class="date" style="color:var(--accent-b)">8/18 周一</span><span class="loc" style="color:var(--accent-b)">黄石国家公园 · 下8字精华一日</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:00 起床, 打包早餐 (提前买好的三明治+水果) <span class="tag tip">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>06:30 出发! 西入口进园→直奔 Old Faithful <span class="tag tip">交通</span></div>
@@ -234,21 +363,20 @@
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:00 Mud Volcano / Sulphur Caldron <span class="tag tip">黄石</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:00 Canyon Village 远眺 Lower Falls <span class="tag tip">黄石</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:00 从 Canyon 经 Norris 返回西黄石 (注意黄昏动物) <span class="tag tip">交通</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:00 晚餐西黄石镇  Wild West Pizzeria 或 Madison Crossing <span class="tag pack">晚餐</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>20:00 晚餐西黄石镇 Wild West Pizzeria 或 Madison Crossing <span class="tag pack">晚餐</span></div>
 </div>
 </div>
 
 <!-- ============ 8/19 黄石收尾→St Paul ============ -->
-<h2>8/19 周二 黄石收尾 → St Paul</h2>
 <div class="day-section" style="border-left:3px solid var(--accent-c); border-radius:10px; padding-left:0">
-<div class="day-header" style="border-color:var(--accent-c)"><span class="date" style="color:var(--accent-c)">8/19 周二</span><span class="loc" style="color:var(--accent-c)">DL2946 博兹曼→明尼阿波利斯</span></div>
+<div class="day-header" style="border-color:var(--accent-c)"><span class="date" style="color:var(--accent-c)">8/19 周二</span><span class="loc" style="color:var(--accent-c)">黄石收尾 → St Paul · DL2946</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:00 退房, 行李装车 <span class="tag tip">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>07:30 Norris Geyser Basin (黄石最热区, Porcelain Basin 30min) <span class="tag tip">黄石</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 开车出园回 Bozeman (1.5h, Madison River段最后看动物) <span class="tag tip">交通</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:30 到 BZN 还车 <span class="tag tip">交通</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>12:00 BZN 机场简餐 <span class="tag pack">午餐</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:55 DL2946 BZN→MSP</strong> 飞行约3h20m <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:55 DL2946 BZN→MSP</strong> 飞行约3h20m <span class="tag must">飞行</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>19:15 抵达 Minneapolis MSP, 朋友接机 <span class="tag tip">抵达</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>入住 St Paul 家里! 朋友接风晚餐 <span class="tag pack">晚餐</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>赶路结束! 享受休整模式 <span class="tag tip">休息</span></div>
@@ -256,9 +384,8 @@
 </div>
 
 <!-- ============ 8/20 St Paul ============ -->
-<h2>8/20 周三 St Paul · Mall of America</h2>
 <div class="day-section">
-<div class="day-header"><span class="date">8/20 周三</span><span class="loc sp">St Paul</span></div>
+<div class="day-header"><span class="date">8/20 周三</span><span class="loc sp">St Paul · Mall of America</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 睡到自然醒. 朋友家早餐 <span class="tag tip">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 Mall of America (全美最大, 开车20min) <span class="tag tip">游玩</span></div>
@@ -271,9 +398,8 @@
 </div>
 
 <!-- ============ 8/21 St Paul ============ -->
-<h2>8/21 周四 St Paul · 双城探索 + 告别</h2>
 <div class="day-section">
-<div class="day-header"><span class="date">8/21 周四</span><span class="loc sp">St Paul</span></div>
+<div class="day-header"><span class="date">8/21 周四</span><span class="loc sp">St Paul · 双城探索 + 告别</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>09:00 Minnehaha Falls 城市瀑布 (免费) <span class="tag tip">游玩</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>11:00 Minneapolis Sculpture Garden 勺子桥樱桃 <span class="tag tip">游玩</span></div>
@@ -287,16 +413,15 @@
 </div>
 
 <!-- ============ 8/22 返程 ============ -->
-<h2>8/22 周五 全家返程</h2>
 <div class="day-section" style="border-left:3px solid var(--flight); border-radius:10px; padding-left:0">
 <div class="day-header" style="border-color:var(--flight)"><span class="date" style="color:var(--flight)">8/22 周五</span><span class="loc" style="color:var(--flight)">SY425 + KE012 返回中国</span></div>
 <div class="day-body">
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>08:00 最后收拾. 和 St Paul 朋友道别 <span class="tag tip">时间</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>10:00 朋友送机到 MSP <span class="tag tip">交通</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:25 SY425 MSP→LAX T1</strong> 飞行约3h <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span><strong>15:25 SY425 MSP→LAX T1</strong> 飞行约3h <span class="tag must">飞行</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>17:15 抵达 LAX. 转国际航站楼 TBIT <span class="tag tip">转机</span></div>
   <div class="item" onclick="toggle(this)"><span class="check">☐</span>18:00 机场晚餐 + 免税店最后购物 <span class="tag pack">晚餐</span></div>
-  <div class="item" onclick="toggle(this)"><span class="check">☐</span>23:50 KE012 LAX→ICN 起飞 <span class="tag tip">飞行</span></div>
+  <div class="item" onclick="toggle(this)"><span class="check">☐</span>23:50 KE012 LAX→ICN 起飞 <span class="tag must">飞行</span></div>
 </div>
 </div>
 
@@ -304,12 +429,12 @@
 
 <script>
 // 从 localStorage 恢复状态
-document.querySelectorAll('.item').forEach(el => {
+document.querySelectorAll('.item, .prep-item').forEach(el => {
   const id = el.innerHTML.trim();
   const saved = localStorage.getItem('check_' + id);
   if (saved === 'done') {
     el.classList.add('done');
-    el.querySelector('.check').textContent = '?';
+    el.querySelector('.check').textContent = '☑';
   }
 });
 updateStats();
@@ -318,28 +443,28 @@ function toggle(el) {
   el.classList.toggle('done');
   const check = el.querySelector('.check');
   if (el.classList.contains('done')) {
-    check.textContent = '?';
+    check.textContent = '☑';
     localStorage.setItem('check_' + el.innerHTML.trim(), 'done');
   } else {
-    check.textContent = '?';
+    check.textContent = '☐';
     localStorage.removeItem('check_' + el.innerHTML.trim());
   }
   updateStats();
 }
 
 function checkAll() {
-  document.querySelectorAll('.item:not(.done)').forEach(el => {
+  document.querySelectorAll('.item:not(.done), .prep-item:not(.done)').forEach(el => {
     el.classList.add('done');
-    el.querySelector('.check').textContent = '?';
+    el.querySelector('.check').textContent = '☑';
     localStorage.setItem('check_' + el.innerHTML.trim(), 'done');
   });
   updateStats();
 }
 
 function uncheckAll() {
-  document.querySelectorAll('.item.done').forEach(el => {
+  document.querySelectorAll('.item.done, .prep-item.done').forEach(el => {
     el.classList.remove('done');
-    el.querySelector('.check').textContent = '?';
+    el.querySelector('.check').textContent = '☐';
     localStorage.removeItem('check_' + el.innerHTML.trim());
   });
   updateStats();
@@ -351,8 +476,8 @@ function saveState() {
 }
 
 function updateStats() {
-  const total = document.querySelectorAll('.item').length;
-  const done = document.querySelectorAll('.item.done').length;
+  const total = document.querySelectorAll('.item, .prep-item').length;
+  const done = document.querySelectorAll('.item.done, .prep-item.done').length;
   document.getElementById('done-count').textContent = done;
   document.getElementById('total-count').textContent = total;
 }
